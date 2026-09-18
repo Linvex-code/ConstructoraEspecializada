@@ -46,11 +46,11 @@ docs/presentacion/
 ## Supuestos y notas
 
 - Todas las cifras y alcance provienen de la documentación de `docs/` (no se inventaron).
-- El plan por fases y prioridades se basa en `docs/planificacion/analisis-comercial-financiero.md`
-  (Fases 0–3, 6,943 h PERT, 9–11 meses escenario recomendado).
+- El plan por fases y prioridades se basa en la sección 25 (plan de implementación) de
+  `docs/diseno-arquitectura.md` (Fases 0–4).
 - La migración de la data de **SharePoint** se incluye como **posible pero con revisión/analisis
   por separado** (sin vía más automatizada contemplada), tal como se indicó en la solicitud.
-- Cifras comerciales (precio, modelo de contratación, plan de cobro) quedan fuera por decisión
-  de diseño; están disponibles en `docs/planificacion/analisis-comercial-financiero.md` si se requieren.
+- Las cifras comerciales (costos, precios y modelo de contratación) no forman parte de este repositorio
+  por decisión del equipo.
 - Pendientes bloqueantes a validar antes de una versión final para cliente: CPA, asesor legal,
   ciudad/proveedores y decisiones D1–D12 (ver `data/project-analysis.md`).

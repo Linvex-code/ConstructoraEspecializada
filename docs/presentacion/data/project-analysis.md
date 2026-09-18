@@ -24,7 +24,7 @@ Este documento resume el análisis documental usado para construir la presentaci
 | `docs/modulos/README.md` + 11 docs de módulos | Módulos, permisos, RF, dependencias |
 | `docs/ui/diseno-ui-design-system.md` (v1.7) + `tokens.css` | Identidad GRAFITO, tokens, componentes, accesibilidad |
 | `docs/ui/requerimientos-modulos.md` (v0.1) | Decisiones D1–D12, permisos `[P]` |
-| `docs/planificacion/analisis-comercial-financiero.md` | Fases, WBS, esfuerzo, dependencias, pendientes (migración de datos) |
+| `docs/diseno-arquitectura.md` (§25) | Plan por fases y dependencias; pendientes (migración de datos) |
 | `ui/prototipo-demo.html` + capturas | Evidencia visual (dashboard, clientes, inmuebles, cobros, contratos, contabilidad) |
 
 ## Mapa de módulos (con fase)
@@ -52,4 +52,4 @@ Media: Incidencias, Línea Blanca, Notificaciones + Calendario, Reportes.
 - Confirmación de ciudad principal y proveedores (correo, SMS, WhatsApp, almacenamiento).
 - Cierre de decisiones D1–D12 (reglas de negocio).
 - Definición de responsable de hosting/producción y SLA.
-- Cifras comerciales ($ y modelo de contratación) **no se mostraron** en la presentación por decisión de diseño; si el usuario lo pide se incorporan de `analisis-comercial-financiero.md`.
+- Cifras comerciales (costos, precios y modelo de contratación) no se muestran y no forman parte de este repositorio por decisión del equipo.

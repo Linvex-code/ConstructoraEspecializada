@@ -81,7 +81,6 @@ Sistema de diseño **open design** y tool-agnostic: cualquier equipo puede const
 │  ├─ adr-aislamiento-modulos-killswitch.md  # ADR-015…018 (aislamiento, kill-switch)
 │  ├─ modulo-contabilidad.md                 # Diseño del módulo de contabilidad panameña
 │  ├─ modulos/                               # Documentos oficiales por módulo (11)
-│  ├─ planificacion/                         # Análisis comercial y financiero (interno)
 │  ├─ ui/                                    # Design system GRAFITO, tokens y prototipos
 │  └─ presentacion/ + presentacion-slidev/   # Presentaciones ejecutables
 └─ ui/
