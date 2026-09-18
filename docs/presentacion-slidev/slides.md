@@ -1,8 +1,8 @@
 ---
 theme: default
-title: GRAFITO · Administración de Inmuebles, Portales y Contabilidad
+title: Constructora Especializada · Administración de Inmuebles, Portales y Contabilidad
 info: |
-  ## GRAFITO — Diseño de solución
+  ## Constructora Especializada — Diseño de solución
   Plataforma de administración de inmuebles, portales y contabilidad para Panamá.
   Elaborado a partir de docs/diseno-arquitectura.md, docs/ui/diseno-ui-design-system.md,
   docs/ui/requerimientos-modulos.md y el prototipo validado.
@@ -19,8 +19,8 @@ drawings:
 ---
 
 <div class="g-cover g-cover-canvas">
-  <div class="g-mark">G</div>
-  <div class="g-cover-kicker">GRAFITO · Diseño de solución</div>
+  <div class="g-mark">CE</div>
+  <div class="g-cover-kicker">Constructora Especializada · Diseño de solución</div>
   <h1>Administración de Inmuebles,<br>Portales y Contabilidad</h1>
   <p class="g-cover-sub">Plataforma integral para la gestión del portafolio de alquileres en Panamá — operación, cobro, portales y contabilidad en un solo lugar.</p>
   <div class="g-cover-meta">
@@ -55,7 +55,7 @@ para la plataforma de administración de inmuebles, portales y contabilidad en P
       <li><span class="g-ag-num">04</span>Núcleo del negocio (F1)</li>
       <li><span class="g-ag-num">05</span>Operación (F2) y Contabilidad (F3)</li>
       <li><span class="g-ag-num">06</span>Portal inquilino y administración de acceso</li>
-      <li><span class="g-ag-num">07</span>Experiencia de usuario · GRAFITO</li>
+      <li><span class="g-ag-num">07</span>Experiencia de usuario · Constructora Especializada</li>
     </ul>
   </div>
   <div>
@@ -753,8 +753,8 @@ class: g-portada
 ---
 
 <div class="g-cover">
-  <div class="g-mark">G</div>
-  <div class="g-cover-kicker">GRAFITO · Diseño de solución</div>
+  <div class="g-mark">CE</div>
+  <div class="g-cover-kicker">Constructora Especializada · Diseño de solución</div>
   <h1>¿Siguiente paso?</h1>
   <p class="g-cover-sub">Definamos juntos el alcance contractual por fases, validemos el marco legal y fiscal, y cerremos las decisiones de negocio para arrancar la Fase 0.</p>
   <div class="g-cover-meta">

@@ -399,7 +399,7 @@ html, body, #app, #page-root, #slide-content, .slidev-page {
   align-items: center;
   justify-content: center;
   font-weight: 800;
-  font-size: 24px;
+  font-size: 20px;
   margin-bottom: 26px;
 }
 .slidev-layout.g-portada p.g-cover-sub,

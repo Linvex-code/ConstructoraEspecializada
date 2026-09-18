@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>GRAFITO · Prototipo demo — Plataforma de Administración de Inmuebles, Portales y Contabilidad</title>
+<title>Constructora Especializada · Prototipo demo — Plataforma de Administración de Inmuebles, Portales y Contabilidad</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
@@ -211,7 +211,7 @@ select.input{appearance:auto}
 .sidebar{width:var(--sidebar-w);background:var(--scaffold-bg);color:var(--scaffold-text);flex:none;display:flex;flex-direction:column;position:fixed;inset:0 auto 0 0;z-index:var(--z-drawer,300);transition:transform var(--dur-3)}
 .brand{display:flex;align-items:center;gap:12px;height:var(--topbar-h);padding:0 20px;border-bottom:1px solid var(--scaffold-border);flex:none}
 .brand-logo{width:32px;height:32px;border-radius:var(--radius-md);background:var(--scaffold-text);color:var(--scaffold-bg);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:16px}
-.brand-name{font-weight:600;font-size:14px;line-height:1.2}
+.brand-name{font-weight:600;font-size:13px;line-height:1.2;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:172px}
 .brand-sub{font-size:11px;color:var(--scaffold-text-m)}
 .side-nav{flex:1;overflow-y:auto;overflow-x:hidden;padding:12px 10px 24px;scrollbar-width:thin;scrollbar-color:transparent transparent;transition:scrollbar-color var(--dur-2)}
   .side-nav:hover,.side-nav:focus-within{scrollbar-color:rgba(154,163,176,.45) transparent}
@@ -996,8 +996,8 @@ function logout(area){
 function authShell(inner){
   return '<div class="auth-body">'+
     '<div class="auth-top">'+
-      '<div class="brand-logo" style="width:36px;height:36px">G</div>'+
-      '<div><div class="brand-name">GRAFITO</div><div class="brand-sub">Plataforma de Administración de Inmuebles y Contabilidad · Panamá</div></div>'+
+      '<div class="brand-logo" style="width:36px;height:36px">CE</div>'+
+      '<div><div class="brand-name">Constructora Especializada</div><div class="brand-sub">Plataforma de Administración de Inmuebles y Contabilidad · Panamá</div></div>'+
     '</div>'+
     '<div class="auth-main">'+inner+'</div>'+
     '<div class="auth-foot">© 2026 Empresa de Administración de Inmuebles · <a href="#" onclick="return false">Términos</a> · <a href="#" onclick="return false">Privacidad</a></div>'+
@@ -1203,7 +1203,7 @@ function navItem(routeParam, iconName, label, active, extra){
 function sidebarAdmin(active){
   var feats = FEATURE_FLAGS;
   function ffOn(f){ return (feats.find(function(x){return x.flag===f;}) || {}).activo; }
-  var html = '<div class="sidebar"><div class="brand"><div class="brand-logo">G</div><div><div class="brand-name">GRAFITO</div><div class="brand-sub">Admin · Panamá</div></div></div><div class="side-nav">';
+  var html = '<div class="sidebar"><div class="brand"><div class="brand-logo">CE</div><div><div class="brand-name">Constructora Especializada</div><div class="brand-sub">Admin · Panamá</div></div></div><div class="side-nav">';
   html += '<div class="nav-group">General</div>';
   html += navItem('resumen','gauge','Resumen', active==='resumen');
   html += can('clientes') ? '<div class="nav-group">Gestión / Arrendamiento</div>' : '';
@@ -2318,7 +2318,7 @@ function comprobanteHtml(r){
   var hash = 'GS-'+r.comp.replace(/\D/g,'')+'-'+r.folio.replace(/\D/g,'')+'-'+String((r.monto*7)%997).padStart(3,'0');
   return '<div style="border:1px solid var(--border-default);border-radius:12px;overflow:hidden">'+
     '<div style="background:var(--brand);color:#fff;padding:18px 20px;display:flex;justify-content:space-between;align-items:center">'+
-      '<div><div style="font-weight:700;font-size:15px">GRAFITO · Administración de inmuebles</div><div class="small" style="opacity:.85">Comprobante de pago · Panamá</div></div>'+
+      '<div><div style="font-weight:700;font-size:15px">Constructora Especializada · Administración de inmuebles</div><div class="small" style="opacity:.85">Comprobante de pago · Panamá</div></div>'+
       '<div style="text-align:right"><div class="mono">'+esc(r.comp)+'</div><div class="small" style="opacity:.85">'+esc(r.pago)+'</div></div></div>'+
     '<div style="padding:18px 20px;background:#fff">'+
       '<div class="flex between" style="border-bottom:1px solid var(--border-subtle);padding:6px 0"><span class="muted2 small">Recibo</span><span class="mono">'+esc(r.folio)+' · '+esc(r.periodo)+'</span></div>'+
@@ -4028,7 +4028,7 @@ function admPermisosHtml(){
 }
 function admConfigHtml(){
   return '<div class="card" style="padding:20px;max-width:640px"><div class="card-title" style="margin-bottom:14px">Parámetros del sistema</div>'+
-    '<div class="field"><label for="c1">Nombre de la empresa</label><input class="input" id="c1" value="GRAFITO Administración de Inmuebles S.A."></div>'+
+    '<div class="field"><label for="c1">Nombre de la empresa</label><input class="input" id="c1" value="Constructora Especializada"></div>'+
     '<div class="form-grid" style="grid-template-columns:1fr 1fr">'+
     '<div class="field"><label for="c2">RUC</label><input class="input" id="c2" value="155-1234-56789"></div>'+
     '<div class="field"><label for="c3">Moneda</label><select class="input" id="c3"><option selected>Balboa (B/.) — USD</option></select></div></div>'+
@@ -4221,7 +4221,7 @@ function portalNavItems(tipo, active){
 }
 function portalSidebar(tipo, active){
   var sub = tipo==='inquilino' ? 'Portal Inquilino' : 'Portal Propietario';
-  var html = '<div class="sidebar"><div class="brand"><div class="brand-logo" style="background:#fff;color:var(--brand)">G</div><div><div class="brand-name">GRAFITO</div><div class="brand-sub">'+esc(sub)+'</div></div></div><div class="side-nav">';
+  var html = '<div class="sidebar"><div class="brand"><div class="brand-logo" style="background:#fff;color:var(--brand)">CE</div><div><div class="brand-name">Constructora Especializada</div><div class="brand-sub">'+esc(sub)+'</div></div></div><div class="side-nav">';
   html += '<div class="nav-group">Mi cuenta</div>';
   portalNavItems(tipo, active).forEach(function(it){
     html += '<a class="nav-a'+(active===it[0]?' active':'')+'" href="#/portal/'+tipo+'/'+it[0]+'">'+ic(it[1],18)+'<span>'+esc(it[2])+'</span></a>';
@@ -4584,7 +4584,7 @@ function render(){
   var html = '';
   if(r.area==='auth'){
     if(r.view==='login' && session){ location.hash = homeForSession(); return; }
-    document.title = 'GRAFITO · Acceso';
+    document.title = 'Constructora Especializada · Acceso';
     html = r.view==='olvide-contrasena' ? viewOlvide()
          : r.view==='verificacion-otp' ? viewOtp(new URLSearchParams(location.hash.split('?')[1]||'').get('email'))
          : r.view==='restablecer-contrasena' ? viewRestablecer()
@@ -4594,15 +4594,15 @@ function render(){
     document.body.classList.remove('portal-body');
     var activeNav = r.sub || r.view;
     html = appShell(activeNav, dispatchAdmin(r.view, r.sub));
-    document.title = 'GRAFITO · Admin';
+    document.title = 'Constructora Especializada · Admin';
   } else if(r.area==='portal'){
     if(!session || session.type!==r.portal){ location.hash = session ? homeForSession() : '#/login'; return; }
     document.body.classList.add('portal-body');
     html = portalShell(r.portal, r.view, dispatchPortal(r.portal, r.view, r.sub));
-    document.title = 'GRAFITO · Portal '+(r.portal==='inquilino'?'Inquilino':'Propietario');
+    document.title = 'Constructora Especializada · Portal '+(r.portal==='inquilino'?'Inquilino':'Propietario');
   } else {
     if(session){ location.hash = homeForSession(); return; }
-    document.title = 'GRAFITO · Acceso';
+    document.title = 'Constructora Especializada · Acceso';
     html = viewLogin();
   }
   app.innerHTML = html;
