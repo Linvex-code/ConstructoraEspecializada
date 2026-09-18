@@ -1,0 +1,6 @@
+[build]
+  publish = "site"
+
+# Deploy del prototipo estático (HTML autocontenido).
+# Importante: "publish = site" — Netlify sirve solo la carpeta site/,
+# nunca las docs internas del repositorio.
