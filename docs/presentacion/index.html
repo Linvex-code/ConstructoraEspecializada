@@ -1,0 +1,509 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GRAFITO · Plataforma de Administración de Inmuebles, Portales y Contabilidad</title>
+  <link rel="stylesheet" href="assets/vendor/reveal-js/dist/reset.css">
+  <link rel="stylesheet" href="assets/vendor/reveal-js/dist/reveal.css">
+  <link rel="stylesheet" href="css/presentation.css">
+</head>
+<body>
+  <div class="reveal">
+    <div class="slides">
+
+      <!-- ============ 1. PORTADA ============ -->
+      <section class="portada" data-state="portada">
+        <div class="portada-brand">GRAFITO</div>
+        <h1 class="portada-title">Plataforma de Administración de Inmuebles,<br>Portales y Contabilidad</h1>
+        <p class="portada-sub">Una sola aplicación para administrar su portafolio de alquileres de principio a fin: personas, inmuebles, contratos, cobros, operaciones y contabilidad panameña.</p>
+        <div class="portada-meta">
+          <span>Panamá · USD/Balboa</span>
+          <span>Diseño de solución · Septiembre 2026</span>
+        </div>
+      </section>
+
+      <!-- ============ 2. AGENDA ============ -->
+      <section>
+        <div class="slide-kicker">Agenda</div>
+        <h2>Qué veremos en esta presentación</h2>
+        <div class="grid agenda-grid">
+          <div class="card">01 · Contexto y problema</div>
+          <div class="card">02 · Objetivos y solución propuesta</div>
+          <div class="card">03 · Módulos de la plataforma</div>
+          <div class="card">04 · Experiencia de usuario (prototipo GRAFITO)</div>
+          <div class="card">05 · Arquitectura y seguridad</div>
+          <div class="card">06 · Plan de desarrollo por fases y prioridades</div>
+          <div class="card">07 · Migración de datos desde SharePoint</div>
+          <div class="card">08 · Alcance, decisiones y próximos pasos</div>
+        </div>
+      </section>
+
+      <!-- ============ 3. CONTEXTO Y PROBLEMA ============ -->
+      <section>
+        <div class="slide-kicker">Contexto</div>
+        <h2>Problema que resolvemos</h2>
+        <div class="grid two-col">
+          <div>
+            <h3 class="card-title">Hoy: operación manual y dispersa</h3>
+            <ul class="checks">
+              <li>Información repartida en <strong>SharePoint y hojas de cálculo</strong>, sin un registro único consolidado.</li>
+              <li>Seguimiento de cobros, mora y liquidaciones a propietarios con procesos manuales.</li>
+              <li>Sin comprobantes auditables, historial trazable ni estados derivados (mora automática).</li>
+              <li>Incidencias, visitas y equipos de línea blanca sin historial documentado.</li>
+              <li>Contabilidad (plan de cuentas, asientos, cierres e impuestos) sin soporte de sistema.</li>
+            </ul>
+          </div>
+          <div>
+            <h3 class="card-title">Datos de referencia confirmados</h3>
+            <div class="stat-grid">
+              <div class="stat"><div class="stat-value">~400</div><div class="stat-label">unidades administradas</div></div>
+              <div class="stat"><div class="stat-value">~2,500</div><div class="stat-label">pagos por mes</div></div>
+              <div class="stat"><div class="stat-value">3</div><div class="stat-label">áreas de usuarios (Admin, Inquilino, Propietario)</div></div>
+            </div>
+            <h3 class="card-title" style="margin-top:24px">Implicaciones</h3>
+            <ul class="checks">
+              <li>Riesgo de descontrol de cartera y mora.</li>
+              <li>Riesgo legal y fiscal (marco panameño: DGI, Ley 81/2019, ITBMS).</li>
+              <li>Dificultad para reportar y tomar decisiones en el día a día.</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============ 4. OBJETIVOS Y SOLUCION ============ -->
+      <section>
+        <div class="slide-kicker">Objetivos y solución</div>
+        <h2>Una plataforma única, tres experiencias</h2>
+        <p class="lead">Consolidar toda la operación en un solo sistema con fronteras claras por rol, datos en un solo lugar, y autorización verificada siempre en el backend.</p>
+        <div class="grid three-col">
+          <div class="card strong-card">
+            <div class="card-title">Área Administración</div>
+            <p class="card-body">Equipo de la empresa: clientes, inmuebles, contratos, cobros, liquidaciones, incidencias, línea blanca, notificaciones, contabilidad, reportes y administración de roles.</p>
+          </div>
+          <div class="card strong-card">
+            <div class="card-title">Portal del Inquilino</div>
+            <p class="card-body">El inquilino consulta su estado de cuenta, paga, descarga su comprobante, reporta incidencias y ve su calendario de pagos y visitas.</p>
+          </div>
+          <div class="card strong-card">
+            <div class="card-title">Portal del Propietario</div>
+            <p class="card-body">A consulta de cuándo y cuánto se le paga. <span class="chip chip-warn">En discusión · fase futura</span></p>
+          </div>
+        </div>
+        <div class="note">Principios rectores: el dinero es transaccional (inmutable y auditable) · modularidad con soberanía de datos · roles dinámicos creados por el cliente con permisos fijos sembrados · seguridad desde el diseño.</div>
+      </section>
+
+      <!-- ============ 5. MAPA DE MODULOS ============ -->
+      <section>
+        <div class="slide-kicker">Módulos</div>
+        <h2>Panorama de la plataforma</h2>
+        <div class="module-grid">
+          <div class="module">
+            <div class="m-icon">👥</div>
+            <div class="m-name">Clientes</div>
+            <div class="m-desc">Inquilinos y propietarios</div>
+            <span class="chip chip-hi">F1</span>
+          </div>
+          <div class="module"><div class="m-icon">🏢</div><div class="m-name">Inmuebles</div><div class="m-desc">Portafolio y fotos</div><span class="chip chip-hi">F1</span></div>
+          <div class="module"><div class="m-icon">📋</div><div class="m-name">Contratos</div><div class="m-desc">Arrendamiento y administración</div><span class="chip chip-hi">F1</span></div>
+          <div class="module"><div class="m-icon">💵</div><div class="m-name">Cobros</div><div class="m-desc">Recibos, pagos, mora</div><span class="chip chip-hi">F1</span></div>
+          <div class="module"><div class="m-icon">🤝</div><div class="m-name">Liquidaciones</div><div class="m-desc">Pagos a propietarios</div><span class="chip chip-hi">F1</span></div>
+          <div class="module"><div class="m-icon">🔧</div><div class="m-name">Incidencias</div><div class="m-desc">Workflow y proveedores</div><span class="chip chip-med">F2</span></div>
+          <div class="module"><div class="m-icon">❄️</div><div class="m-name">Línea blanca</div><div class="m-desc">Equipos y mantenimientos</div><span class="chip chip-med">F2</span></div>
+          <div class="module"><div class="m-icon">🔔</div><div class="m-name">Notificaciones</div><div class="m-desc">Plataforma, Email, SMS, WhatsApp</div><span class="chip chip-med">F2</span></div>
+          <div class="module"><div class="m-icon">🔥</div><div class="m-name">Contabilidad</div><div class="m-desc">Partida doble, cierres, impuestos</div><span class="chip chip-hi">F3</span></div>
+          <div class="module"><div class="m-icon">📊</div><div class="m-name">Reportes</div><div class="m-desc">Operativos y financieros</div><span class="chip chip-med">F2/F3</span></div>
+          <div class="module"><div class="m-icon">🛡️</div><div class="m-name">Administración y Seguridad</div><div class="m-desc">Usuarios, roles, permisos, flags</div><span class="chip chip-hi">F0</span></div>
+          <div class="module"><div class="m-icon">📱</div><div class="m-name">Portal Inquilino</div><div class="m-desc">Área de usuario del inquilino</div><span class="chip chip-hi">F1+</span></div>
+        </div>
+        <div class="legend"><span class="chip chip-hi">F0–F3</span> Fase de implementación según el plan de desarrollo (sección 06)</div>
+        <aside class="notes">Mapa de los 11 módulos + portal. Cada tarjeta muestra la fase en la que se construye según el plan por fases documentado.</aside>
+      </section>
+
+      <!-- ============ 6. MODULOS NUCLEO (F1) ============ -->
+      <section>
+        <div class="slide-kicker">Módulos · Núcleo del negocio (F1)</div>
+        <h2>Lo esencial para operar el portafolio</h2>
+        <div class="grid two-col">
+          <div class="card">
+            <div class="card-title">Clientes</div>
+            <ul class="checks">
+              <li>Personas/empresas: inquilino, propietario o ambos.</li>
+              <li>Información laboral, contactos, documentos y cuentas bancarias.</li>
+              <li>Consentimientos de datos personales <strong>Ley 81 de 2019</strong>.</li>
+              <li>Estado <strong>Mora</strong> derivado automáticamente de los cobros.</li>
+            </ul>
+          </div>
+          <div class="card">
+            <div class="card-title">Inmuebles</div>
+            <ul class="checks">
+              <li>Catálogo con atributos enriquecidos y <strong>fotografías</strong>.</li>
+              <li>Ciclo de vida: disponible → reservado → alquilado → mantenimiento.</li>
+              <li>Exclusividad de ocupación (un contrato vigente por unidad).</li>
+              <li>Historial de estados, incidencias y equipos asociados.</li>
+            </ul>
+          </div>
+        </div>
+        <div class="grid two-col">
+          <div class="card">
+            <div class="card-title">Contratos</div>
+            <ul class="checks">
+              <li>Arrendamiento (canon, garantía, ITBMS) y administración (comisión).</li>
+              <li>Snapshot económico para no alterar liquidaciones históricas.</li>
+              <li>Contrato firmado obligatorio en arrendamiento.</li>
+              <li>Renovación, terminación con prorrateo y devolución de garantía.</li>
+            </ul>
+          </div>
+          <div class="card">
+            <div class="card-title">Cobros y liquidaciones</div>
+            <ul class="checks">
+              <li>Generación masiva de recibos por período (unicidad contrato × período).</li>
+              <li>Mora automática por vencimiento; pagos con comprobante PDF inmutable.</li>
+              <li>Liquidación a propietarios: ingreso cobrado − comisión.</li>
+              <li>Cada pago genera el asiento contable borrador pendiente de aprobación.</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============ 7. MODULOS OPERACION (F2) ============ -->
+      <section>
+        <div class="slide-kicker">Módulos · Operación y comunicación (F2)</div>
+        <h2>Control operativo y comunicación con el inquilino</h2>
+        <div class="grid two-col">
+          <div class="card">
+            <div class="card-title">Incidencias y visitas</div>
+            <ul class="checks">
+              <li>Reporte desde el portal o la administración, con categoría y urgencia.</li>
+              <li>Workflow: reportada → presupuesto → asignada → en ejecución → cerrada.</li>
+              <li>Timeline <strong>append-only</strong> (historial inmutable y auditable).</li>
+              <li>Asignación de proveedores, costos, SLA por urgencia y visitas programadas.</li>
+            </ul>
+          </div>
+          <div class="card">
+            <div class="card-title">Línea blanca</div>
+            <ul class="checks">
+              <li>Inventario de equipos por inmueble (A/C, neveras, lavadoras…).</li>
+              <li>Historial de mantenimiento preventivo y correctivo.</li>
+              <li>Avisos preventivos y costos acumulados por equipo.</li>
+              <li>Integración opcional: activo fijo y depreciación en Contabilidad.</li>
+            </ul>
+          </div>
+        </div>
+        <div class="grid two-col">
+          <div class="card">
+            <div class="card-title">Notificaciones multicanal</div>
+            <ul class="checks">
+              <li>Eventos: vencimiento de pago, visita, pago registrado, incidencia, contrato por vencer.</li>
+              <li>Canales: <strong>plataforma, Email, SMS y WhatsApp</strong> (según proveedor).</li>
+              <li>Preferencias por persona y evento; plantillas tipadas; reintentos con backoff.</li>
+            </ul>
+          </div>
+          <div class="card">
+            <div class="card-title">Calendario y reportes</div>
+            <ul class="checks">
+              <li>Agenda del inquilino: pagos pendientes, visitas y eventos de contrato.</li>
+              <li>Reportes operativos con exportación PDF/CSV/Excel.</li>
+              <li>Reportes financieros protegidos por su permiso fuente (solo quien lo tenga).</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============ 8. CONTABILIDAD (F3) ============ -->
+      <section>
+        <div class="slide-kicker">Módulos · Contabilidad completa (F3)</div>
+        <h2>Contabilidad panameña desde el sistema</h2>
+        <div class="grid three-col">
+          <div class="card">
+            <div class="card-title">Base contable</div>
+            <ul class="checks">
+              <li>Plan de cuentas jerárquico, versionado y con naturaleza.</li>
+              <li>Asientos de partida doble con validación débito = crédito.</li>
+              <li>Flujo borrador → aprobado → inmutable; separación crear ≠ aprobar.</li>
+            </ul>
+          </div>
+          <div class="card">
+            <div class="card-title">Cierres y conciliación</div>
+            <ul class="checks">
+              <li><strong>Cierres parametrizables</strong>: diario, semanal, mensual, trimestral, semestral, anual.</li>
+              <li>Bloqueo/reapertura de períodos con auditoría.</li>
+              <li>Conciliación bancaria por cuenta y período.</li>
+            </ul>
+          </div>
+          <div class="card">
+            <div class="card-title">Impuestos y resultados</div>
+            <ul class="checks">
+              <li>Motor parametrizado: ITBMS 7%, ISR, retenciones, dividendos.</li>
+              <li>Activos fijos y depreciación (integra línea blanca).</li>
+              <li>Estados financieros: Balance, Resultados, Flujo y Balanza.</li>
+            </ul>
+          </div>
+        </div>
+        <div class="note"><strong>Nota:</strong> las tasas y reglas fiscales <strong>deben validarse con CPA y asesor legal panameño</strong> antes de implementar; el módulo se parametriza y recalibra en la Fase 3.</div>
+      </section>
+
+      <!-- ============ 9. PORTAL + SEGURIDAD ============ -->
+      <section>
+        <div class="slide-kicker">Portal y seguridad</div>
+        <h2>Portal del inquilino y administración de acceso</h2>
+        <div class="grid two-col">
+          <div class="card">
+            <div class="card-title">Portal del inquilino <span class="chip chip-info">área separada</span></div>
+            <ul class="checks">
+              <li>Dashboard: saldo, próximo pago, incidencias y notificaciones.</li>
+              <li>Calendario de pagos y visitas de mantenimiento.</li>
+              <li>Reportar y seguir incidencias; descargar comprobantes PDF.</li>
+              <li>Acceso solo a sus propios datos (scope por relación, protección IDOR).</li>
+            </ul>
+          </div>
+          <div class="card">
+            <div class="card-title">Administración y Seguridad <span class="chip chip-info">transversal</span></div>
+            <ul class="checks">
+              <li>El cliente <strong>crea sus propios roles</strong> a partir de un catálogo fijo de permisos.</li>
+              <li>Permisos `módulo.acción`; el backend siempre valida permiso + flag + regla.</li>
+              <li>Feature flags por módulo y auditoría de acciones críticas.</li>
+              <li>-1 regla: nadie puede revocarse su último permiso de administración.</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============ 10. EXPERIENCIA + CAPTURAS ============ -->
+      <section>
+        <div class="slide-kicker">Experiencia de usuario · GRAFITO</div>
+        <h2>Interfaz ya diseñada y prototipada</h2>
+        <p class="lead">La UI está diseñada y validada con un prototipo ejecutable. Sistema de diseño GRAFITO: sobrio, formal, neutral y predecible; accesible (WCAG 2.2 AA+).</p>
+        <div class="shot-grid">
+          <figure><img class="shot" src="assets/screenshots/v3-resumen.png" alt="Dashboard de administración"><figcaption>Dashboard con KPIs por módulo</figcaption></figure>
+          <figure><img class="shot" src="assets/screenshots/v3-clientes.png" alt="Módulo de clientes"><figcaption>Clientes: listado con demografía y estado</figcaption></figure>
+          <figure><img class="shot" src="assets/screenshots/v3-inmuebles.png" alt="Módulo de inmuebles"><figcaption>Inmuebles: portafolio y filtros</figcaption></figure>
+          <figure><img class="shot" src="assets/screenshots/v3-cobros.png" alt="Módulo de cobros"><figcaption>Cobros: recibos, pagos y mora</figcaption></figure>
+        </div>
+      </section>
+
+      <!-- ============ 11. CONTABILIDAD CAPTURAS ============ -->
+      <section>
+        <div class="slide-kicker">Experiencia de usuario · Contabilidad</div>
+        <h2>Contabilidad en acción</h2>
+        <div class="shot-grid">
+          <figure><img class="shot" src="assets/screenshots/v3-contabilidad-plan.png" alt="Plan de cuentas"><figcaption>Plan de cuentas con naturaleza y débito/crédito</figcaption></figure>
+          <figure><img class="shot" src="assets/screenshots/v3-contabilidad-asientos.png" alt="Asientos contables"><figcaption>Asientos: partida doble (débito = crédito)</figcaption></figure>
+          <figure><img class="shot" src="assets/screenshots/v3-contabilidad-ef.png" alt="Estados financieros"><figcaption>Estados financieros por período</figcaption></figure>
+          <figure><img class="shot" src="assets/screenshots/v3-contrato-nuevo.png" alt="Asistente de contrato"><figcaption>Contratos: asistente de arrendamiento</figcaption></figure>
+        </div>
+      </section>
+
+      <!-- ============ 12. ARQUITECTURA ============ -->
+      <section>
+        <div class="slide-kicker">Arquitectura</div>
+        <h2>Diseño técnico de la solución</h2>
+        <div class="arch">
+          <div class="arch-box arch-ui">Aplicación web<br><span>Blazor + MudBlazor · Admin y portales</span></div>
+          <div class="arch-arrow">↓ HTTPS/JSON</div>
+          <div class="arch-box arch-gw">API Gateway (YARP)<br><span>routing · rate limit · correlación</span></div>
+          <div class="arch-arrow">↓</div>
+          <div class="arch-box arch-api">Núcleo: Monolito Modular<br><span>11 módulos con límites estrictos · esquemas BD propios</span></div>
+          <div class="arch-row">
+            <div class="arch-box">PostgreSQL 17<br><span>transacciones ACID · JSONB</span></div>
+            <div class="arch-box">Redis<br><span>caché de lectura · locks</span></div>
+            <div class="arch-box">Object Storage<br><span>fotos, documentos, recibos PDF</span></div>
+            <div class="arch-box">Quartz .NET<br><span>recibos, cierres, avisos</span></div>
+          </div>
+          <div class="arch-arrow">↑ OpenTelemetry</div>
+          <div class="arch-box arch-obs">Grafana + Loki<br><span>observabilidad de extremo a extremo</span></div>
+        </div>
+        <div class="note">Monolito modular: un despliegue, fronteras por módulo (ADR-015), contención de fallos y kill-switch por módulo (ADR-016/017), comprobantes PDF inmutables y observabilidad por módulo.</div>
+        <aside class="notes">Stack: ASP.NET Core 10 + Blazor Web App/MudBlazor + YARP + PostgreSQL 17 + Redis + S3 + OpenTelemetry/Grafana/Loki + Quartz.NET. Confirmed en el documento de arquitectura.</aside>
+      </section>
+
+      <!-- ============ 13. SEGURIDAD ============ -->
+      <section>
+        <div class="slide-kicker">Seguridad y cumplimiento</div>
+        <h2>Seguridad y cumplimiento desde el diseño</h2>
+        <div class="grid two-col">
+          <div class="card">
+            <div class="card-title">Seguridad técnica</div>
+            <ul class="checks">
+              <li>Autenticación BFF: JWT en cookie httpOnly + refresh rotativo (15 min).</li>
+              <li>RBAC con roles dinámicos + permisos fijos; validación siempre en backend.</li>
+              <li>Protección IDOR en cada recurso; soft delete; cifrado de datos sensibles.</li>
+              <li>Contención de fallos y kill-switch remoto por módulo (Ops Console).</li>
+            </ul>
+          </div>
+          <div class="card">
+            <div class="card-title">Cumplimiento panameño</div>
+            <ul class="checks">
+              <li><strong>Ley 81 de 2019</strong> (datos personales): consentimientos, derechos del titular, cifrado en reposo.</li>
+              <li>Marco fiscal (DGI): ITBMS 7%, ISR, retenciones — tasas parametrizadas y validadas con CPA.</li>
+              <li>Retención documental propuesta de 10 años.</li>
+              <li>Moneda base USD (Balboa a la par); montos en centavos (sin errores de redondeo).</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============ 14. ALCANCE ============ -->
+      <section>
+        <div class="slide-kicker">Alcance</div>
+        <h2>Qué incluye la solución y qué queda fuera</h2>
+        <div class="grid two-col">
+          <div class="card">
+            <div class="card-title">Incluido (Fases 0–3)</div>
+            <ul class="checks">
+              <li>Áreas de administración + portal del inquilino.</li>
+              <li>Módulos: clientes, inmuebles, contratos, cobros, liquidaciones, incidencias, línea blanca, contabilidad y reportes.</li>
+              <li>Notificaciones Plataforma + Email (F1) y SMS (F2).</li>
+              <li>Observabilidad, Ops Console y seguridad transversal.</li>
+            </ul>
+          </div>
+          <div class="card">
+            <div class="card-title">Excluido / fase futura</div>
+            <ul class="checks">
+              <li>Portal del propietario (en discusión — Fase 4).</li>
+              <li>Facturación electrónica DGI (futuro).</li>
+              <li>Multi-empresa / multi-moneda (futuro).</li>
+              <li>WhatsApp (contingente, F2 según proveedor).</li>
+              <li>Migración de datos históricos desde SharePoint (<strong>servicio aparte</strong>, sección 07).</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============ 15. PLAN DE DESARROLLO ============ -->
+      <section>
+        <div class="slide-kicker">Implementación</div>
+        <h2>Plan de desarrollo por fases</h2>
+        <p class="lead">Esfuerzo PERT estimado: <strong>6,943 horas</strong> · duración recomendada <strong>9–11 meses</strong> · equipo de 4–5 personas.</p>
+        <div class="timeline">
+          <div class="tl-item">
+            <div class="tl-phase">Fase 0 · Fundación</div>
+            <div class="tl-hours">≈ 1,648 h</div>
+            <ul class="checks"><li>Scaffolding monolito modular, Identity + JWT BFF, RBAC con roles dinámicos, YARP, observabilidad, Ops Console/kill-switch, CI/CD, UI shell.</li></ul>
+            <div class="tl-tag"><span class="chip chip-hi">Prioridad Alta · prerrequisito</span></div>
+          </div>
+          <div class="tl-item">
+            <div class="tl-phase">Fase 1 · Núcleo del negocio</div>
+            <div class="tl-hours">≈ 1,871 h</div>
+            <ul class="checks"><li>Clientes, Inmuebles, Contratos, Cobros con comprobantes PDF, Liquidaciones, portal inquilino base. Cierre de decisiones D1–D12 y validación legal.</li></ul>
+            <div class="tl-tag"><span class="chip chip-hi">Prioridad Alta</span></div>
+          </div>
+          <div class="tl-item">
+            <div class="tl-phase">Fase 2 · Operación</div>
+            <div class="tl-hours">≈ 1,455 h</div>
+            <ul class="checks"><li>Incidencias, visitas y calendario, notificaciones multicanal, línea blanca, reportes operativos.</li></ul>
+            <div class="tl-tag"><span class="chip chip-med">Prioridad Media</span></div>
+          </div>
+          <div class="tl-item">
+            <div class="tl-phase">Fase 3 · Contabilidad</div>
+            <div class="tl-hours">≈ 1,969 h</div>
+            <ul class="checks"><li>Plan de cuentas, asientos y automatización, cierres parametrizables, conciliación, impuestos, activos fijos, estados financieros. Recalibra tras cuestionario CPA.</li></ul>
+            <div class="tl-tag"><span class="chip chip-hi">Prioridad Alta · mayor complejidad</span></div>
+          </div>
+        </div>
+        <aside class="notes">Total por fases: 1,648 + 1,871 + 1,455 + 1,969 = 6,943 h. Calendario indicativo: firma oct-2026, F0 oct–nov, F1 dic–mar, F2 mar–may, F3 may–sep, Go-Live con garantía hasta dic-2027.</aside>
+      </section>
+
+      <!-- ============ 16. PRIORIDADES ============ -->
+      <section>
+        <div class="slide-kicker">Prioridades</div>
+        <h2>Prioridad por módulo dentro del plan</h2>
+        <table class="plan-table">
+          <thead>
+            <tr><th>Módulo</th><th>Fase</th><th>Prioridad</th><th>Justificación</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>Administración y Seguridad</td><td>F0</td><td><span class="chip chip-hi">Alta</span></td><td>Base de toda la plataforma (RBAC, flags, config).</td></tr>
+            <tr><td>Clientes</td><td>F1</td><td><span class="chip chip-hi">Alta</span></td><td>Identidad de inquilinos y propietarios.</td></tr>
+            <tr><td>Inmuebles</td><td>F1</td><td><span class="chip chip-hi">Alta</span></td><td>Catálogo del portafolio.</td></tr>
+            <tr><td>Contratos</td><td>F1</td><td><span class="chip chip-hi">Alta</span></td><td>Tienda de verdad del negocio.</td></tr>
+            <tr><td>Cobros</td><td>F1</td><td><span class="chip chip-hi">Alta</span></td><td>Flujo de dinero: recibos, pagos, mora.</td></tr>
+            <tr><td>Liquidaciones</td><td>F1</td><td><span class="chip chip-hi">Alta</span></td><td>Pagos a propietarios.</td></tr>
+            <tr><td>Portal Inquilino (base)</td><td>F1</td><td><span class="chip chip-hi">Alta</span></td><td>Autoservicio del inquilino.</td></tr>
+            <tr><td>Incidencias</td><td>F2</td><td><span class="chip chip-med">Media</span></td><td>Operación; depende de inmuebles/contratos.</td></tr>
+            <tr><td>Línea blanca</td><td>F2</td><td><span class="chip chip-med">Media</span></td><td>Inventario y mantenimientos.</td></tr>
+            <tr><td>Notificaciones + Calendario</td><td>F2</td><td><span class="chip chip-med">Media</span></td><td>Comunicación; depende de cobros/incidencias.</td></tr>
+            <tr><td>Reportes</td><td>F2/F3</td><td><span class="chip chip-med">Media</span></td><td>Operativos en F2; financieros con Contabilidad.</td></tr>
+            <tr><td>Contabilidad</td><td>F3</td><td><span class="chip chip-hi">Alta</span></td><td>Completa cierra el ciclo; validación CPA previa.</td></tr>
+          </tbody>
+        </table>
+        <div class="note">Prioridades derivadas del plan por fases documentado (`docs/planificacion/analisis-comercial-financiero.md`). Contabilidad puede iniciar su base (plan + asientos manuales) en paralelo al cierre de F2.</div>
+        <aside class="notes">Dependencias: F0 antes que todo; F1 antes de F2; F2 antes de F3 (parcial). La base contable puede ejecutarse en paralelo a F2, pero la automatización requiere F1 completa.</aside>
+      </section>
+
+      <!-- ============ 17. MIGRACION SHAREPOINT ============ -->
+      <section>
+        <div class="slide-kicker">Datos históricos</div>
+        <h2>Migración de la información desde SharePoint</h2>
+        <div class="grid two-col">
+          <div class="card">
+            <div class="card-title">¿Es posible migrar todos los datos?</div>
+            <ul class="checks">
+              <li><strong>Sí, es posible migrar la data que hoy se mantiene en SharePoint</strong> hacia la nueva plataforma.</li>
+              <li>Requiere un proceso de <strong>revisión y análisis por separado</strong> de las fuentes existentes.</li>
+              <li><strong>No se tiene contemplada una vía más automatizada</strong> en el alcance actual: la carga inicial se define con los datos normalizados o captura desde cero.</li>
+              <li>Se dimensiona como un <strong>servicio aparte</strong> (bolsa de horas o contrato propio), fuera del alcance F0–F3.</li>
+            </ul>
+          </div>
+          <div class="card">
+            <div class="card-title">Pasos propuestos para el análisis</div>
+            <ul class="checks">
+              <li>1 · Inventario de fuentes y volúmenes en SharePoint (clientes, inmuebles, recibos, contratos).</li>
+              <li>2 · Validación de calidad y normalización de la data con el equipo del cliente.</li>
+              <li>3 · Definición de estrategia: carga inicial completa vs. arranque desde cero.</li>
+              <li>4 · Carga, validación (conciliación de saldos) y go-live de datos.</li>
+            </ul>
+          </div>
+        </div>
+        <div class="note"><strong>Recomendación:</strong> coordinar la revisión de datos <strong>al inicio del proyecto</strong> (se nivela con la Fase 1) para que la carga inicial no retrase el arranque de operaciones.</div>
+      </section>
+
+      <!-- ============ 18. DECISIONES ABIERTAS ============ -->
+      <section>
+        <div class="slide-kicker">A confirmar</div>
+        <h2>Decisiones y pendientes antes de implementar</h2>
+        <div class="grid two-col">
+          <div class="card">
+            <div class="card-title">Validaciones externas (bloqueantes)</div>
+            <ul class="checks">
+              <li><strong>CPA panameño</strong>: plan de cuentas, NIIF vs NIIF PYMES, tasas ISR/ITBMS/retenciones, ITBMS del arrendamiento.</li>
+              <li><strong>Asesor legal</strong>: marco de arrendamiento, retención documental (10 años), Ley 81/2019.</li>
+              <li>Confirmación de ciudad principal y proveedores (correo, SMS, WhatsApp, almacenamiento).</li>
+            </ul>
+          </div>
+          <div class="card">
+            <div class="card-title">Reglas de negocio (12 decisiones D1–D12)</div>
+            <ul class="checks">
+              <li>Mora del cliente derivada de cualquier recibo vencido.</li>
+              <li>Fórmula de prorrateo / terminación anticipada de contrato.</li>
+              <li>Anulaciones: requisito de motivo + supervisor; pagos parciales.</li>
+              <li>Cierre contable bloqueado si el banco no está conciliado (sí, recomendado).</li>
+              <li>Separación de funciones en asientos y contratos; permisos nuevos del catálogo.</li>
+            </ul>
+          </div>
+        </div>
+        <div class="note">Estas decisiones cambian el comportamiento, no el tamaño del proyecto; se cierran idealmente en una sesión de decisiones al inicio de la Fase 1.</div>
+      </section>
+
+      <!-- ============ 19. CIERRE ============ -->
+      <section data-state="portada" class="cierre">
+        <div class="portada-brand">GRAFITO</div>
+        <h1 class="portada-title">¿Siguiente paso?</h1>
+        <p class="portada-sub">Definamos juntos el alcance contractual por fases, validemos el marco legal y fiscal, y cerremos las decisiones de negocio para arrancar la Fase 0.</p>
+        <div class="cierre-cta">
+          <span class="chip chip-info">Plan sugerido: Fases 0–3</span>
+          <span class="chip chip-med">Esfuerzo: 6,943 h · 9–11 meses</span>
+          <span class="chip chip-hi">Migración SharePoint: análisis aparte</span>
+        </div>
+      </section>
+
+    </div>
+  </div>
+
+  <script src="assets/vendor/reveal-js/dist/reveal.js"></script>
+  <script src="assets/vendor/reveal-js/plugin/notes/notes.js"></script>
+  <script src="assets/vendor/reveal-js/plugin/zoom/zoom.js"></script>
+  <script src="assets/vendor/reveal-js/plugin/highlight/highlight.js"></script>
+  <script src="js/presentation.js"></script>
+</body>
+</html>

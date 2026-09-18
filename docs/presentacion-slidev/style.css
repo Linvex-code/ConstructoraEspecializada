@@ -1,0 +1,477 @@
+/* ============================================================
+   GRAFITO · Tema de la presentación Slidev
+   Tokens del design system y del prototipo
+   ============================================================ */
+
+/* Tokens accesibles desde la raíz (fondo de pantalla completa) */
+:root {
+  --bg-canvas: #F6F7F9;
+}
+
+.slidev-layout {
+  --n0: #FFFFFF;
+  --n50: #F8F9FB;
+  --n100: #F1F3F6;
+  --n200: #E3E6EB;
+  --n300: #CFD4DC;
+  --n600: #5B6470;
+  --n700: #4A5361;
+  --n900: #1B212B;
+  --n950: #10151D;
+  --brand: #1B212B;
+  --brand-h: #2A313D;
+  --brand-a: #10151D;
+  --scaffold: #141A22;
+  --scaffold-h: #1F2733;
+  --scaffold-act: #2A3441;
+  --scaffold-border: #2B3442;
+  --scaffold-text: #E6E9EE;
+  --scaffold-text-m: #9AA3B0;
+  --bg-canvas: #F6F7F9;
+  --bg-content: #FFFFFF;
+  --bg-subtle: #F1F3F6;
+  --bg-muted: #E9EDF1;
+  --border-subtle: #E3E6EB;
+  --border-default: #CFD4DC;
+  --border-strong: #A6AEBB;
+  --text-p: #1B212B;
+  --text-s: #5B6470;
+  --text-t: #697486;
+  --text-d: #9AA3AD;
+  --text-inv: #FFFFFF;
+  --succ: #146C43;
+  --succ-bg: #E7F2EC;
+  --succ-bd: #9ECFB3;
+  --warn: #7A4F00;
+  --warn-bg: #FCF3D9;
+  --warn-bd: #E3C768;
+  --danger: #B42318;
+  --danger-bg: #FCE8E6;
+  --danger-bd: #F0A8A0;
+  --info: #1D4ED8;
+  --info-bg: #E8F0FE;
+  --info-bd: #A9C8F5;
+  --radius-sm: 4px;
+  --radius-md: 6px;
+  --radius-lg: 8px;
+  --radius-xl: 12px;
+  --radius-pill: 999px;
+  --shadow-sm: 0 1px 2px rgba(16, 21, 29, 0.06);
+  --shadow-md: 0 2px 4px rgba(16, 21, 29, 0.06), 0 1px 0 rgba(16, 21, 29, 0.02);
+  --shadow-lg: 0 8px 24px rgba(16, 21, 29, 0.12), 0 2px 8px rgba(16, 21, 29, 0.08);
+
+  background: var(--bg-canvas);
+  color: var(--text-p);
+  font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
+  font-size: 17px;
+  line-height: 1.5;
+  padding: 2.75rem 3.25rem;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Fondo unificado a pantalla completa (evita letterbox blanco/dispar) */
+html, body, #app, #page-root, #slide-content, .slidev-page {
+  background: var(--bg-canvas);
+}
+
+/* ---------- Escala tipográfica (jerarquía única) ---------- */
+.slidev-layout h1 { font-weight: 700; letter-spacing: -0.02em; color: var(--text-p); font-size: 2.9em; line-height: 1.06; margin: 0 0 0.35em; }
+.slidev-layout h2 { font-weight: 700; letter-spacing: -0.015em; color: var(--text-p); font-size: 1.7em; line-height: 1.15; margin: 0 0 0.45em; }
+.slidev-layout h3 { font-weight: 600; color: var(--text-p); font-size: 1.1em; }
+.slidev-layout p { color: var(--text-s); }
+.slidev-layout strong { font-weight: 600; color: var(--text-p); }
+
+.mono, .g-mono { font-family: 'IBM Plex Mono', 'JetBrains Mono', Consolas, monospace; }
+
+/* Kicker: etiqueta de categoría con línea */
+.g-kicker {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 12.5px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--text-s);
+  margin: 0 0 10px;
+}
+.g-kicker::before {
+  content: '';
+  width: 18px;
+  height: 2px;
+  border-radius: 2px;
+  background: var(--border-strong);
+  flex: none;
+}
+
+/* Subtítulo descriptivo */
+.g-sub {
+  font-size: 1.05em;
+  color: var(--text-s);
+  max-width: 46em;
+  margin: 0 0 18px;
+}
+
+/* Notas / llamadas */
+.g-note {
+  margin-top: 16px;
+  padding: 11px 15px;
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--warn-bd);
+  background: var(--warn-bg);
+  font-size: 13.5px;
+  color: var(--text-p);
+}
+.g-note.g-blue { border-color: var(--info-bd); background: var(--info-bg); }
+.g-note.g-red { border-color: var(--danger-bd); background: var(--danger-bg); }
+.g-note.g-green { border-color: var(--succ-bd); background: var(--succ-bg); }
+
+/* ---------- Grids ---------- */
+.g-grid { display: grid; gap: 16px; }
+.g-two { grid-template-columns: repeat(2, 1fr); }
+.g-three { grid-template-columns: repeat(3, 1fr); }
+.g-four { grid-template-columns: repeat(4, 1fr); }
+.g-row { display: flex; gap: 10px; flex-wrap: wrap; }
+
+/* ---------- Tarjetas ---------- */
+.g-card {
+  background: var(--bg-content);
+  border: 1px solid var(--border-subtle);
+  border-radius: 10px;
+  box-shadow: var(--shadow-sm);
+  padding: 14px 16px;
+}
+.g-card-h {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-weight: 700;
+  font-size: 14.5px;
+  color: var(--text-p);
+  margin: 0 0 8px;
+}
+.g-num {
+  flex: none;
+  width: 22px;
+  height: 22px;
+  border-radius: 6px;
+  background: var(--brand);
+  color: #fff;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 12px;
+  font-weight: 500;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+.g-checks { list-style: none; margin: 0; padding: 0; }
+.g-checks li {
+  position: relative;
+  padding-left: 19px;
+  margin-bottom: 5px;
+  font-size: 13.5px;
+  color: var(--text-s);
+  line-height: 1.45;
+}
+.g-checks li::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 4px;
+  width: 11px;
+  height: 6px;
+  border-left: 2px solid var(--succ);
+  border-bottom: 2px solid var(--succ);
+  transform: rotate(-45deg);
+}
+
+/* ---------- Chips / estados ---------- */
+.g-chip {
+  display: inline-flex;
+  align-items: center;
+  height: 22px;
+  padding: 0 11px;
+  border-radius: var(--radius-pill);
+  font-size: 12px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+.g-chip-alta { background: var(--succ-bg); color: var(--succ); border: 1px solid var(--succ-bd); }
+.g-chip-med { background: var(--warn-bg); color: var(--warn); border: 1px solid var(--warn-bd); }
+.g-chip-info { background: var(--info-bg); color: var(--info); border: 1px solid var(--info-bd); }
+.g-chip-dark { background: var(--brand); color: #fff; }
+.g-chip-danger { background: var(--danger-bg); color: var(--danger); border: 1px solid var(--danger-bd); }
+
+/* ---------- Mapa de módulos ---------- */
+.g-mod {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: var(--bg-content);
+  border: 1px solid var(--border-subtle);
+  border-radius: 8px;
+  box-shadow: var(--shadow-sm);
+  padding: 8px 12px;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-p);
+}
+.g-mod .g-dot { width: 8px; height: 8px; border-radius: 50%; flex: none; }
+.g-dot-f0 { background: var(--n600); }
+.g-dot-f1 { background: var(--succ); }
+.g-dot-f2 { background: var(--info); }
+.g-dot-f3 { background: var(--warn); }
+.g-mod .g-ph {
+  margin-left: auto;
+  flex: none;
+  font-size: 10.5px;
+  font-weight: 600;
+  color: var(--text-s);
+  font-family: 'IBM Plex Mono', monospace;
+}
+
+/* ---------- Diagrama de arquitectura ---------- */
+.g-arch { display: flex; flex-direction: column; gap: 5px; }
+.g-abox {
+  background: var(--bg-content);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-md);
+  padding: 10px 14px;
+  text-align: center;
+  font-weight: 700;
+  font-size: 14px;
+  color: var(--text-p);
+}
+.g-abox.g-brand { background: var(--brand); border-color: var(--brand); color: #fff; }
+.g-abox.g-scaffold { background: var(--scaffold); border-color: var(--scaffold); color: var(--scaffold-text); }
+.g-abox.g-subtle { background: var(--bg-subtle); border-color: var(--border-subtle); }
+.g-abox span {
+  display: block;
+  font-weight: 400;
+  font-size: 12px;
+  color: var(--text-s);
+  margin-top: 1px;
+}
+.g-abox.g-brand span, .g-abox.g-scaffold span { color: #C6CDD8; }
+.g-arr { text-align: center; color: var(--text-t); font-size: 12px; line-height: 1; margin: -1px 0; }
+.g-arow { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
+
+/* Variante compacta del diagrama (cabe en la pantalla) */
+.g-arch .g-abox { padding: 7px 12px; font-size: 13.5px; }
+.g-arch .g-abox span { font-size: 11.5px; margin-top: 0; line-height: 1.4; }
+.g-arch .g-arr { font-size: 11px; margin: 0; }
+
+/* ---------- Timeline de fases ---------- */
+.g-tl-item {
+  display: grid;
+  grid-template-columns: 192px 92px 1fr auto;
+  gap: 14px;
+  align-items: start;
+  padding: 10px 0;
+  border-top: 1px solid var(--border-subtle);
+}
+.g-tl-item:first-child { border-top: none; }
+.g-tl-phase { font-weight: 700; font-size: 14.5px; color: var(--text-p); }
+.g-tl-hours { font-family: 'IBM Plex Mono', monospace; font-size: 13px; color: var(--text-s); padding-top: 1px; }
+.g-tl-desc { font-size: 13px; color: var(--text-s); }
+
+/* ---------- Tabla ---------- */
+.g-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+  background: var(--bg-content);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
+}
+.g-table thead th {
+  background: var(--bg-subtle);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text-s);
+  text-align: left;
+  padding: 8px 12px;
+  border-bottom: 1px solid var(--border-default);
+}
+.g-table td { padding: 7px 12px; border-bottom: 1px solid var(--border-subtle); }
+.g-table tbody tr:last-child td { border-bottom: none; }
+.g-table tbody tr:hover td { background: #FBFCFD; }
+.g-table .r { text-align: right; font-family: 'IBM Plex Mono', monospace; }
+
+/* ---------- Capturas (grilla 2×2, imágenes grandes) ---------- */
+.g-shots { display: grid; gap: 16px 20px; }
+.g-two-shots { grid-template-columns: repeat(2, 1fr); }
+.g-shot img {
+  width: 100%;
+  height: 244px;
+  object-fit: contain;
+  background: #fff;
+  border: 1px solid var(--border-default);
+  border-radius: 10px;
+  box-shadow: var(--shadow-md);
+  cursor: zoom-in;
+  transition: transform 0.18s ease, box-shadow 0.18s ease;
+}
+.g-shot img:hover { transform: scale(1.04); box-shadow: var(--shadow-lg); }
+.g-shot figcaption {
+  font-size: 12px;
+  color: var(--text-s);
+  margin-top: 6px;
+  text-align: center;
+}
+
+/* ---------- Hechos numéricos ---------- */
+.g-fact {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 14.5px;
+  color: var(--text-p);
+  background: var(--bg-content);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+  padding: 9px 13px;
+  text-align: center;
+}
+
+/* ---------- Agenda ---------- */
+.g-ag-group {
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text-t);
+  margin: 4px 0 8px;
+}
+.g-agenda { list-style: none; margin: 0 0 22px; padding: 0; }
+.g-agenda li {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  padding: 6px 0;
+  border-bottom: 1px solid var(--border-subtle);
+  font-size: 15px;
+  color: var(--text-s);
+}
+.g-agenda .g-ag-num {
+  flex: none;
+  width: 26px;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 12.5px;
+  color: var(--text-d);
+}
+
+/* ---------- Portada / cierre / secciones (fondo grafito) ---------- */
+.slidev-layout.g-portada {
+  background:
+    radial-gradient(1100px 500px at 85% -10%, rgba(42, 52, 65, 0.75), transparent 60%),
+    radial-gradient(900px 480px at -5% 110%, rgba(31, 39, 51, 0.9), transparent 55%),
+    var(--scaffold);
+  color: #fff;
+  padding: 0;
+}
+.slidev-layout.g-portada .g-cover {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 3rem 3.5rem;
+}
+.slidev-layout.g-portada h1 { color: #fff; font-size: 3.1em; margin: 14px 0 16px; letter-spacing: -0.02em; line-height: 1.05; }
+.g-cover-kicker {
+  color: #9AA3B0;
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+  font-size: 13px;
+  font-weight: 600;
+}
+.g-mark {
+  width: 56px;
+  height: 56px;
+  background: #fff;
+  color: var(--scaffold);
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 800;
+  font-size: 24px;
+  margin-bottom: 26px;
+}
+.slidev-layout.g-portada p.g-cover-sub,
+.slidev-layout .g-cover-canvas p.g-cover-sub {
+  color: #DCE5EF;
+  font-size: 19px;
+  max-width: 40em;
+  line-height: 1.5;
+}
+.g-cover-meta { margin-top: 32px; display: flex; gap: 10px; flex-wrap: wrap; }
+.g-cover-meta .g-chip-dark { background: #fff; color: var(--scaffold); font-weight: 600; }
+
+/* Portada en primera diapositiva (sin frontmatter): lienzo a sangre completa */
+.slidev-layout .g-cover-canvas {
+  position: absolute;
+  inset: 0;
+  margin: -2.75rem -3.25rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 3rem 3.5rem;
+  background:
+    radial-gradient(1100px 500px at 85% -10%, rgba(42, 52, 65, 0.75), transparent 60%),
+    radial-gradient(900px 480px at -5% 110%, rgba(31, 39, 51, 0.9), transparent 55%),
+    var(--scaffold);
+  color: #fff;
+  overflow: hidden;
+}
+.slidev-layout .g-cover-canvas h1 { color: #fff; font-size: 3.1em; margin: 14px 0 16px; letter-spacing: -0.02em; line-height: 1.05; }
+.slidev-layout .g-cover-canvas .g-cover-kicker { color: #9AA3B0; }
+.slidev-layout .g-cover-canvas .g-chip-dark {
+  background: transparent;
+  color: #fff;
+  border-radius: 0;
+}
+.slidev-layout.default:has(.g-cover-canvas)::after { content: none; }
+
+/* Divisores de sección */
+.slidev-layout.g-section {
+  background:
+    radial-gradient(800px 420px at 90% -20%, rgba(42, 52, 65, 0.6), transparent 55%),
+    var(--scaffold);
+  color: #fff;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  text-align: left;
+  padding: 3rem 4rem;
+}
+.slidev-layout.g-section .g-sec-num {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 58px;
+  font-weight: 500;
+  line-height: 1;
+  color: #6B7686;
+  margin-bottom: 8px;
+}
+.slidev-layout.g-section .g-kicker { color: #9AA3B0; }
+.slidev-layout.g-section .g-kicker::before { background: #9AA3B0; }
+.slidev-layout.g-section h1 { color: #fff; font-size: 2.5em; margin: 0 0 12px; }
+.slidev-layout.g-section p { color: #C6CDD8; max-width: 32em; font-size: 1.05em; margin: 0; }
+
+/* Footer de marca en diapositivas de contenido */
+.slidev-layout.default::after {
+  content: 'GRAFITO · Diseño de solución';
+  position: absolute;
+  right: 3.25rem;
+  bottom: 1.05rem;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 11.5px;
+  letter-spacing: 0.06em;
+  color: var(--text-d);
+  pointer-events: none;
+}

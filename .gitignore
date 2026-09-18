@@ -1,0 +1,26 @@
+# Node.js
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+package-lock.json.tmp
+
+# Build outputs
+dist/
+build/
+out/
+.slidev/
+
+# Slidev exports (generados)
+slides-export/
+
+# Librerias vendored de terceros (descargadas, no fuente)
+docs/presentacion/assets/vendor/
+
+# Sistema operativo / editor
+.DS_Store
+Thumbs.db
+Desktop.ini
+.vscode/
+.idea/
+*.swp

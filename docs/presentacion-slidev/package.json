@@ -1,0 +1,24 @@
+{
+  "name": "presentacion-grafito-slidev",
+  "type": "module",
+  "private": true,
+  "description": "Presentación GRAFITO — Plataforma de Administración de Inmuebles, Portales y Contabilidad (Panamá). Generada con Slidev a partir de docs/ y del prototipo.",
+  "version": "1.0.0",
+  "scripts": {
+    "dev": "slidev --open",
+    "dev:no-open": "slidev",
+    "build": "slidev build",
+    "export": "slidev export",
+    "format": "slidev format",
+    "screenshot": "slidev export --format png"
+  },
+  "dependencies": {
+    "@iconify-json/ph": "^1.2.2",
+    "@slidev/cli": "^52.20.1",
+    "@slidev/theme-default": "^0.25.0",
+    "@slidev/theme-seriph": "^0.25.0"
+  },
+  "devDependencies": {
+    "playwright-chromium": "^1.63.0"
+  }
+}
