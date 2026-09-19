@@ -4,9 +4,9 @@
 
 | Campo | Valor |
 |---|---|
-| **Versión** | 1.3 |
-| **Fecha** | 16/09/2026 |
-| **Estado** | Borrador de arquitectura v1.3 — v1.2 incorpora permiso `clientes.estado.cambiar`, reglas de cambio de estado gestionado (RN-C5/R-C6) y exclusividad de ocupación reforzada (RN-I1, defensa en profundidad). **v1.3:** carga de contrato firmado obligatorio en arrendamiento (RN-CT7, URL firmada, pestaña Documentos) y gestión de documentos en ficha de cliente con `clientes.documentos.gestionar` asignado a Gerente y Cobros/Finanzas (§7.4). Pendiente de validación con el cliente, asesor legal y contador panameño |
+| **Versión** | 1.4 |
+| **Fecha** | 18/09/2026 |
+| **Estado** | Borrador de arquitectura v1.4 — sobre v1.3 incorpora seis features transversales: **pagos en línea + débito ACH** (Cobros, ADR-019), **firma electrónica de contratos** (Contratos, ADR-020), **onboarding KYC del inquilino** (Clientes), **mantenimiento preventivo + control de llaves** (Incidencias/Inmuebles), **KPIs ejecutivos + analítica** (Reportes, ADR-021) y **MFA + privacidad Ley 81** (Administración y Seguridad). Detalle por módulo en `docs/modulos/` (v1.1). Pendiente de validación con el cliente, asesor legal y contador panameño (incluye Ley 51/2008 de firma electrónica y plazos ARCO) |
 | **Documentos base** | `requerimiento-funcional.md` (v0.2), `levantamiento-requerimientos.md` (v0.1), `modulo-contabilidad.md` (nuevo, v1.0) |
 | **Modelo C4** | Sistema → Contenedores → Bounded Contexts → (componentes de alto nivel) |
 
@@ -188,16 +188,16 @@ flowchart TD
 
 | Módulo | Esquema | Tablas principales |
 |---|---|---|
-| Identity | `identity` | `User`, `Role`, `Permission`, `RolePermission`, `UserRole`, `Session`, `RefreshToken` |
-| Clientes | `crm` | `Persona`, `PersonaContacto`, `PersonaDireccion`, `Empleo`, `PersonaDocumento`, `CuentaBancaria`, `Consentimiento`, `ClasificacionCliente` |
-| Inmuebles | `properties` | `Inmueble`, `InmuebleAtributo(JSONB)`, `InmuebleFoto`, `InmuebleDocumento`, `InmuebleServicio`, `InmueblePropietario`, `InmuebleHistorial` |
-| Contratos | `contracts` | `ContratoAdministracion`, `ContratoArrendamiento`, `Clausula`, `Renovacion`, `Inspeccion`, `Garantia` |
-| Finanzas | `finances` | `Recibo`, `Pago`, `ReciboArchivo(PDF)`, `NotaAjuste`, `Liquidacion`, `LiquidacionDetalle`, `PagoPropietario` |
-| Operaciones | `ops` | `Incidencia`, `IncidenciaSeguimiento`, `IncidenciaArchivo`, `VisitaProgramada`, `Proveedor` |
+| Identity | `identity` | `User`, `Role`, `Permission`, `RolePermission`, `UserRole`, `Session`, `RefreshToken`, `MfaConfig`, `SolicitudArco` |
+| Clientes | `crm` | `Persona`, `PersonaContacto`, `PersonaDireccion`, `Empleo`, `PersonaDocumento`, `CuentaBancaria`, `Consentimiento`, `ClasificacionCliente`, `SolicitudArrendamiento`, `Verificacion`, `Referencia`, `ScoreCliente` |
+| Inmuebles | `properties` | `Inmueble`, `InmuebleAtributo(JSONB)`, `InmuebleFoto`, `InmuebleDocumento`, `InmuebleServicio`, `InmueblePropietario`, `InmuebleHistorial`, `SetLlaves` |
+| Contratos | `contracts` | `ContratoAdministracion`, `ContratoArrendamiento`, `Clausula`, `Renovacion`, `Inspeccion`, `Garantia`, `ContratoFirma` |
+| Finanzas | `finances` | `Recibo`, `Pago`, `ReciboArchivo(PDF)`, `NotaAjuste`, `Liquidacion`, `LiquidacionDetalle`, `PagoPropietario`, `PagoElectronico`, `MandatoACH` |
+| Operaciones | `ops` | `Incidencia`, `IncidenciaSeguimiento`, `IncidenciaArchivo`, `VisitaProgramada`, `Proveedor`, `PlanMantenimiento` |
 | Línea Blanca | `assets` | `Electrodomestico`, `CategoriaElectrodomestico`, `ElectrodomesticoMantenimiento`, `ElectrodomesticoArchivo` |
 | Contabilidad | `accounting` | `PlanCuenta`, `Asiento`, `AsientoDetalle`, `PeriodoContable`, `TipoCierre`, `CierreEjecutado`, `ConciliacionBancaria`, `ActivoFijo`, `Depreciacion`, `Impuesto`, `Retencion` (detalle en `modulo-contabilidad.md`) |
 | Notificaciones | `notifications` | `Notificacion`, `IntentoNotificacion`, `PlantillaNotificacion`, `PreferenciaNotificacion`, `EventoAgendado` |
-| Reportes | `reports` | Vistas materializadas / tablas de reporting |
+| Reportes | `reports` | Vistas materializadas / tablas de reporting y métricas KPI |
 | Auditoría | `audit` | `AuditLog` |
 
 **Regla de soberanía:** ningún módulo consulta tablas de otro directamente; se accede mediante servicios de aplicación del módulo propietario (in-process). Las transacciones multi-módulo las lidera el módulo responsable de la operación (ADR-008).
@@ -274,17 +274,17 @@ sequenceDiagram
 
 | Módulo | Permisos (código) |
 |---|---|
-| Clientes | `clientes.read`, `clientes.create`, `clientes.update`, `clientes.delete`, `clientes.estado.cambiar`, `clientes.documentos.gestionar` |
-| Inmuebles | `inmuebles.read`, `inmuebles.create`, `inmuebles.update`, `inmuebles.delete`, `inmuebles.fotos.gestionar` |
-| Contratos | `contratos.read`, `contratos.create`, `contratos.firmar`, `contratos.renovar`, `contratos.terminar` |
-| Cobros | `cobros.recibos.generar`, `cobros.pagos.registrar`, `cobros.pagos.anular`, `cobros.mora.consultar` |
+| Clientes | `clientes.read`, `clientes.create`, `clientes.update`, `clientes.delete`, `clientes.estado.cambiar`, `clientes.documentos.gestionar`, `clientes.solicitudes.gestionar`, `clientes.verificacion.ejecutar` |
+| Inmuebles | `inmuebles.read`, `inmuebles.create`, `inmuebles.update`, `inmuebles.delete`, `inmuebles.fotos.gestionar`, `inmuebles.llaves.gestionar` |
+| Contratos | `contratos.read`, `contratos.create`, `contratos.firmar`, `contratos.firmas.gestionar`, `contratos.renovar`, `contratos.terminar` |
+| Cobros | `cobros.recibos.generar`, `cobros.pagos.registrar`, `cobros.pagos.en-linea`, `cobros.pagos.reembolsar`, `cobros.pagos.anular`, `cobros.mora.consultar` |
 | Liquidaciones | `liquidaciones.generar`, `liquidaciones.confirmar`, `liquidaciones.pagar` |
-| Incidencias | `incidencias.leer`, `incidencias.asignar`, `incidencias.cerrar`, `incidencias.visitas.programar` |
+| Incidencias | `incidencias.leer`, `incidencias.asignar`, `incidencias.cerrar`, `incidencias.visitas.programar`, `incidencias.planes.gestionar` |
 | Línea Blanca | `lineablanca.registrar`, `lineablanca.mantenimientos.registrar`, `lineablanca.reportes.ver` |
 | Notificaciones | `notificaciones.enviar`, `notificaciones.plantillas.editar`, `notificaciones.calendario.gestionar` |
 | Contabilidad | `contabilidad.asientos.crear`, `contabilidad.asientos.aprobar`, `contabilidad.plan-cuentas.editar`, `contabilidad.cierres.ejecutar`, `contabilidad.cierres.reabrir`, `contabilidad.estados-financieros.ver`, `contabilidad.conciliacion.ejecutar`, `contabilidad.impuestos.calcular` |
-| Administración | `usuarios.gestionar`, `roles.gestionar`, `permisos.consultar`, `configuracion.editar`, `feature-flags.gestionar` |
-| Reportes/Auditoría | `reportes.ver`, `auditoria.ver` |
+| Administración | `usuarios.gestionar`, `roles.gestionar`, `permisos.consultar`, `configuracion.editar`, `feature-flags.gestionar`, `admin.mfa.gestionar`, `admin.privacidad` |
+| Reportes/Auditoría | `reportes.ver`, `reportes.kpis.ver`, `analitica.ver`, `auditoria.ver` |
 
 ### 7.3 Reglas
 
@@ -491,9 +491,19 @@ Resumen arquitectónico:
 | WhatsApp | `features.notificaciones.whatsapp` |
 | SMS | `features.notificaciones.sms` |
 | Portal Inquilino (incidencias) | `features.incidencias` |
+| Pagos en línea (pasarela) | `features.pagos-en-linea` |
+| Débito automático ACH | `features.debito-ach` |
+| Conciliación bancaria | `features.conciliacion` |
+| Firma electrónica de contratos (Ley 51/2008) | `features.firma-electronica` |
+| Onboarding KYC del inquilino | `features.kyc` |
+| Mantenimiento preventivo planificado | `features.mant-preventivo` |
+| Control de llaves/pases | `features.control-llaves` |
+| KPIs ejecutivos | `features.kpis` |
+| Analítica (score morosidad / sugerencia canon) | `features.analitica` |
+| MFA (TOTP) | `features.mfa` |
+| Panel de privacidad Ley 81 (ARCO) | `features.privacidad` |
 | Línea Blanca | `features.linea-blanca` |
 | Contabilidad completa | `features.contabilidad` |
-| Conciliación bancaria | `features.conciliacion` |
 
 Regla: **un feature flag del frontend solo controla UX; el backend valida flag + autorización + regla de negocio.**
 
@@ -608,6 +618,21 @@ Regla: **un feature flag del frontend solo controla UX; el backend valida flag +
 
 > Detalle completo de ADR-015 a 018 en **`docs/adr-aislamiento-modulos-killswitch.md`**.
 
+### ADR-019 — Pagos en línea y débito ACH detrás de `IPaymentProvider` (port-adapter)
+- **Decisión**: pasarela de pagos **PCI-DSS** (tarjeta/Yappy/ACH) e inicio de débito ACH acceden solo vía la interfaz `IPaymentProvider` del módulo Finanzas (`features.pagos-en-linea`/`features.debito-ach`); estados `Solicitado → Autorizado → Completado/Fallido/Reembolsado`, `idTx` único (idempotencia) y recibo `Pagado` solo en `Completado`.
+- **Racional**: proveedores panameños (Yappy/ACH) aún no elegidos; aislar el cambio (ADRs 004/007). El **dinero nunca se cachea** (ADR-010); reembolsos exigen `cobros.pagos.reembolsar` + asiento de reversión.
+- **Escape**: multi-proveedor o banca dedicada detrás de la misma interfaz.
+
+### ADR-020 — Firma electrónica de contratos (Ley 51/2008)
+- **Decisión**: firma en plataforma del PDF generado por Contratos (`features.firma-electronica`), con evidencia inmutable (`hash`, `timestamp`, `IP`, `consentimiento`) en `ContratoFirma`; complementa (no elimina) la carga del PDF firmado (RN-CT7) como alternativa física.
+- **Racional**: elimina el fricción de firmar/escaneo y acorta el tiempo contrato → cobro; la Ley 51 de 2008 valida la firma electrónica simple, pero los requisitos de firma **digital certificada** se confirman con asesor legal (supuesto).
+- **Escape**: integración con proveedor de firma digital certificada (Panamá) si el marco legal lo exige.
+
+### ADR-021 — Analítica y KPIs con reglas parametrizables (sin ML en v1)
+- **Decisión**: KPIs en vistas materializadas (`reports`) y analítica (score de morosidad, sugerencia de canon) mediante **reglas parametrizables y versionadas**, calculadas por lotes; salidas marcadas como **estimaciones** (nunca modifican recibos/contratos/saldos). ML queda para Fase 4.
+- **Racional**: sin datos históricos suficientes ni reglas fiscales/crediticias validadas, un modelo ML sería especulativo; las reglas explícitas son auditables y configurables por el cliente (`analitica.ver`, `features.analitica`, `features.kpis`).
+- **Escape**: reemplazo de reglas por modelo ML entrenado en producción (Fase 4) detrás del mismo contrato de cálculo.
+
 ---
 
 ## 23. Riesgos técnicos
@@ -621,6 +646,10 @@ Regla: **un feature flag del frontend solo controla UX; el backend valida flag +
 | Cierres mal configurados → asientos erróneos | Descuadres | Cierres con validaciones, bloqueos, reapertura controlada y auditoría |
 | Cambio de moneda (dólar vs balboa) | Confusión en reportes | Moneda única interna en centavos USD; formato B/. en presentación |
 | Retención de datos personales (Ley 81/2019) | Incumplimiento | Consentimientos, cifrado, derechos del titular |
+| Firma electrónica sin respaldo legal (Ley 51/2008 y firma digital) | Contrato impugnable | Validar alcance de firma simple/digital y evidencia con asesor legal antes de Fase 3 |
+| Pasarela de pagos: riesgos de fraude/reembolsos | Pérdidas y reputación | PCI-DSS, `idTx` idempotente, reembolso con permiso + motivo + asiento de reversión |
+| Score de morosidad tratado como dato contractual | Decisiones de crédito erróneas | Salidas marcadas como estimaciones; la decisión final siempre humana (rol con permiso) |
+| ARCO / KYC mal interpretados (Ley 81) | Incumplimiento de datos personales | Plazos y base legal validados con abogado panameño; retiro vía ofuscación en registros contables |
 
 ---
 
@@ -642,25 +671,29 @@ Regla: **un feature flag del frontend solo controla UX; el backend valida flag +
 | PA-10 | Proveedores de Email y SMS iniciales; WhatsApp Fase 2 | No (Fase 2) | Notificaciones |
 | PA-11 | Facturación electrónica DGI en fase futura | No | Comprobantes |
 | PA-12 | Orquestación simple (Docker Compose); Kubernetes solo si escala | No | Operación |
+| PA-13 | Pasarela de pagos panameña (Yappy/ACH/tarjeta) y proveedores de débito ACH y OCR — a confirmar (ADRs 019/021, port-adapter) | No (Fase 2) | Cobros, KYC |
+| PA-14 | Firma electrónica conforme a la Ley 51 de 2008: alcance de firma simple vs firma digital certificada | **SÍ** (Fase 3) | Contratos |
+| PA-15 | Plazos, base legal y procedimiento de las solicitudes ARCO según reglamento de la Ley 81/2019 | **SÍ** | Privacidad |
+| PA-16 | Analítica v1 sin ML; modelos predictivos planificados para Fase 4 | No | Reportes |
 
 ---
 
 ## 25. Plan de implementación por fases
 
 ### Fase 0 — Fundación
-Identity + roles dinámicos con catálogo de permisos sembrado, YARP, observabilidad, CI/CD, Docker Compose, health checks.
+Identity + roles dinámicos con catálogo de permisos sembrado, YARP, observabilidad, CI/CD, Docker Compose, health checks, **MFA (TOTP)** con política por rol.
 
 ### Fase 1 — Núcleo del negocio
-Clientes (personas), Inmuebles con atributos y fotos, Contratos, Cobros → **recibos descargables**, dashboard inquilino básico (pagos + comprobantes), liquidaciones y pagos a propietario.
+Clientes (personas), Inmuebles con atributos y fotos, Contratos, Cobros → **recibos descargables**, dashboard inquilino básico (pagos + comprobantes), liquidaciones y pagos a propietario, **control de llaves** y **solicitud de arrendamiento (pipeline KYC básico)**.
 
 ### Fase 2 — Operación y comunicación
-Incidencias con portal inquilino, **calendario**, **notificaciones multicanal** (Plataforma + Email + SMS; WhatsApp según proveedor), **Línea blanca** con historial de mantenimiento, plantillas de notificación, reportes operativos.
+Incidencias con portal inquilino, **calendario**, **notificaciones multicanal** (Plataforma + Email + SMS; WhatsApp según proveedor), **Línea blanca** con historial de mantenimiento, **mantenimiento preventivo planificado**, plantillas de notificación, reportes operativos, **pagos en línea + débito ACH** (proveedor real) y **conciliación semi-automática**, **KPIs ejecutivos**.
 
 ### Fase 3 — Contabilidad completa
-Plan de cuentas, asientos automáticos desde el negocio, activos fijos/depreciación, **cierres parametrizables**, impuestos panameños, estados financieros, conciliación bancaria.
+Plan de cuentas, asientos automáticos desde el negocio, activos fijos/depreciación, **cierres parametrizables**, impuestos panameños, estados financieros, conciliación bancaria, **firma electrónica de contratos** (Ley 51/2008 validada), **panel de privacidad ARCO** y **analítica** (score de morosidad, sugerencia de canon).
 
 ### Fase 4 — Extensión
-Portal propietario (si se confirma), proveedores reales (SMS/WhatsApp), facturación DGI, multi-moneda/empresa si aplica.
+Portal propietario (si se confirma), proveedores reales (SMS/WhatsApp/OCR), facturación DGI, **modelos ML** (predictivo de morosidad/canon), multi-moneda/empresa si aplica.
 
 ---
 
