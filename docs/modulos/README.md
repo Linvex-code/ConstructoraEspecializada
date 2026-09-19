@@ -2,16 +2,16 @@
 
 | Campo | Valor |
 |---|---|
-| **Versión** | 1.1 |
-| **Fecha** | 18/09/2026 |
-| **Estado** | Documento oficial de versiones v1.1. Registro maestro de los documentos por módulo. v1.1 incorpora features transversales: pagos en línea + ACH (Cobros), firma electrónica (Contratos), KYC (Clientes), mantenimiento preventivo (Incidencias), control de llaves (Inmuebles), KPIs + analítica (Reportes) y MFA + privacidad (Administración y Seguridad) |
+| **Versión** | 1.2 |
+| **Fecha** | 19/09/2026 |
+| **Estado** | Documento oficial de versiones v1.2. Registro maestro de los documentos por módulo. v1.2 incorpora el **módulo Recursos Humanos y Planilla** (`recursos-humanos.md` v1.0, base RF-RH-001): nómina parametrizable con estados inmutables e integración contable/bancaria |
 | **Documento base** | `docs/ui/requerimientos-modulos.md` (v0.1) |
 
 ---
 
 ## 1. Propósito
 
-Este folder (`docs/modulos/`) contiene **un documento oficial por módulo**, versionado de forma independiente (cada archivo parte como **v1.0**) y derivado del borrador único `docs/ui/requerimientos-modulos.md` (v0.1).
+Este folder (`docs/modulos/`) contiene **un documento oficial por módulo**, versionado de forma independiente (cada archivo parte como **v1.0**) y derivado, en su mayoría, del borrador único `docs/ui/requerimientos-modulos.md` (v0.1). Excepción: **Recursos Humanos** (`recursos-humanos.md` v1.0) deriva del requerimiento funcional **RF-RH-001** (no está en v0.1).
 
 Esto permite:
 
@@ -45,6 +45,7 @@ Esto permite:
 | Reportes | [`reportes.md`](reportes.md) | 1.1 | 18/09/2026 | Oficial v1.1 (KPIs + analítica) | §9 |
 | Administración y Seguridad | [`administracion-seguridad.md`](administracion-seguridad.md) | 1.1 | 18/09/2026 | Oficial v1.1 (MFA + privacidad Ley 81) | §10 |
 | Portal inquilino | [`portal-inquilino.md`](portal-inquilino.md) | 1.0 | 12/09/2026 | Oficial v1.0 (alcance propio) | §11 |
+| Recursos Humanos | [`recursos-humanos.md`](recursos-humanos.md) | 1.0 | 19/09/2026 | Oficial v1.0 (nómina parametrizable; base RF-RH-001, no deriva de v0.1) | — |
 
 > La fuente original `docs/ui/requerimientos-modulos.md` (v0.1) queda como **ficha técnica/borrador de discusión**. Los documentos de `docs/modulos/` son la fuente oficial por módulo.
 
@@ -116,6 +117,30 @@ Esto permite:
 | | `admin.mfa.gestionar` **[P]** | Política MFA y recuperación de usuarios |
 | | `admin.privacidad` **[P]** | Privacidad Ley 81 (ARCO, inventario, transferencias) |
 | Portal | `portal.ver` **[P]** | Ingreso del inquilino al portal |
+| Recursos Humanos | `rrhh.empleados.ver` | Ver empleados/expedientes (datos no salariales) |
+| | `rrhh.empleados.gestionar` **[P]** | Crear/editar empleados, expedientes e historial laboral |
+| | `rrhh.salarios.ver` **[P]** | Ver información salarial y de nómina (protegido) |
+| | `rrhh.organizacion.gestionar` **[P]** | Configurar empresas/sucursales, departamentos, puestos, centros de costo |
+| | `rrhh.proyectos.asignar` **[P]** | Asignar empleados a proyectos/obras y distribuir costos |
+| | `rrhh.contratos.gestionar` **[P]** | Gestionar contratos laborales y adendas |
+| | `rrhh.asistencia.ver` | Consultar asistencia (propia o del equipo autorizado) |
+| | `rrhh.asistencia.gestionar` **[P]** | Registrar/corregir asistencia y marcaciones |
+| | `rrhh.horasextras.aprobar` **[P]** | Aprobar/rechazar horas extras |
+| | `rrhh.ausencias.aprobar` **[P]** | Aprobar vacaciones y permisos |
+| | `rrhh.incapacidades.gestionar` **[P]** | Registrar incapacidades (datos médicos protegidos) |
+| | `rrhh.prestamos.gestionar` **[P]** | Gestionar préstamos y anticipos |
+| | `rrhh.nomina.crear` **[P]** | Crear/calcular planilla (borrador → calculada) |
+| | `rrhh.nomina.revisar` **[P]** | Revisar planilla calculada |
+| | `rrhh.nomina.aprobar` **[P]** | Aprobar/cerrar planilla (usuario distinto del que creó) |
+| | `rrhh.nomina.pagar` **[P]** | Generar archivo bancario y registrar pago/confirmación |
+| | `rrhh.nomina.reabrir` **[P]** | Reabrir planilla cerrada (permiso especial + motivo) |
+| | `rrhh.nomina.contabilizar` **[P]** | Generar asientos borrador hacia Contabilidad |
+| | `rrhh.liquidaciones.gestionar` **[P]** | Calcular/aprobar liquidaciones laborales |
+| | `rrhh.reclutamiento.gestionar` **[P]** | Vacantes, candidatos, ofertas, onboarding/offboarding |
+| | `rrhh.desarrollo.gestionar` **[P]** | Evaluaciones y capacitaciones |
+| | `rrhh.seguridad-ocupacional.gestionar` **[P]** | EPP, accidentes/incidentes y equipos entregados |
+| | `rrhh.configuracion` **[P]** | Configurar reglas de nómina, conceptos, feriados y políticas |
+| | `rrhh.reportes.ver` **[P]** | Ver reportes/dashboard RH (además del permiso fuente del reporte) |
 
 ---
 
@@ -131,6 +156,8 @@ Línea blanca ──► Inmuebles
 Contabilidad ──► Cobros + Liquidaciones (asientos borrador) + Impuestos
 Reportes ──► Todos (permiso fuente por tipo)
 Admin ──► Todos (permisos + flags)
+Recursos Humanos ──► Contabilidad (asientos borrador de planilla) + Admin (usuarios/permisos) + Reportes
+Recursos Humanos ◄── Contabilidad (catálogo de cuentas para conceptos) + Admin (RBAC/roles)
 ```
 
 ---
@@ -163,4 +190,4 @@ Admin ──► Todos (permisos + flags)
 
 ---
 
-*Documento de registro v1.1. Los documentos de módulo se versionan de forma independiente a partir de esta estructura. Las features v1.1 se detallan en los documentos de cada módulo y en `docs/diseno-arquitectura.md` v1.4 (ADRs 019–021).*
+*Documento de registro v1.2. Los documentos de módulo se versionan de forma independiente a partir de esta estructura. La features v1.1 se detallan en los documentos de cada módulo y en `docs/diseno-arquitectura.md` v1.4 (ADRs 019–021). El módulo Recursos Humanos v1.0 (nómina parametrizable, inmutabilidad e integración contable/bancaria) se describe en `docs/modulos/recursos-humanos.md` y en la v1.5 de `docs/diseno-arquitectura.md`.*

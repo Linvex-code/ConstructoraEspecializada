@@ -4,10 +4,10 @@
 
 | Campo | Valor |
 |---|---|
-| **Versión** | 1.4 |
-| **Fecha** | 18/09/2026 |
-| **Estado** | Borrador de arquitectura v1.4 — sobre v1.3 incorpora seis features transversales: **pagos en línea + débito ACH** (Cobros, ADR-019), **firma electrónica de contratos** (Contratos, ADR-020), **onboarding KYC del inquilino** (Clientes), **mantenimiento preventivo + control de llaves** (Incidencias/Inmuebles), **KPIs ejecutivos + analítica** (Reportes, ADR-021) y **MFA + privacidad Ley 81** (Administración y Seguridad). Detalle por módulo en `docs/modulos/` (v1.1). Pendiente de validación con el cliente, asesor legal y contador panameño (incluye Ley 51/2008 de firma electrónica y plazos ARCO) |
-| **Documentos base** | `requerimiento-funcional.md` (v0.2), `levantamiento-requerimientos.md` (v0.1), `modulo-contabilidad.md` (nuevo, v1.0) |
+| **Versión** | 1.5 |
+| **Fecha** | 19/09/2026 |
+| **Estado** | Borrador de arquitectura v1.5 — sobre v1.4 (features transversales 018–021: pagos en línea/ACH, firma electrónica, KYC, mantenimiento preventivo/control de llaves, KPIs/analítica, MFA/privacidad Ley 81) incorpora el **módulo Recursos Humanos y Planilla** (`RHH`, esquema `hr`, base RF-RH-001): nómina parametrizable con estados inmutables, integración contable (asientos borrador) y bancaria, asistencia, contratos, liquidaciones, reclutamiento y seguridad ocupacional (ADR-022, `SUPUESTO PA-17`). Detalle por módulo en `docs/modulos/` (v1.1; Recursos Humanos v1.0). Pendiente de validación con el cliente, asesor legal y contador panameño |
+| **Documentos base** | `requerimiento-funcional.md` (v0.2), `levantamiento-requerimientos.md` (v0.1), `modulo-contabilidad.md` (v1.0), `RF-RH-001` (v1.0, nuevo módulo) |
 | **Modelo C4** | Sistema → Contenedores → Bounded Contexts → (componentes de alto nivel) |
 
 ---
@@ -162,6 +162,7 @@ flowchart TD
         OPS["Operaciones<br/>(incidencias, visitas, proveedores)"]
         AST["Línea Blanca<br/>(electrodomésticos, mantenimientos)"]
         ACC["Contabilidad<br/>(plan cuentas, asientos, cierres)"]
+        RHH["Recursos Humanos<br/>(empleados, nómina, liquidaciones)<br/>esquema hr — RF-RH-001"]
         NOT["Notificaciones + Calendario"]
         REP["Reportes & Analytics"]
         AUD["Auditoría"]
@@ -174,13 +175,19 @@ flowchart TD
     FIN --> ACC
     OPS --> ACC
     AST --> ACC
+    RHH --> ACC
+    RHH --> FIN
+    RHH --> IDA
+    IDA --> RHH
     NOT --> CRM
     NOT --> CON
     NOT --> FIN
     NOT --> OPS
+    RHH --> NOT
     REP --> FIN
     REP --> ACC
     REP --> AST
+    REP --> RHH
     AUD --> IDA
 ```
 
@@ -197,6 +204,7 @@ flowchart TD
 | Línea Blanca | `assets` | `Electrodomestico`, `CategoriaElectrodomestico`, `ElectrodomesticoMantenimiento`, `ElectrodomesticoArchivo` |
 | Contabilidad | `accounting` | `PlanCuenta`, `Asiento`, `AsientoDetalle`, `PeriodoContable`, `TipoCierre`, `CierreEjecutado`, `ConciliacionBancaria`, `ActivoFijo`, `Depreciacion`, `Impuesto`, `Retencion` (detalle en `modulo-contabilidad.md`) |
 | Notificaciones | `notifications` | `Notificacion`, `IntentoNotificacion`, `PlantillaNotificacion`, `PreferenciaNotificacion`, `EventoAgendado` |
+| Recursos Humanos | `hr` | `Empresa`, `Sucursal`, `Departamento`, `Puesto`, `CentroCosto`, `Proyecto`, `Obra`, `AsignacionProyecto`, `Empleado`, `EstadoEmpleado`, `HistorialLaboral`, `ExpedienteDocumento`, `ContratoLaboral`, `Adenda`, `Horario`, `Turno`, `Marcacion`, `SolicitudHoraExtra`, `Feriado`, `SolicitudVacacion`, `SolicitudPermiso`, `Incapacidad`, `ConceptoNomina`, `ReglaNomina`, `PrestamoEmpleado`, `Anticipo`, `PeriodoPlanilla`, `Planilla`, `PlanillaEmpleado`, `PlanillaConcepto`, `Liquidacion`, `LiquidacionConcepto`, `ReciboPago`, `Vacante`, `Candidato`, `Capacitacion`, `Evaluacion`, `EppEntrega`, `Accidente`, `EquipoEntregado` (detalle en `docs/modulos/recursos-humanos.md`) |
 | Reportes | `reports` | Vistas materializadas / tablas de reporting y métricas KPI |
 | Auditoría | `audit` | `AuditLog` |
 
@@ -284,6 +292,7 @@ sequenceDiagram
 | Notificaciones | `notificaciones.enviar`, `notificaciones.plantillas.editar`, `notificaciones.calendario.gestionar` |
 | Contabilidad | `contabilidad.asientos.crear`, `contabilidad.asientos.aprobar`, `contabilidad.plan-cuentas.editar`, `contabilidad.cierres.ejecutar`, `contabilidad.cierres.reabrir`, `contabilidad.estados-financieros.ver`, `contabilidad.conciliacion.ejecutar`, `contabilidad.impuestos.calcular` |
 | Administración | `usuarios.gestionar`, `roles.gestionar`, `permisos.consultar`, `configuracion.editar`, `feature-flags.gestionar`, `admin.mfa.gestionar`, `admin.privacidad` |
+| Recursos Humanos | `rrhh.empleados.ver`, `rrhh.empleados.gestionar`, `rrhh.salarios.ver`, `rrhh.organizacion.gestionar`, `rrhh.proyectos.asignar`, `rrhh.contratos.gestionar`, `rrhh.asistencia.ver`, `rrhh.asistencia.gestionar`, `rrhh.horasextras.aprobar`, `rrhh.ausencias.aprobar`, `rrhh.incapacidades.gestionar`, `rrhh.prestamos.gestionar`, `rrhh.nomina.crear`, `rrhh.nomina.revisar`, `rrhh.nomina.aprobar`, `rrhh.nomina.pagar`, `rrhh.nomina.reabrir`, `rrhh.nomina.contabilizar`, `rrhh.liquidaciones.gestionar`, `rrhh.reclutamiento.gestionar`, `rrhh.desarrollo.gestionar`, `rrhh.seguridad-ocupacional.gestionar`, `rrhh.configuracion`, `rrhh.reportes.ver` |
 | Reportes/Auditoría | `reportes.ver`, `reportes.kpis.ver`, `analitica.ver`, `auditoria.ver` |
 
 ### 7.3 Reglas
@@ -504,6 +513,12 @@ Resumen arquitectónico:
 | Panel de privacidad Ley 81 (ARCO) | `features.privacidad` |
 | Línea Blanca | `features.linea-blanca` |
 | Contabilidad completa | `features.contabilidad` |
+| Recursos Humanos (estructura organizacional, empleados, contratos) | `features.rrhh` |
+| Nómina (planilla parametrizable; requiere `features.rrhh`) | `features.nomina` |
+| Asistencia y tiempo libre (marcación, horas extras, vacaciones) | `features.asistencia` |
+| Portal del empleado (autoservicio; requiere `features.rrhh`) | `features.portal-empleado` |
+| Reclutamiento / onboarding / offboarding | `features.reclutamiento` |
+| Seguridad ocupacional (EPP, accidentes, equipos entregados) | `features.seguridad-ocupacional` |
 
 Regla: **un feature flag del frontend solo controla UX; el backend valida flag + autorización + regla de negocio.**
 
@@ -633,6 +648,18 @@ Regla: **un feature flag del frontend solo controla UX; el backend valida flag +
 - **Racional**: sin datos históricos suficientes ni reglas fiscales/crediticias validadas, un modelo ML sería especulativo; las reglas explícitas son auditables y configurables por el cliente (`analitica.ver`, `features.analitica`, `features.kpis`).
 - **Escape**: reemplazo de reglas por modelo ML entrenado en producción (Fase 4) detrás del mismo contrato de cálculo.
 
+### ADR-022 — Nómina parametrizable con planilla inmutable e integración contable (módulo Recursos Humanos)
+- **Contexto**: el cliente construye inmuebles y obras además de administrarlos; necesita planilla de personal (administrativo, obra, supervisión, temporal), costos de mano de obra por proyecto/obra y asientos de gastos hacia Contabilidad. Contabilidad v1 **no realiza nómina** (`modulo-contabilidad.md` §3.7).
+- **Decisión**: el módulo **Recursos Humanos** (`RHH`, esquema `hr`, base RF-RH-001) es el motor de nómina:
+  - **Reglas parametrizables** (`ReglaNomina` + vigencia): conceptos de ingreso/deducción, fórmulas, porcentajes, topes y base legal por jurisdicción `(SUPUESTO PA-17)`; el cálculo registra un **snapshot** de la versión de reglas utilizada.
+  - **Planilla con estados** `Borrador → Calculada → Revisada → Aprobada → Cerrada → Pagada`; **cerrada = inmutable** (append-only, RN-RH-11) y **reapertura controlada** con permiso `rrhh.nomina.reabrir` + motivo (RN-RH-12).
+  - **Asientos borrador** hacia Contabilidad (FL-CTB-03): la planilla **aprobada** genera el asiento de gastos (salarios, horas extras, beneficios, mano de obra directa/indirecta) y CxP (retenciones, CSS, bancos, préstamos); Contabilidad **aprueba** el asiento — separación de funciones. Contabilización **idempotente** por periodo.
+  - **Pago**: diseño **port-adapter** `IPayrollFileBuilder` para archivo ACH por banco (Fase 2, `(SUPUESTO PA-###)`); marcación biométrica también detrás de `IMarcacionProvider` (Fase 2).
+- **Consecuencias**: los costos de mano de obra por proyecto/obra alimentan Presupuestos/Contabilidad; el costo real del proyecto se cierra con la planilla (snapshot).
+- **Seguridad**: planilla inmutable (forense), separación de funciones crear ≠ revisar ≠ aprobar ≠ pagar, salarios protegidos por `rrhh.salarios.ver`, incapacidades (datos médicos) con acceso restringido; cédula cifrada (Ley 81/2019).
+- **Alternativas rechazadas**: nómina dentro de Contabilidad (viola la separación y contradice `modulo-contabilidad.md` §3.7); planilla editable post-cierre (rompe inmutabilidad/auditoría); motor de terceros (dependencia externa para nómina parametrizable).
+- **Detalle**: `docs/modulos/recursos-humanos.md`.
+
 ---
 
 ## 23. Riesgos técnicos
@@ -675,6 +702,7 @@ Regla: **un feature flag del frontend solo controla UX; el backend valida flag +
 | PA-14 | Firma electrónica conforme a la Ley 51 de 2008: alcance de firma simple vs firma digital certificada | **SÍ** (Fase 3) | Contratos |
 | PA-15 | Plazos, base legal y procedimiento de las solicitudes ARCO según reglamento de la Ley 81/2019 | **SÍ** | Privacidad |
 | PA-16 | Analítica v1 sin ML; modelos predictivos planificados para Fase 4 | No | Reportes |
+| PA-17 | Reglas de nómina panameñas (CSS, ISR y retenciones DGI, décimo tercer mes, horas extras, vacaciones, preaviso/indemnización) y valores aplicables (tasas, topes, mínimo legal) — validar con **CPA y asesor legal** antes de implementar; el motor es parametrizable para absorber los valores | **SÍ** (antes de nómina) | Recursos Humanos |
 
 ---
 
@@ -693,7 +721,7 @@ Incidencias con portal inquilino, **calendario**, **notificaciones multicanal** 
 Plan de cuentas, asientos automáticos desde el negocio, activos fijos/depreciación, **cierres parametrizables**, impuestos panameños, estados financieros, conciliación bancaria, **firma electrónica de contratos** (Ley 51/2008 validada), **panel de privacidad ARCO** y **analítica** (score de morosidad, sugerencia de canon).
 
 ### Fase 4 — Extensión
-Portal propietario (si se confirma), proveedores reales (SMS/WhatsApp/OCR), facturación DGI, **modelos ML** (predictivo de morosidad/canon), multi-moneda/empresa si aplica.
+Portal propietario (si se confirma), proveedores reales (SMS/WhatsApp/OCR), facturación DGI, **modelos ML** (predictivo de morosidad/canon), multi-moneda/empresa si aplica. **Recursos Humanos y Planilla** (base RF-RH-001): en el prototipo ya existe la vista previa "Empleados" detrás de `features.empleados` (así queda el módulo de portal + empleados en preview); la implementación oficial del módulo (esquema `hr`) habilita `features.rrhh`/`features.nomina` con los flags de subfuncionalidad (ADR-022, Fase 4 o anterior si el cliente lo prioriza; **normativa de nómina validada con CPA/legal — PA-17**, bloqueante).
 
 ---
 
@@ -704,12 +732,14 @@ Portal propietario (si se confirma), proveedores reales (SMS/WhatsApp/OCR), fact
 ├─ docs/
 │  ├─ levantamiento-requerimientos.md   (v0.1 — preguntas del cliente)
 │  ├─ requerimiento-funcional.md        (v0.2 — requiere actualización al nuevo alcance)
-│  ├─ diseno-arquitectura.md            (v1.1 — este documento)
+│  ├─ diseno-arquitectura.md            (v1.5 — este documento)
 │  ├─ adr-aislamiento-modulos-killswitch.md (v1.0 — ADR-015..018: aislamiento, kill-switch, control plane)
-│  └─ modulo-contabilidad.md            (v1.0 — diseño del módulo de contabilidad panameña)
+│  ├─ modulo-contabilidad.md            (v1.0 — diseño del módulo de contabilidad panameña)
+│  ├─ modulos/README.md                 (v1.2 — índice maestro de módulos)
+│  └─ modulos/recursos-humanos.md       (v1.0 — Recursos Humanos y Planilla, base RF-RH-001)
 ├─ src/
 │  ├─ Backend.API/                      (módulos: Identity, CRM, Properties, Contracts, Finances,
-│  │                                     Ops, Assets, Accounting, Notifications, Reports, Audit)
+│  │                                     Ops, Assets, Accounting, HR, Notifications, Reports, Audit)
 │  ├─ Backend.Tests/
 │  └─ App/                              (Blazor Web App + MudBlazor: Admin y Portales)
 └─ infra/                               (compose, CI/CD, scripts de backup)
@@ -717,4 +747,4 @@ Portal propietario (si se confirma), proveedores reales (SMS/WhatsApp/OCR), fact
 
 ---
 
-*Documento de arquitectura de referencia v1.0. Las decisiones marcadas como supuestos deben validarse antes de la fase correspondiente; los ADR se mantienen versionados. El módulo de contabilidad se desarrolla en `docs/modulo-contabilidad.md`.*
+*Documento de arquitectura de referencia v1.5. Las decisiones marcadas como supuestos deben validarse antes de la fase correspondiente; los ADR se mantienen versionados. El módulo de contabilidad se desarrolla en `docs/modulo-contabilidad.md`; el módulo Recursos Humanos y Planilla en `docs/modulos/recursos-humanos.md`.*

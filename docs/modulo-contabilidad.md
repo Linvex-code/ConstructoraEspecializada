@@ -99,7 +99,8 @@ El módulo debe ser **parametrizable** en: plan de cuentas, tasas impositivas, p
 - Todo **parametrizado** (tasas, umbrales, plazos) y configurable por el CPA.
 
 ### 3.7 Nómina y provisiones
-- El módulo **no realiza nómina** en la primera versión (validar necesidad). Sí debe soportar **provisión contable de gastos de personal** (salarios, seguro social, décimo tercer mes, vacaciones) mediante asientos manuales o integración futura con un sistema de nómina.
+- El módulo **no calcula nómina**: el **motor de nómina vive en Recursos Humanos** (`docs/modulos/recursos-humanos.md` v1.0, esquema `hr`; ADR-022, base RF-RH-001). La planilla **aprobada** en RH genera **asientos borrador** de gastos de personal y CxP (FL-CTB-03) que Contabilidad **aprueba** — separación de funciones (quien crea no aprueba).
+- Contabilidad sí soporta **provisión contable de gastos de personal** (salarios, seguro social, décimo tercer mes, vacaciones) mediante asientos manuales y la contabilización de los asientos borrador originados por RH.
 
 ### 3.8 Inventario (opcional)
 - Si la empresa gestiona insumos (repuestos, materiales de mantenimiento), se puede habilitar inventario simplificado con impacto contable en el cierre.
@@ -142,7 +143,7 @@ La clave de un módulo contable útil es que **los eventos del negocio generen a
 | Gasto de mantenimiento de incidencia | Ops | Gasto de mantenimiento (D) ↔ Banco/CxP (H) | 51xx, 21xx |
 | Compra de electrodoméstico | Assets | Activo fijo (D) ↔ Banco/CxP (H) + ITBMS por pagar | 15xx, 1110, 2101 |
 | Depreciación de activos | Accounting (cierre) | Gasto por depreciación (D) ↔ Depreciación acumulada (H) | 52xx, 15xx |
-| Nómina/provisión | Contabilidad (manual) | Gasto por salarios (D) ↔ Banco/obligaciones (H) | 51xx/52xx, 21xx |
+| Nómina/provisión | **Recursos Humanos** (planilla aprobada) | Gasto por salarios (D) ↔ Banco/obligaciones (H); horas extras y beneficios; mano de obra directa/indirecta por proyecto/centro de costo; CxP retenciones/CSS/préstamos | 51xx/52xx, 21xx |
 | Provisión de impuestos | Accounting (cierre) | Gasto ISR (D) ↔ ISR por pagar (H) | 53xx, 21xx |
 | Recaudación de ITBMS | Accounting | Banco (D) ↔ ITBMS por pagar (H) | 1110, 2101 |
 

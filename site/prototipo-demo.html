@@ -106,6 +106,12 @@ svg{flex:none}
 /* ---------- Tarjetas ---------- */
 .card{background:var(--bg-content);border:1px solid var(--border-subtle);border-radius:var(--radius-lg);box-shadow:var(--shadow-sm);padding:var(--sp-5);transition:box-shadow var(--dur-2)}
 .card-hover:hover{box-shadow:var(--shadow-md)}
+.rh-mod-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:var(--sp-7);margin-top:var(--sp-6)}
+.rh-mod-grid .stat-ico{width:38px;height:38px;flex:none}
+.rh-mod-card{display:flex;align-items:center;gap:12px;padding:var(--sp-5);text-align:left;cursor:pointer}
+.rh-mod-card .rh-mod-info{flex:1;min-width:0}
+.rh-mod-card .rh-mod-info .strong{display:block;font-size:14px;line-height:1.3}
+.rh-mod-card .rh-mod-info .small{display:block;line-height:1.45;margin-top:3px}
 .card-head{display:flex;align-items:center;justify-content:space-between;gap:var(--sp-3);margin-bottom:var(--sp-4)}
 .card-title{font-size:16px;font-weight:600}
 .card-sub{font-size:13px;color:var(--text-s)}
@@ -183,6 +189,7 @@ select.input{appearance:auto}
 .input:focus{border-color:var(--brand);box-shadow:0 0 0 3px var(--focus-ring);outline:none}
 .input[aria-invalid="true"]{border-color:var(--danger);box-shadow:0 0 0 3px rgba(180,35,24,.12)}
 .input:disabled{background:var(--bg-disabled);color:var(--text-d)}
+.input.ro{background:var(--bg-subtle);color:var(--text-m);cursor:default;border-color:var(--border-subtle)}
 .money-input{position:relative}
 .money-input .pref{position:absolute;left:12px;top:50%;transform:translateY(-50%);color:var(--text-s);font-size:14px;pointer-events:none}
 .money-input .input{padding-left:40px}
@@ -221,6 +228,15 @@ select.input{appearance:auto}
   .side-nav:hover::-webkit-scrollbar-thumb,.side-nav:focus-within::-webkit-scrollbar-thumb{background:rgba(154,163,176,.45);border:1px solid rgba(230,233,238,.12)}
   .side-nav::-webkit-scrollbar-thumb:hover{background:rgba(230,233,238,.7)}
 .nav-group{font-size:11px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--scaffold-text-m);padding:16px 10px 6px}
+.nav-group-btn{display:flex;align-items:center;justify-content:space-between;gap:8px;width:100%;background:none;border:0;padding:16px 10px 6px;color:var(--scaffold-text-m);font-family:inherit;font-size:11px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;text-align:left;cursor:pointer;border-radius:var(--radius-md);min-height:34px}
+.nav-group-btn:hover{color:var(--scaffold-text);background:var(--scaffold-bg-h)}
+.nav-group-btn:focus-visible{outline:2px solid var(--focus-ring);outline-offset:-1px}
+.nav-group-btn .chev{display:inline-flex;flex:none;color:var(--scaffold-text-m);transition:transform var(--dur-2)}
+.nav-group-btn[aria-expanded="true"] .chev{transform:rotate(180deg)}
+.nav-group-btn:hover .chev{color:var(--scaffold-text)}
+.nav-collapse{display:none}
+.nav-collapse.open{display:block}
+.nav-collapse .nav-a{padding-left:26px}
 .nav-a{display:flex;align-items:center;gap:10px;height:38px;padding:0 10px;border-radius:var(--radius-md);color:var(--scaffold-text);font-size:14px;font-weight:500;text-decoration:none;position:relative;margin-bottom:2px;transition:background var(--dur-1)}
 .nav-a:hover{background:var(--scaffold-bg-h)}
 .nav-a.active{background:var(--scaffold-bg-act);color:#fff}
@@ -433,6 +449,14 @@ select.input{appearance:auto}
   .card{padding:var(--sp-4)}
   .toolbar .search{flex-basis:100%}
 }
+/* Panel RH: tarjetas de módulos en 3 columnas (2 filas) en cualquier viewport */
+.rh-mod-grid{grid-template-columns:repeat(3,minmax(0,1fr))}
+@media (max-width:599px){
+  .rh-mod-grid{gap:var(--sp-4);margin-top:var(--sp-5)}
+  .rh-mod-grid .stat-ico{width:32px;height:32px}
+  .rh-mod-card{gap:8px;padding:var(--sp-4)}
+  .rh-mod-card .rh-mod-info .small{font-size:11px;line-height:1.3}
+}
 @media (min-width:960px){
   .hide-desktop{display:none !important}
 }
@@ -453,6 +477,17 @@ select.input{appearance:auto}
 .feat-banner svg{width:20px;height:20px;flex:none;margin-top:1px}
 .feat-banner code{font-family:var(--font-mono);font-size:12px;background:rgba(255,255,255,.4);padding:1px 5px;border-radius:4px}
 .btn-compact{padding:4px 10px !important;height:28px !important;font-size:12px !important}
+/* ===== Métodos de pago · portal inquilino (GRAFITO §4.4) ===== */
+.metodo-grid{display:grid;grid-template-columns:1fr;gap:12px;width:100%}
+.metodo{display:flex;align-items:center;gap:14px;width:100%;text-align:left;padding:14px 18px;border:1px solid var(--border-subtle);border-radius:var(--radius-lg);background:var(--scaffold-surface);box-shadow:var(--shadow-sm);cursor:pointer;transition:border-color .18s ease,box-shadow .18s ease,transform .18s ease;font:inherit;color:inherit}
+.metodo:hover{box-shadow:var(--shadow-md);border-color:var(--brand);transform:translateY(-1px)}
+.metodo:focus-visible{outline:none;box-shadow:0 0 0 3px rgba(..)}
+.metodo[disabled],.metodo.disabled{opacity:.5;cursor:not-allowed;transform:none}
+.metodo[disabled]:hover,.metodo.disabled:hover{border-color:var(--border-subtle);box-shadow:var(--shadow-sm)}
+.m-ico{flex:none;width:42px;height:42px;display:inline-flex;align-items:center;justify-content:center;border-radius:var(--radius-md);background:var(--scaffold-bg-h);color:var(--brand)}
+.metodo strong{display:block;font-size:14px;font-weight:700;line-height:1.4}
+.metodo small{display:block;margin-top:3px;color:var(--text-muted);font-size:12px;line-height:1.5}
+.m-arrow{flex:none;color:var(--text-muted);margin-left:auto}
 </style>
 </head>
 <body>
@@ -469,17 +504,19 @@ select.input{appearance:auto}
 
 /* ---------- Catálogo de permisos (fijo, sembrado por desarrollo) ---------- */
 const CATALOGO_PERMISOS = {
-  clientes:['clientes.read','clientes.create','clientes.update','clientes.delete','clientes.estado.cambiar','clientes.documentos.gestionar'],
-  inmuebles:['inmuebles.read','inmuebles.create','inmuebles.update','inmuebles.delete','inmuebles.fotos.gestionar'],
-  contratos:['contratos.read','contratos.create','contratos.update','contratos.firmar','contratos.renovar','contratos.terminar','contratos.anular'],
-  cobros:['cobros.recibos.generar','cobros.recibos.anular','cobros.pagos.registrar','cobros.pagos.anular','cobros.mora.consultar'],
+  clientes:['clientes.read','clientes.create','clientes.update','clientes.delete','clientes.estado.cambiar','clientes.documentos.gestionar','clientes.solicitudes.gestionar','clientes.verificacion.ejecutar'],
+  inmuebles:['inmuebles.read','inmuebles.create','inmuebles.update','inmuebles.delete','inmuebles.fotos.gestionar','inmuebles.llaves.gestionar'],
+  contratos:['contratos.read','contratos.create','contratos.update','contratos.firmar','contratos.firmas.gestionar','contratos.renovar','contratos.terminar','contratos.anular'],
+  cobros:['cobros.recibos.generar','cobros.recibos.anular','cobros.pagos.registrar','cobros.pagos.anular','cobros.pagos.en-linea','cobros.pagos.yappy','cobros.pagos.reembolsar','cobros.mora.consultar'],
   liquidaciones:['liquidaciones.generar','liquidaciones.confirmar','liquidaciones.consultar','liquidaciones.anular'],
-  incidencias:['incidencias.leer','incidencias.crear','incidencias.asignar','incidencias.registrar_costo','incidencias.cerrar','incidencias.visitas.programar'],
+  incidencias:['incidencias.leer','incidencias.crear','incidencias.asignar','incidencias.registrar_costo','incidencias.cerrar','incidencias.visitas.programar','incidencias.planes.gestionar'],
   lineablanca:['lineablanca.read','lineablanca.create','lineablanca.update','lineablanca.baja','lineablanca.mantenimientos.registrar','lineablanca.reportes.ver'],
   contabilidad:['contabilidad.plan-cuentas.editar','contabilidad.asientos.crear','contabilidad.asientos.aprobar','contabilidad.cierres.ejecutar','contabilidad.cierres.reabrir','contabilidad.impuestos.registrar','contabilidad.activos.editar','conciliacion','estados-financieros.ver'],
   notificaciones:['notificaciones.enviar','notificaciones.plantillas.editar','notificaciones.calendario.gestionar'],
-  reportes:['reportes.ver','reportes.generar'],
-  administracion:['admin.usuarios','admin.roles','admin.permisos','admin.configuracion','admin.feature-flags'],
+  reportes:['reportes.ver','reportes.generar','reportes.kpis.ver'],
+  analitica:['analitica.ver'],
+  administracion:['admin.usuarios','admin.roles','admin.permisos','admin.configuracion','admin.feature-flags','admin.mfa.gestionar','admin.privacidad'],
+  rrhh:['rrhh.empleados.ver','rrhh.empleados.gestionar','rrhh.salarios.ver','rrhh.organizacion.gestionar','rrhh.proyectos.asignar','rrhh.contratos.gestionar','rrhh.asistencia.ver','rrhh.asistencia.gestionar','rrhh.horasextras.aprobar','rrhh.ausencias.aprobar','rrhh.incapacidades.gestionar','rrhh.prestamos.gestionar','rrhh.nomina.crear','rrhh.nomina.revisar','rrhh.nomina.aprobar','rrhh.nomina.pagar','rrhh.nomina.reabrir','rrhh.nomina.contabilizar','rrhh.liquidaciones.gestionar','rrhh.reclutamiento.gestionar','rrhh.desarrollo.gestionar','rrhh.seguridad-ocupacional.gestionar','rrhh.configuracion','rrhh.reportes.ver'],
   portal:['portal.ver']
 };
 const MODULE_PERMS = CATALOGO_PERMISOS;
@@ -487,12 +524,15 @@ const MODULE_PERMS = CATALOGO_PERMISOS;
 /* ---------- Roles semilla (clonables; el cliente crea los suyos) ---------- */
 const ROLES = {
   ADMIN:     {name:'Administrador', all:true, perms:[]},
-  GERENTE:   {name:'Gerente', perms:['clientes.read','clientes.create','clientes.update','clientes.estado.cambiar','clientes.documentos.gestionar','inmuebles.read','inmuebles.create','inmuebles.update','contratos.read','contratos.create','contratos.update','contratos.firmar','contratos.renovar','contratos.terminar','cobros.recibos.generar','cobros.pagos.registrar','cobros.mora.consultar','liquidaciones.generar','liquidaciones.confirmar','liquidaciones.consultar','incidencias.leer','incidencias.asignar','incidencias.registrar_costo','incidencias.cerrar','incidencias.visitas.programar','lineablanca.read','lineablanca.create','lineablanca.update','lineablanca.mantenimientos.registrar','lineablanca.reportes.ver','notificaciones.enviar','reportes.ver','reportes.generar']},
-  CONTADOR:  {name:'Contador', perms:['clientes.read','inmuebles.read','contratos.read','cobros.mora.consultar','cobros.recibos.generar','liquidaciones.consultar','contabilidad.plan-cuentas.editar','contabilidad.asientos.crear','contabilidad.asientos.aprobar','contabilidad.cierres.ejecutar','contabilidad.cierres.reabrir','contabilidad.impuestos.registrar','contabilidad.activos.editar','conciliacion','estados-financieros.ver','reportes.ver','reportes.generar','notificaciones.enviar']},
-  COBROS:    {name:'Cobros/Finanzas', perms:['clientes.read','clientes.create','clientes.update','clientes.estado.cambiar','clientes.documentos.gestionar','inmuebles.read','contratos.read','cobros.recibos.generar','cobros.recibos.anular','cobros.pagos.registrar','cobros.pagos.anular','cobros.mora.consultar','liquidaciones.generar','liquidaciones.confirmar','liquidaciones.consultar','liquidaciones.anular','incidencias.leer','notificaciones.enviar','reportes.ver']},
-  OPERACIONES:{name:'Operaciones/Mantenimiento', perms:['clientes.read','inmuebles.read','inmuebles.update','contratos.read','incidencias.leer','incidencias.crear','incidencias.asignar','incidencias.registrar_costo','incidencias.cerrar','incidencias.visitas.programar','lineablanca.read','lineablanca.create','lineablanca.update','lineablanca.baja','lineablanca.mantenimientos.registrar','lineablanca.reportes.ver','notificaciones.enviar','notificaciones.calendario.gestionar']},
-  SOPORTE:   {name:'Soporte', perms:['admin.usuarios','admin.configuracion','admin.feature-flags','reportes.ver','incidencias.leer','clientes.read','inmuebles.read']},
-  LECTURA:   {name:'Solo lectura', perms:['clientes.read','inmuebles.read','contratos.read','lineablanca.read','incidencias.leer','reportes.ver']}
+  GERENTE:   {name:'Gerente', perms:['clientes.read','clientes.create','clientes.update','clientes.estado.cambiar','clientes.documentos.gestionar','inmuebles.read','inmuebles.create','inmuebles.update','contratos.read','contratos.create','contratos.update','contratos.firmar','contratos.renovar','contratos.terminar','cobros.recibos.generar','cobros.pagos.registrar','cobros.mora.consultar','liquidaciones.generar','liquidaciones.confirmar','liquidaciones.consultar','incidencias.leer','incidencias.asignar','incidencias.registrar_costo','incidencias.cerrar','incidencias.visitas.programar','lineablanca.read','lineablanca.create','lineablanca.update','lineablanca.mantenimientos.registrar','lineablanca.reportes.ver','notificaciones.enviar','reportes.ver','reportes.generar','clientes.solicitudes.gestionar','clientes.verificacion.ejecutar','inmuebles.llaves.gestionar','contratos.firmas.gestionar','cobros.pagos.en-linea','cobros.pagos.yappy','cobros.pagos.reembolsar','incidencias.planes.gestionar','reportes.kpis.ver','analitica.ver']},
+  CONTADOR:  {name:'Contador', perms:['clientes.read','inmuebles.read','contratos.read','cobros.mora.consultar','cobros.recibos.generar','liquidaciones.consultar','contabilidad.plan-cuentas.editar','contabilidad.asientos.crear','contabilidad.asientos.aprobar','contabilidad.cierres.ejecutar','contabilidad.cierres.reabrir','contabilidad.impuestos.registrar','contabilidad.activos.editar','conciliacion','estados-financieros.ver','reportes.ver','reportes.generar','notificaciones.enviar','reportes.kpis.ver','analitica.ver']},
+  COBROS:    {name:'Cobros/Finanzas', perms:['clientes.read','clientes.create','clientes.update','clientes.estado.cambiar','clientes.documentos.gestionar','inmuebles.read','contratos.read','cobros.recibos.generar','cobros.recibos.anular','cobros.pagos.registrar','cobros.pagos.anular','cobros.mora.consultar','liquidaciones.generar','liquidaciones.confirmar','liquidaciones.consultar','liquidaciones.anular','incidencias.leer','notificaciones.enviar','reportes.ver','cobros.pagos.en-linea','cobros.pagos.yappy','cobros.pagos.reembolsar']},
+  OPERACIONES:{name:'Operaciones/Mantenimiento', perms:['clientes.read','inmuebles.read','inmuebles.update','contratos.read','incidencias.leer','incidencias.crear','incidencias.asignar','incidencias.registrar_costo','incidencias.cerrar','incidencias.visitas.programar','lineablanca.read','lineablanca.create','lineablanca.update','lineablanca.baja','lineablanca.mantenimientos.registrar','lineablanca.reportes.ver','notificaciones.enviar','notificaciones.calendario.gestionar','inmuebles.llaves.gestionar','incidencias.planes.gestionar']},
+  SOPORTE:   {name:'Soporte', perms:['admin.usuarios','admin.configuracion','admin.feature-flags','reportes.ver','incidencias.leer','clientes.read','inmuebles.read','admin.mfa.gestionar','admin.privacidad']},
+  LECTURA:   {name:'Solo lectura', perms:['clientes.read','inmuebles.read','contratos.read','lineablanca.read','incidencias.leer','reportes.ver']},
+  RRHH:      {name:'Gerente de RRHH', perms:['rrhh.empleados.ver','rrhh.empleados.gestionar','rrhh.salarios.ver','rrhh.organizacion.gestionar','rrhh.proyectos.asignar','rrhh.contratos.gestionar','rrhh.asistencia.ver','rrhh.asistencia.gestionar','rrhh.horasextras.aprobar','rrhh.ausencias.aprobar','rrhh.incapacidades.gestionar','rrhh.prestamos.gestionar','rrhh.nomina.crear','rrhh.nomina.revisar','rrhh.nomina.aprobar','rrhh.liquidaciones.gestionar','rrhh.reclutamiento.gestionar','rrhh.desarrollo.gestionar','rrhh.seguridad-ocupacional.gestionar','rrhh.configuracion','rrhh.reportes.ver','clientes.read','inmuebles.read','contratos.read','notificaciones.enviar','reportes.ver']},
+  NOMINA:    {name:'Analista de nómina', perms:['rrhh.empleados.ver','rrhh.asistencia.ver','rrhh.nomina.crear','rrhh.nomina.revisar','rrhh.nomina.contabilizar','rrhh.reportes.ver','clientes.read','reportes.ver']},
+  PAGOSRH:   {name:'Pagador (RH)', perms:['rrhh.empleados.ver','rrhh.asistencia.ver','rrhh.nomina.pagar','rrhh.reportes.ver','clientes.read','reportes.ver']}
 };
 const USUARIOS = [
   {id:'u1',nombre:'Ofelia Ríos',    rol:'ADMIN',     correo:'ofi@grafito.pa',      iniciales:'OR'},
@@ -501,7 +541,10 @@ const USUARIOS = [
   {id:'u4',nombre:'Carla Mendoza',  rol:'COBROS',    correo:'carla@grafito.pa',    iniciales:'CM'},
   {id:'u5',nombre:'Luis Batista',   rol:'OPERACIONES',correo:'luis@grafito.pa',    iniciales:'LB'},
   {id:'u6',nombre:'Andrea Ramos',   rol:'SOPORTE',   correo:'andrea@grafito.pa',   iniciales:'AR'},
-  {id:'u7',nombre:'Sandra Pérez',   rol:'LECTURA',   correo:'sandra@grafito.pa',   iniciales:'SP'}
+  {id:'u7',nombre:'Sandra Pérez',   rol:'LECTURA',   correo:'sandra@grafito.pa',   iniciales:'SP'},
+  {id:'u8',nombre:'Diana Herrera',  rol:'RRHH',      correo:'diana.h@grafito.pa',  iniciales:'DH'},
+  {id:'u9',nombre:'Héctor Pardo',   rol:'NOMINA',    correo:'hector@grafito.pa',   iniciales:'HP'},
+  {id:'u10',nombre:'Samuel Quintero',rol:'PAGOSRH',  correo:'samuel.q@grafito.pa', iniciales:'SQ'}
 ];
 
 /* ---------- Datos maestros: personas (clientes) ---------- */
@@ -554,7 +597,8 @@ const RECIBOS = [
   {folio:'REC-2026-008', contrato:'c3', periodo:'Agosto 2026', vence:'30/08/2026', monto:1000, estado:'Pagado', pago:'07/08/2026', metodo:'Transferencia', comp:'CRE-2026-0134', refComp:null, itbms:0, dias:0, notas:''},
   {folio:'REC-2026-009', contrato:'c4', periodo:'Agosto 2026', vence:'30/08/2026', monto:875, estado:'Pagado', pago:'05/08/2026', metodo:'Punto de venta', comp:'CRE-2026-0135', refComp:null, itbms:0, dias:0, notas:''},
   {folio:'REC-2026-010', contrato:'c5', periodo:'Agosto 2026', vence:'30/08/2026', monto:650, estado:'Pagado', pago:'08/08/2026', metodo:'Efectivo', comp:'CRE-2026-0136', refComp:null, itbms:0, dias:0, notas:''},
-  {folio:'REC-2026-011', contrato:'c1', periodo:'Julio 2026', vence:'30/07/2026', monto:900, estado:'Pagado', pago:'05/07/2026', metodo:'Transferencia', comp:'CRE-2026-0118', refComp:null, itbms:0, dias:0, notas:''}
+  {folio:'REC-2026-011', contrato:'c1', periodo:'Julio 2026', vence:'30/07/2026', monto:900, estado:'Pagado', pago:'05/07/2026', metodo:'Transferencia', comp:'CRE-2026-0118', refComp:null, itbms:0, dias:0, notas:''},
+  {folio:'REC-2026-012', contrato:'c1', periodo:'Octubre 2026', vence:'31/10/2026', monto:900, estado:'Emitido', pago:null, metodo:null, comp:null, refComp:null, itbms:0, dias:0, notas:'Recibo demo · pendiente para validar el flujo de pago'}
 ];
 
 /* ---------- Liquidaciones a propietarios ---------- */
@@ -687,7 +731,26 @@ const FEATURE_FLAGS = [
   {flag:'features.incidencias', nombre:'Incidencias en portal', desc:'Permite al inquilino reportar incidencias desde el portal.', activo:true},
   {flag:'features.linea-blanca', nombre:'Línea blanca', desc:'Inventario y mantenimientos de electrodomésticos.', activo:true},
   {flag:'features.contabilidad', nombre:'Contabilidad completa', desc:'Plan de cuentas, asientos, cierres, conciliación e impuestos.', activo:true},
-  {flag:'features.conciliacion', nombre:'Conciliación bancaria', desc:'Conciliación por banco y período (Fase 3).', activo:true}
+  {flag:'features.conciliacion', nombre:'Conciliación bancaria', desc:'Conciliación por banco y período (Fase 3).', activo:true},
+  {flag:'features.pagos-en-linea', nombre:'Pagos en línea · Portal y POS web', desc:'Tarjeta, Yappy y débito ACH con conciliación automática.', activo:true},
+  {flag:'features.firma-electronica', nombre:'Firma electrónica de contratos', desc:'Firma GS con consentimiento, hash y timestamp (Ley 51 de 2008).', activo:true},
+  {flag:'features.kyc', nombre:'KYC — verificación de clientes', desc:'OCR, referencias y score para nuevos clientes.', activo:true},
+  {flag:'features.ipg', nombre:'Pasarela de pagos (IPG por marca blanca)', desc:'Tarjeta y Yappy viajan a la pasarela; el demo simula la respuesta.', activo:true},
+  {flag:'features.ach', nombre:'Débito ACH / mandato', desc:'Mandato con consentimiento Ley 81 para débito automatizado.', activo:true},
+  {flag:'features.debito-ach', nombre:'Débito ACH · Portal y mandato', desc:'Mandato con consentimiento Ley 81; el demo simula la orden SEPA/AIG.', activo:true},
+{flag:'features.yappy', nombre:'Yappy · Pago móvil', desc:'El inquilino paga con Yappy y sube el comprobante desde el portal.', activo:true},
+  {flag:'features.mant-preventivo', nombre:'Mantenimiento preventivo', desc:'Planes y frecuencias de mantenimiento preventivo por activo.', activo:true},
+  {flag:'features.mfa', nombre:'MFA — segundo factor obligatorio', desc:'Requiere segundo factor al ingreso del personal administrativo (roles sensibles).', activo:true},
+  {flag:'features.privacidad', nombre:'Privacidad (Ley 81 / ARCO)', desc:'Solicitudes ARCO, consentimientos y registros de tratamiento.', activo:true},
+  {flag:'features.control-llaves', nombre:'Control de llaves', desc:'Registro de préstamo/devolución de llaves por inmueble y responsable.', activo:true},
+  {flag:'features.kpis', nombre:'KPIs del negocio', desc:'Dashboard de KPIs operativos y financieros.', activo:true},
+  {flag:'features.analitica', nombre:'Analítica avanzada', desc:'Analítica sobre datos del negocio para decisiones.', activo:true},
+  {flag:'features.rrhh', nombre:'Recursos Humanos', desc:'Módulo RH: organización, empleados, expedientes y planilla.', activo:true},
+  {flag:'features.nomina', nombre:'Nómina y planilla', desc:'Períodos, cálculo parametrizable, estados inmutables y pago ACH.', activo:true},
+  {flag:'features.asistencia', nombre:'Asistencia y tiempo', desc:'Horarios, marcaciones, horas extras, vacaciones, permisos e incapacidades.', activo:true},
+  {flag:'features.portal-empleado', nombre:'Portal del empleado', desc:'Autoservicio del colaborador: recibos, saldos y solicitudes.', activo:true},
+  {flag:'features.reclutamiento', nombre:'Reclutamiento y desarrollo', desc:'Vacantes, candidatos, onboarding, offboarding, evaluaciones y capacitaciones.', activo:true},
+  {flag:'features.seguridad-ocupacional', nombre:'Seguridad ocupacional', desc:'EPP, accidentes e incidentes y equipos entregados.', activo:true}
 ];
 
 /* ---------- Estado de la sesión demo ---------- */
@@ -762,7 +825,10 @@ const IC = {
   gauge:'<path d="M12 21a9 9 0 1 1 9-9"/><path d="m12 12 4.5-4.5"/><circle cx="12" cy="12" r="1.6"/>',
   whatsapp:'<path d="M12 3a9 9 0 0 0-7.8 13.5L3 21l4.6-1.2A9 9 0 1 0 12 3Z"/><path d="M9 8.5c.5 3 3.5 6 6.5 6.5l1-1.5-2.5-1.5-1 1a6.7 6.7 0 0 1-2.5-2.5l1-1-1.5-2.5Z"/>',
   file:'<path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8Z"/><path d="M14 3v5h6"/>',
-  flag:'<path d="M5 21V4"/><path d="M5 4c4-2 7 2 10 0s6-1 6-1v11c-2 1-4 2-6 1s-5-1-10 1Z"/>'
+  flag:'<path d="M5 21V4"/><path d="M5 4c4-2 7 2 10 0s6-1 6-1v11c-2 1-4 2-6 1s-5-1-10 1Z"/>',
+  userplus:'<path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="8.5" cy="7" r="4"/><path d="M19 8v6M22 11h-6"/>',
+  briefcase:'<rect x="3" y="7" width="18" height="13" rx="2"/><path d="M8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/><path d="M3 13h18"/>',
+  edit:'<path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z"/>'
 };
 function ic(name, size){
   size = size || 16;
@@ -961,6 +1027,8 @@ function homeForSession(){
   if(!session) return '#/login';
   if(session.type==='admin') return '#/app/resumen';
   if(session.type==='inquilino') return '#/portal/inquilino/resumen';
+  if(session.type==='empleado') return '#/portal/empleado/resumen';
+  if(session.type==='supervisor') return '#/portal/supervisor/resumen';
   return '#/portal/propietario/resumen';
 }
 
@@ -973,15 +1041,16 @@ function loginAs(idUsuario){
   location.hash = '#/app/resumen';
 }
 function loginPortal(tipo){
-  if(tipo==='inquilino'){
-    session = {type:'inquilino', user:{id:'p1', nombre:'Ana Rodríguez', rol:'Inquilina', iniciales:'AR'}, rol:null};
-    try{ sessionStorage.setItem('grafito.session', JSON.stringify(session)); }catch(e){}
-    location.hash = '#/portal/inquilino/resumen';
-  }else{
-    session = {type:'propietario', user:{id:'p4', nombre:'Julio Vega', rol:'Propietario', iniciales:'JV'}, rol:null};
-    try{ sessionStorage.setItem('grafito.session', JSON.stringify(session)); }catch(e){}
-    location.hash = '#/portal/propietario/resumen';
-  }
+  var mapa = {
+    'inquilino':  {type:'inquilino',  home:'#/portal/inquilino/resumen',  user:{id:'p1', nombre:'Ana Rodríguez', rol:'Inquilina', iniciales:'AR'}},
+    'propietario':{type:'propietario',home:'#/portal/propietario/resumen',user:{id:'p4', nombre:'Julio Vega', rol:'Propietario', iniciales:'JV'}},
+    'empleado':   {type:'empleado',   home:'#/portal/empleado/resumen',   user:(function(){ var e=rhEmp('e2'); return {id:'e2', nombre:e.nombre, rol:'Empleada', iniciales:e.iniciales, rhId:'e2'}; })()},
+    'supervisor': {type:'supervisor', home:'#/portal/supervisor/resumen', user:(function(){ var e=rhEmp('e6'); return {id:'e6', nombre:e.nombre, rol:'Jefe de obra', iniciales:e.iniciales, rhId:'e6'}; })()}
+  };
+  var m = mapa[tipo] || mapa.propietario;
+  session = {type:m.type, user:m.user, rol:null};
+  try{ sessionStorage.setItem('grafito.session', JSON.stringify(session)); }catch(e){}
+  location.hash = m.home;
 }
 function logout(area){
   session = null;
@@ -1025,9 +1094,11 @@ function viewLogin(){
       '</form>'+
       '<div class="divider">Modo demo · entra como</div>'+
       USUARIOS.map(function(u,i){ return '<button type="button" class="demo-user" onclick="loginAs(\''+u.id+'\')"><span class="avatar">'+u.iniciales+'</span><span><span class="d-name">'+esc(u.nombre)+'</span><br><span class="d-role">'+esc(ROLES[u.rol].name)+'</span></span></button>'; }).join('') +
-      '<div style="margin-top:10px;display:flex;gap:8px">'+
+      '<div style="margin-top:10px;display:flex;gap:8px;flex-wrap:wrap">'+
         '<button type="button" class="btn btn-secondary btn-block" onclick="loginPortal(\'inquilino\')">'+ic('user')+' Portal inquilino</button>'+
         '<button type="button" class="btn btn-secondary btn-block" onclick="loginPortal(\'propietario\')">'+ic('building')+' Portal propietario</button>'+
+        '<button type="button" class="btn btn-secondary btn-block" onclick="loginPortal(\'empleado\')">'+ic('clock')+' Portal empleado</button>'+
+        '<button type="button" class="btn btn-secondary btn-block" onclick="loginPortal(\'supervisor\')">'+ic('users')+' Portal supervisor</button>'+
       '</div>'+
       '<div class="rbac-note">'+ic('shield',14)+'<span>Demo de diseño. La contraseña del prototipo es libre (<span class="mono">demo123</span>); en producción la autenticación la valida el backend con cookie httpOnly (BFF).</span></div>'+
     '</div>'
@@ -1200,35 +1271,63 @@ function navItem(routeParam, iconName, label, active, extra){
   var h = '<a class="nav-a'+(active?' active':'')+'" href="#/app/'+routeParam+'">'+ic(iconName,18)+'<span>'+esc(label)+'</span>'+(extra||'')+'</a>';
   return h;
 }
-function sidebarAdmin(active){
+function groupOpen(key, activeGroup){
+  if(V.navOpen && typeof V.navOpen[key]==='boolean') return V.navOpen[key];
+  return activeGroup===key;
+}
+function navGroup(key, label, activeGroup, inner){
+  var open = groupOpen(key, activeGroup);
+  return '<button type="button" class="nav-group-btn" data-nav="'+key+'" onclick="toggleNavGroup(\''+key+'\')" aria-expanded="'+(open?'true':'false')+'" aria-controls="nav-'+key+'"><span>'+esc(label)+'</span><span class="chev">'+iccArrow()+'</span></button>'+
+    '<div class="nav-collapse'+(open?' open':'')+'" id="nav-'+key+'" role="region" aria-label="'+esc(label)+'">'+inner+'</div>';
+}
+function toggleNavGroup(key){
+  var b = document.querySelector('.nav-group-btn[data-nav="'+key+'"]');
+  var c = document.getElementById('nav-'+key);
+  if(!b || !c) return;
+  V.navOpen = V.navOpen || {};
+  var open = !c.classList.contains('open');
+  c.classList.toggle('open', open);
+  b.setAttribute('aria-expanded', open ? 'true':'false');
+  V.navOpen[key] = open;
+}
+function sidebarAdmin(active, activeGroup){
   var feats = FEATURE_FLAGS;
   function ffOn(f){ return (feats.find(function(x){return x.flag===f;}) || {}).activo; }
   var html = '<div class="sidebar"><div class="brand"><div class="brand-logo">CE</div><div><div class="brand-name">Constructora Especializada</div><div class="brand-sub">Admin · Panamá</div></div></div><div class="side-nav">';
   html += '<div class="nav-group">General</div>';
   html += navItem('resumen','gauge','Resumen', active==='resumen');
-  html += can('clientes') ? '<div class="nav-group">Gestión / Arrendamiento</div>' : '';
-  if(can('clientes')) html += navItem('clientes','users','Clientes', active==='clientes');
-  if(can('inmuebles')) html += navItem('inmuebles','building','Inmuebles', active==='inmuebles');
-  if(can('contratos')) html += navItem('contratos','contract','Alquiler', active==='contratos');
-  if(can('cobros')) html += navItem('cobros','wallet','Cobros', active==='cobros');
-  if(can('liquidaciones')) html += navItem('liquidaciones','scale','Liquidaciones', active==='liquidaciones');
-  var ops = can('incidencias') || can('lineablanca');
-  if(ops){ html += '<div class="nav-group">Operación y mantenimiento</div>'; }
-  if(can('incidencias')) html += navItem('incidencias','wrench','Incidencias', active==='incidencias');
-  if(can('lineablanca')) html += navItem('lineablanca','toolbox','Línea blanca', active==='lineablanca');
+  var gestInner = '';
+  if(can('clientes')) gestInner += navItem('clientes','users','Clientes', active==='clientes');
+  if(can('inmuebles')) gestInner += navItem('inmuebles','building','Inmuebles', active==='inmuebles');
+  if(can('contratos')) gestInner += navItem('contratos','contract','Alquiler', active==='contratos');
+  if(can('cobros')) gestInner += navItem('cobros','wallet','Cobros', active==='cobros');
+  if(can('liquidaciones')) gestInner += navItem('liquidaciones','scale','Liquidaciones', active==='liquidaciones');
+  if(gestInner) html += navGroup('gest','Gestión / Arrendamiento', activeGroup, gestInner);
+  var opsInner = '';
+  if(can('incidencias')) opsInner += navItem('incidencias','wrench','Incidencias', active==='incidencias');
+  if(can('lineablanca')) opsInner += navItem('lineablanca','toolbox','Línea blanca', active==='lineablanca');
+  if(opsInner) html += navGroup('ops','Operación y mantenimiento', activeGroup, opsInner);
+  var contInner = '';
   if(can('contabilidad')){
-    html += '<div class="nav-group">Contabilidad</div>';
-    [['contabilidad','calculator','Contabilidad'],['contabilidad/plan','list','Plan de cuentas'],['contabilidad/asientos','receipt','Asientos'],['contabilidad/cierres','calendar','Cierres'],['contabilidad/conciliacion','bank','Conciliación'],['contabilidad/impuestos','flag','Impuestos'],['contabilidad/activos','toolbox','Activos fijos'],['contabilidad/ef','chart','Estados financieros']].forEach(function(item){
-      html += navItem(item[0], item[1], item[2], active===(item[0].split('/')[1]||'contabilidad'));
-    });
+    contInner = [['contabilidad','calculator','Contabilidad'],['contabilidad/plan','list','Plan de cuentas'],['contabilidad/asientos','receipt','Asientos'],['contabilidad/cierres','calendar','Cierres'],['contabilidad/conciliacion','bank','Conciliación'],['contabilidad/impuestos','flag','Impuestos'],['contabilidad/activos','toolbox','Activos fijos'],['contabilidad/ef','chart','Estados financieros']].map(function(item){
+      return navItem(item[0], item[1], item[2], active===(item[0].split('/')[1]||'contabilidad'));
+    }).join('');
+    html += navGroup('cont','Contabilidad', activeGroup, contInner);
   }
-  var sys = can('notificaciones') || can('reportes') || can('administracion');
-  if(sys){ html += '<div class="nav-group">Sistema</div>'; }
-  if(can('notificaciones')) html += navItem('notificaciones','megaphone','Notificaciones', active==='notificaciones');
-  if(can('reportes')) html += navItem('reportes','chartline','Reportes', active==='reportes');
+  var rhhInner = '';
+  if(can('rrhh')){
+    rhhInner = [['rrhh','users','Panel RH'],['rrhh/empleados','user','Empleados'],['rrhh/organizacion','grid','Organización'],['rrhh/proyectos','briefcase','Proyectos'],['rrhh/asistencia','clock','Asistencia'],['rrhh/tiempo-libre','calendar','Tiempo libre'],['rrhh/compensaciones','wallet','Compensaciones'],['rrhh/nomina','receipt','Nómina'],['rrhh/liquidaciones','scale','Liquidaciones'],['rrhh/reclutamiento','userplus','Reclutamiento'],['rrhh/desarrollo','chartline','Desarrollo'],['rrhh/seguridad','shield','Seguridad'],['rrhh/reportes','chart','Reportes'],['rrhh/configuracion','settings','Configuración']].map(function(item){
+      return navItem(item[0], item[1], item[2], active===(item[0].split('/')[1]||'rrhh'));
+    }).join('');
+    html += navGroup('rrhh','Recursos Humanos', activeGroup, rhhInner);
+  }
+  var sysInner = '';
+  if(can('notificaciones')) sysInner += navItem('notificaciones','megaphone','Notificaciones', active==='notificaciones');
+  if(can('reportes')) sysInner += navItem('reportes','chartline','Reportes', active==='reportes');
   if(can('administracion')){
-    html += navItem('administracion','settings','Administración', active==='administracion');
+    sysInner += navItem('administracion','settings','Administración', active==='administracion');
   }
+  if(sysInner) html += navGroup('sys','Sistema', activeGroup, sysInner);
   html += '<div class="nav-group">Soporte</div>';
   html += navItem('guia','info','Guía de estados', active==='guia');
   html += '</div></div>';
@@ -4197,9 +4296,9 @@ let PORTAL_NOTIFS = [
 ];
 function portalNotifications(){
   if(session && session.type==='admin') return NOTIFS;
-  return PORTAL_NOTIFS.filter(function(n){ return n.portal===(session? session.type : ''); });
+  return (PORTAL_NOTIFS.concat(RH_PORTAL_NOTIFS)).filter(function(n){ return n.portal===(session? session.type : ''); });
 }
-function marcarPortalNotif(id){ var n=PORTAL_NOTIFS.find(function(x){ return x.id===id; }); if(n) n.leida=true; }
+function marcarPortalNotif(id){ var n=PORTAL_NOTIFS.concat(RH_PORTAL_NOTIFS).find(function(x){ return x.id===id; }); if(n) n.leida=true; }
 function marcarTodasPortalNotif(){
   var nb = portalNotifications();
   var faltan = nb.some(function(n){ return !n.leida; });
@@ -4213,14 +4312,27 @@ function marcarTodasPortalNotif(){
 function portalNavItems(tipo, active){
   var items = [['resumen','gauge','Resumen']];
   if(tipo==='inquilino') items.push(['calendario','calendar','Calendario']);
-  items.push(['pagos','wallet','Pagos']);
+  if(tipo==='empleado'||tipo==='supervisor') items.push(['asistencia','clock','Asistencia']);
+  if(tipo==='empleado') items.push(['recibos','receipt','Recibos']);
+  if(tipo==='empleado') items.push(['tiempo-libre','calendar','Tiempo libre']);
+  if(tipo==='empleado') items.push(['solicitudes','send','Solicitudes']);
+  if(tipo==='empleado') items.push(['prestamos','wallet','Préstamos']);
+  if(tipo==='empleado') items.push(['documentos','file','Documentos']);
+  if(tipo==='empleado') items.push(['datos','edit','Datos']);
+  if(tipo==='supervisor') items.push(['equipo','users','Equipo']);
+  if(tipo==='supervisor') items.push(['horas-extras','clock','Horas extra']);
+  if(tipo==='supervisor') items.push(['ausencias','calendar','Ausencias']);
+  if(tipo==='supervisor') items.push(['evaluaciones','chartline','Evaluaciones']);
+  if(tipo==='inquilino') items.push(['pagos','wallet','Pagos']);
   if(tipo==='inquilino') items.push(['incidencias','wrench','Incidencias']);
+  if(tipo==='propietario') items.push(['pagos','wallet','Pagos']);
   items.push(['notificaciones','bell','Notificaciones']);
   items.push(['perfil','user','Perfil']);
   return items;
 }
 function portalSidebar(tipo, active){
-  var sub = tipo==='inquilino' ? 'Portal Inquilino' : 'Portal Propietario';
+  var subs = {'inquilino':'Portal Inquilino','propietario':'Portal Propietario','empleado':'Portal Empleado','supervisor':'Portal Supervisor'};
+  var sub = subs[tipo] || 'Portal';
   var html = '<div class="sidebar"><div class="brand"><div class="brand-logo" style="background:#fff;color:var(--brand)">CE</div><div><div class="brand-name">Constructora Especializada</div><div class="brand-sub">'+esc(sub)+'</div></div></div><div class="side-nav">';
   html += '<div class="nav-group">Mi cuenta</div>';
   portalNavItems(tipo, active).forEach(function(it){
@@ -4234,14 +4346,16 @@ function portalSidebar(tipo, active){
 function portalTopbar(tipo, view){
   var nb = portalNotifications().filter(function(n){ return !n.leida; }).length;
   var u = session.user;
+  var titulos = {'inquilino':'Mi apartamento','propietario':'Mis ingresos','empleado':'Mi portal laboral','supervisor':'Mi portal laboral'};
+  var roles = {'inquilino':'Inquilina','propietario':'Propietario','empleado':'Empleada','supervisor':'Supervisor'};
   return '<header class="topbar" role="banner">'+
     '<button class="btn-icon hamburger" onclick="toggleNav()" aria-label="Abrir menú">'+ic('menu',20)+'</button>'+
-    '<div class="strong" style="font-size:14px">'+esc(tipo==='inquilino'?'Mi apartamento':'Mis ingresos')+'</div>'+
+    '<div class="strong" style="font-size:14px">'+esc(titulos[tipo]||'Mi portal')+'</div>'+
     '<div class="spacer"></div>'+
     '<button class="icon-btn" onclick="openNotifMenu(this)" aria-label="Notificaciones" aria-expanded="false">'+ic('bell',20)+(nb?'<span class="dot" aria-hidden="true"></span>':'')+'</button>'+
     '<div class="user-chip" onclick="openUserMenu(this)" tabindex="0" role="button" aria-haspopup="true" aria-expanded="false">'+
       '<span class="avatar">'+u.iniciales+'</span>'+
-      '<span><span class="u-n">'+esc(u.nombre)+'</span><br><span class="u-r">'+esc(tipo==='inquilino'?'Inquilina':'Propietario')+'</span></span>'+
+      '<span><span class="u-n">'+esc(u.nombre)+'</span><br><span class="u-r">'+esc(roles[tipo]||'Usuario')+'</span></span>'+
       '<span>'+iccArrow()+'</span>'+
     '</div></header>';
 }
@@ -4290,7 +4404,9 @@ function viewPortalInqResumen(){
     '<div class="ph-amount">'+fmtM(rec? rec.monto : c.canon)+'</div>'+
     '<div class="ph-due">'+(alDia? 'Pagado el '+rec.pago+' · '+rec.metodo+(rec.refComp? ' · ref. '+rec.refComp : '') : 'Vence el 30/09/2026')+'</div>'+
     (alDia? '<button class="btn btn-primary" onclick="location.hash=\'#/portal/inquilino/pagos\'">'+ic('receipt')+' Ver comprobante</button>'
-          : '<button class="btn btn-primary" onclick="toast(\'La administración te notificará cuando registre tu pago.\',\'info\',\'Pago pendiente\')">'+ic('wallet')+' Pagar ahora</button>')+
+          : (can('cobros.pagos.en-linea')&&ffOn('features.debito-ach')
+            ? '<button class="btn btn-primary" onclick="location.hash=\'#/portal/inquilino/pagos\'">'+ic('wallet')+' Pagar en línea · Débito ACH</button>'
+            : '<button class="btn btn-primary" onclick="toast(\'La administración te notificará cuando registre tu pago.\',\'info\',\'Pago pendiente\')">'+ic('wallet')+' Pagar ahora</button>'))+
   '</div>';
   html += pageHead([{label:'Portal', link:'#/portal/inquilino/resumen'},{label:'Resumen'}], 'Hola, '+esc(p.nombre.split(' ')[0]), 'Apartamento '+esc(inm.ref)+' · '+esc(inm.nombre)+' · Alquiler '+esc(c.ref));
   html += '<div class="kpis" style="margin-bottom:var(--sp-6)">'+
@@ -4338,16 +4454,1261 @@ function viewPortalInqCalendario(){
 function viewPortalInqPagos(){
   var rcs = recibosPortal();
   var html = pageHead([{label:'Portal', link:'#/portal/inquilino/resumen'},{label:'Pagos'}], 'Mis pagos', 'Recibos de tu contrato '+(contratoPortal()? contratoPortal().ref : '—'),
-    '<button class="btn btn-secondary" onclick="exportPagosPortal()">'+ic('download')+' Exportar CSV</button>');
+    '<button class="btn btn-secondary" onclick="exportPagosPortal()">'+ic('download')+' Exportar CSV</button>'+
+    '<button class="btn btn-primary" onclick="nuevoPagoPortal()">'+ic('wallet')+' Pagar</button>');
   if(!rcs.length) return html + emptyState('receipt','Aún no tienes pagos registrados','Cuando la administración emita tu primer recibo, aparecerá aquí.', '');
   html += '<div class="card"><div class="tbl-wrap" style="border:none;box-shadow:none"><table class="tbl dense">'+
     '<thead><tr><th>Folio</th><th>Período</th><th class="num">Monto</th><th>Vence</th><th>Estado</th><th>Pago</th><th>Método</th><th></th></tr></thead><tbody>'+
     rcs.map(function(r){
       return '<tr><td class="mono">'+esc(r.folio)+'</td><td>'+esc(r.periodo)+'</td><td class="num mono">'+fmtM(r.monto)+'</td><td class="mono">'+esc(r.vence)+'</td><td>'+chipEstado(r.estado)+'</td><td class="mono small">'+esc(r.pago||'—')+'</td><td class="small">'+esc(r.metodo||'—')+'</td><td>'+
-        (r.estado==='Pagado'? '<button class="btn btn-secondary btn-compact" onclick="verComprobante(\''+r.folio+'\')">'+ic('receipt',14)+' Comprobante</button>' : '<span class="muted2 small">—</span>')+'</td></tr>';
+        (r.estado==='Pagado'? '<button class="btn btn-secondary btn-compact" onclick="verComprobantePortal(\''+r.folio+'\')">'+ic('receipt',14)+' Comprobante</button>' : '<span class="muted2 small">—</span>')+'</td></tr>';
     }).join('')+'</tbody></table></div>'+
     '<div class="pagination"><span class="small muted2">Demostración de diseño · en producción el comprobante PDF se genera desde el BFF.</span></div></div>';
-  html += '<div class="alert alert-info" style="margin-top:var(--sp-5)">'+ic('info',20)+'<div><h4>¿Cómo pagas?</h4><p>La administración registra tu pago (transferencia, punto de venta o ventanilla) y te entrega el comprobante numerado CRE-2026-xxxx.</p></div></div>';
+  html += '<div class="alert alert-info" style="margin-top:var(--sp-5)">'+ic('info',20)+'<div><h4>¿Cómo pagas?</h4><p>Paga con <b>Débito ACH</b> (mandato Ley 81), <b>Yappy</b> o sube el <b>comprobante de tu transferencia</b> desde el portal. La administración valida el pago y te entrega el comprobante numerado CRE-2026-xxxx.</p></div></div>';
+  return html;
+}
+function nuevoPagoPortal(){
+  if(!contratoPortal()) return;
+  var rcs = recibosPortal().filter(function(r){ return r.estado!=='Pagado'; });
+  if(!rcs.length){ toast('Ya no tienes recibos pendientes por pagar.','info','Sin pendientes'); return; }
+  var masYappy = rcs.some(function(r){ return r.monto > 1000; });
+  var yapDisponible = !masYappy;
+  var cards = '<div class="pago-m metodo-grid">'+
+    '<button type="button" class="metodo" onclick="nuevoPagoEnLineaPortal()"><span class="m-ico">'+ic('wallet',26)+'</span><span><strong>Débito ACH · en línea</strong><small>Cargo automático desde tu cuenta bancaria el día 5 de cada mes.</small></span><span class="m-arrow">'+ic('chev-right',18)+'</span></button>'+
+    '<button type="button" class="metodo"'+(yapDisponible? '':' disabled title="Yappy solo permite montos de hasta B/. 1,000 por transacción. Este recibo lo supera; usa Débito ACH o sube un comprobante."')+' onclick="'+(yapDisponible?'nuevoPagoYappyPortal()':'void 0')+'"><span class="m-ico">'+ic('smartphone',26)+'</span><span><strong>Yappy</strong><small>'+(yapDisponible?'Pago desde tu app Yappy (hasta B/. 1,000 por transacción).':'Límite B/. 1,000 superado · usa otro método.')+'</small></span><span class="m-arrow">'+ic('chev-right',18)+'</span></button>'+
+    '<button type="button" class="metodo" onclick="nuevoPagoComprobantePortal()"><span class="m-ico">'+ic('upload',26)+'</span><span><strong>Subir comprobante</strong><small>Ya pagaste por transferencia o ventanilla; adjunta el recibo y la administración lo valida.</small></span><span class="m-arrow">'+ic('chev-right',18)+'</span></button>'+
+    '<button type="button" class="metodo" onclick="nuevoPagoTarjetaPortal()"><span class="m-ico">'+ic('lock',24)+'</span><span><strong>Tarjeta Visa · débito/crédito</strong><small>Paga con tu tarjeta Visa y, si quieres, actívala como pago <b>recurrente</b> para los cánones de cada mes.</small></span><span class="m-arrow">'+ic('chev-right',18)+'</span></button>'+
+    '</div>';
+  openModal('<div class="alert alert-info">'+ic('info',20)+'<div><h4>¿Cómo quieres pagar tu recibo?</h4><p>Elige un método y completa el pago. La administración lo valida y emite tu comprobante oficial.</p></div></div>'+cards,
+    {title:'Pagar recibo', size:'w560'});
+}
+function nuevoPagoComprobantePortal(){
+  var pa = contratoPortal(); if(!pa) return;
+  var rcs = recibosPortal().filter(function(r){ return r.estado!=='Pagado'; });
+  var opts = rcs.map(function(r){ return '<option value="'+esc(r.folio)+'">'+esc(r.folio)+' · '+esc(r.periodo)+' · '+fmtM(r.monto)+'</option>'; }).join('');
+  if(!rcs.length){ toast('No tienes recibos pendientes.','info','Sin pendientes'); return; }
+  var html = '<div class="alert alert-success">'+ic('upload',20)+'<div><h4>Comprobante de pago externo</h4><p>Si ya pagaste por <b>transferencia bancaria (ACH/UIT B/. 1,950.00 por folio)</b> o en <b>ventanilla</b>, adjunta aquí el comprobante para que la administración lo valide y marque tu recibo como pagado.</p></div></div>'+
+    '<div class="field"><label for="cp-folio">Recibo a pagar <span class="req">*</span></label><select class="input" id="cp-folio">'+opts+'</select></div>'+
+    '<div class="field"><label for="cp-monto">Monto pagado (B/.) <span class="req">*</span></label><input class="input mono" id="cp-monto" value="'+rcs[0].monto+'"></div>'+
+    '<div class="field"><label for="cp-file">Comprobante (captura / PDF) <span class="req">*</span></label><input class="input" type="file" id="cp-file" accept="image/*,.pdf"></div>'+
+    '<div class="field"><label for="cp-nota">Nota a la administración</label><textarea class="input" id="cp-nota" rows="2" placeholder="Ej. Pago a través de Banistmo, referencia 88231"></textarea></div>'+
+    '<div class="alert alert-warning">'+ic('clock',18)+'<div><h4>Aviso</h4><p>No se permiten los <b>pagos por cuotas</b> en este flujo. El monto debe ser por recibo completo.</p></div></div>';
+  var m = openModal(html, {title:'Subir comprobante', size:'w520'});
+  var foot = document.createElement('div'); foot.className='modal-foot';
+  foot.innerHTML='<button class="btn btn-secondary" onclick="closeModal()">Cancelar</button>'+
+    '<button class="btn btn-primary" onclick="confirmarComprobantePortal()">'+ic('check')+' Validar comprobante</button>';
+  m.querySelector('.modal-body').after(foot);
+}
+function nuevoPagoTarjetaPortal(){
+  var pa = contratoPortal(); if(!pa) return;
+  var rcs = recibosPortal().filter(function(r){ return r.estado!=='Pagado'; });
+  var opts = rcs.map(function(r){ return '<option value="'+esc(r.folio)+'">'+esc(r.folio)+' · '+esc(r.periodo)+' · '+fmtM(r.monto)+'</option>'; }).join('');
+  var html = '<div class="alert alert-info">'+ic('lock',20)+'<div><h4>Tarjeta Visa · débito/crédito</h4><p>Ingresa los datos de tu tarjeta. El cargo se procesa al instante y se emite tu comprobante numerado CRE-2026-xxxx.</p></div></div>'+
+    '<div class="field"><label for="tc-folio">Recibo a pagar <span class="req">*</span></label><select class="input" id="tc-folio">'+opts+'</select></div>'+
+    '<div class="field"><label for="tc-num">Número de tarjeta <span class="req">*</span></label><input class="input mono" id="tc-num" maxlength="19" placeholder="4000 0000 0000 0000"></div>'+
+    '<div class="g2"><div class="field"><label for="tc-tit">Titular <span class="req">*</span></label><input class="input" id="tc-tit" placeholder="Nombre como aparece en la tarjeta"></div><div class="field"><label for="tc-cvv">CVV <span class="req">*</span></label><input class="input mono" id="tc-cvv" maxlength="3" placeholder="123"></div></div>'+
+    '<div class="g2"><div class="field"><label for="tc-vto">Vence (MM/AA) <span class="req">*</span></label><input class="input mono" id="tc-vto" maxlength="5" placeholder="09/28"></div><div class="field"><label for="tc-pais">Red</label><div class="chip chip-success" style="font-size:12px">'+ic('lock',14)+' Visa · tokenizada</div></div></div>'+
+    '<div class="field"><label class="check" style="display:flex;align-items:flex-start;gap:10px"><input type="checkbox" id="tc-rec" checked> <span><strong>Este pago se repite automáticamente cada mes</strong><small class="muted2" style="display:block;margin-top:3px">Mismo monto, misma tarjeta, sin que tengas que volver a pagar: el canon se cobrará a tu tarjeta en la misma fecha cada mes (Ley 81 · cargo recurrente).</small></span></label></div>'+
+    '<div class="alert alert-warning">'+ic('shield',16)+'<div><h4>Seguridad</h4><p>El número se tokeniza (VTS); la administración nunca ve los 16 dígitos. Demo: no se procesa ningún cargo real.</p></div></div>';
+  var m = openModal(html, {title:'Pagar con tarjeta Visa', size:'w520'});
+  var foot = document.createElement('div'); foot.className='modal-foot';
+  foot.innerHTML='<button class="btn btn-secondary" onclick="closeModal()">Cancelar</button>'+
+    '<button class="btn btn-primary" onclick="confirmarPagoTarjetaPortal()">'+ic('check')+' Pagar recibo</button>';
+  m.querySelector('.modal-body').after(foot);
+}
+function confirmarPagoTarjetaPortal(){
+  var f = document.getElementById('tc-folio'); if(!f) return;
+  var rcs = recibosPortal(); var r=null;
+  for(var i=0;i<rcs.length;i++){ if(rcs[i].folio===f.value){ r=rcs[i]; break; } }
+  if(!r) return;
+  var rec = document.getElementById('tc-rec');
+  if(rec && rec.checked){ var pa = contratoPortal(); if(pa){ pa.pagoRecurrente = true; } toast('Se activó el cargo recurrente: tu canon se cobrará a esta tarjeta automáticamente cada mes. Puedes desactivarlo desde tu perfil.','success','Pago recurrente'); }
+  r.estado='Pagado'; r.metodo='Tarjeta Visa · débito/crédito'; r.pago='Pago en línea · tarjeta';
+  closeModal();
+  toast('Recibo '+esc(r.folio)+' pagado con tu tarjeta Visa. Comprobante emitido.','success','Pago procesado');
+  if(typeof render==='function') render();
+}
+/*
+ * ===== GRAFITO §4.4 · Empleados · nómina y autoservicio del personal =====
+ * Simula: (1) la administración liquida la planilla (Contabilidad) y
+ * (2) cada empleado pide carta laboral, vacaciones o permiso especial.
+ */
+/* ============================================================
+   RH — Módulo de Recursos Humanos y Planilla
+   (docs/ui/diseno-ui-rrhh.md · docs/modulos/recursos-humanos.md v1.0)
+   ============================================================ */
+var RH_EMPRESAS=[
+  {id:'rh-emp-1', nombre:'Constructora Especializada, S.A.', ruc:'155-1234-56789', sucursales:[{id:'rh-suc-1', nombre:'Panamá — Sede Central'},{id:'rh-suc-2', nombre:'Chilibre — Bodega y obra'}]}
+];
+var RH_DEPARTAMENTOS=[
+  {id:'d1', nombre:'Administración', empresa:'rh-emp-1'},
+  {id:'d2', nombre:'Recursos Humanos', empresa:'rh-emp-1'},
+  {id:'d3', nombre:'Finanzas', empresa:'rh-emp-1'},
+  {id:'d4', nombre:'Construcción', empresa:'rh-emp-1'},
+  {id:'d5', nombre:'Mantenimiento', empresa:'rh-emp-1'},
+  {id:'d6', nombre:'Operaciones / TI', empresa:'rh-emp-1'},
+  {id:'d7', nombre:'Alquileres', empresa:'rh-emp-1'}
+];
+var RH_PUESTOS=[
+  {id:'p1', nombre:'Gerente General', depto:'d1', min:4000, max:7000},
+  {id:'p2', nombre:'Asistente administrativa', depto:'d1', min:900, max:1400},
+  {id:'p3', nombre:'Contador', depto:'d3', min:1800, max:3000},
+  {id:'p4', nombre:'Conserje / mantenimiento', depto:'d5', min:700, max:1000},
+  {id:'p5', nombre:'Operador de sistemas / TI', depto:'d6', min:1200, max:2200},
+  {id:'p6', nombre:'Jefe de obra', depto:'d4', min:2400, max:3800},
+  {id:'p7', nombre:'Técnico de construcción', depto:'d4', min:1100, max:1700},
+  {id:'p8', nombre:'Supervisor de obra', depto:'d4', min:1600, max:2600},
+  {id:'p9', nombre:'Bodeguero / logística', depto:'d5', min:900, max:1300},
+  {id:'p10', nombre:'Analista de RRHH', depto:'d2', min:1500, max:2400},
+  {id:'p11', nombre:'Supervisor de administración', depto:'d6', min:1200, max:2000},
+  {id:'p12', nombre:'Asistente contable', depto:'d3', min:900, max:1400}
+];
+var RH_CENTROS=[
+  {id:'cc1', codigo:'ADM-001', nombre:'Administración general', depto:'d1', cuenta:'5101'},
+  {id:'cc2', codigo:'CON-001', nombre:'Torre Central (construcción)', depto:'d4', cuenta:'5102'},
+  {id:'cc3', codigo:'MNT-001', nombre:'Mantenimiento', depto:'d5', cuenta:'5103'},
+  {id:'cc4', codigo:'ALQ-001', nombre:'Alquileres y arrendamiento', depto:'d7', cuenta:'5104'}
+];
+var RH_PROYECTOS=[
+  {id:'pr1', codigo:'PRY-2026-001', nombre:'Torres del Mar — Torre 3', ubic:'Vía Argentina, Panamá', etapa:'Obra gris', supervisor:'e6', costoEstimado:850000, centro:'cc2'},
+  {id:'pr2', codigo:'PRY-2026-002', nombre:'Residencial Las Cumbres — Casa 18', ubic:'Chilibre', etapa:'Cimientos', supervisor:'e6', costoEstimado:195000, centro:'cc2'},
+  {id:'pr3', codigo:'PRY-2026-003', nombre:'Rehabilitación Local C-1', ubic:'Calle 50', etapa:'Acabados', supervisor:'e6', costoEstimado:42000, centro:'cc2'}
+];
+var RH_EMPLEADOS=[
+  {id:'e1', nombre:'Luis Sandoval',   cargo:'Conserje / mantenimiento', depto:'d5',  puesto:'p4',  cedula:'8-822-1401', correo:'l.sandoval@grafito.pa', tel:'+507 6110-2293', nacim:'15/05/1988', nacionalidad:'Panameña', civ:'Casado', direccion:'Chilibre, Panamá', emergencia:{nombre:'Rosa Sandoval', tel:'+507 6110-2294', rel:'Esposa'}, sucursal:'rh-suc-2', jefe:'e6', proyecto:'pr3', centro:'cc3', tipoEmp:'Operativo', tipoContrato:'Indefinido', fechaIngreso:'02/03/2021', fechaContrato:'02/03/2021', fechaFin:null, salario:820, frecuencia:'Quincenal', horario:'h1', estado:'Activo', banco:'Banco General', cuenta:'03-4421-8890-7', iniciales:'LS'},
+  {id:'e2', nombre:'María Vega',      cargo:'Asistente administrativa', depto:'d1',  puesto:'p2',  cedula:'8-844-2201', correo:'m.vega@grafito.pa', tel:'+507 6110-3345', nacim:'30/11/1990', nacionalidad:'Panameña', civ:'Casada', direccion:'Vía Argentina, Panamá', emergencia:{nombre:'Pedro Vega', tel:'+507 6110-3346', rel:'Hermano'}, sucursal:'rh-suc-1', jefe:'e10', proyecto:null, centro:'cc1', tipoEmp:'Administrativo', tipoContrato:'Indefinido', fechaIngreso:'10/03/2022', fechaContrato:'10/03/2022', fechaFin:null, salario:1100, frecuencia:'Quincenal', horario:'h1', estado:'Activo', banco:'Banco General', cuenta:'03-4421-8890-8', iniciales:'MV'},
+  {id:'e3', nombre:'Carlos Matus',    cargo:'Operador de sistemas / TI', depto:'d6', puesto:'p5',  cedula:'4-776-0092', correo:'c.matus@grafito.pa', tel:'+507 6110-4478', nacim:'17/09/1985', nacionalidad:'Panameño', civ:'Soltero', direccion:'San Miguelito', emergencia:{nombre:'Luisa Matus', tel:'+507 6110-4479', rel:'Madre'}, sucursal:'rh-suc-1', jefe:'e10', proyecto:null, centro:'cc1', tipoEmp:'Administrativo', tipoContrato:'Indefinido', fechaIngreso:'05/01/2023', fechaContrato:'05/01/2023', fechaFin:null, salario:1350, frecuencia:'Quincenal', horario:'h1', estado:'Activo', banco:'Banco Nacional', cuenta:'04-2211-9000-1', iniciales:'CM'},
+  {id:'e4', nombre:'Sofía Ríos',      cargo:'Analista de RRHH', depto:'d2', puesto:'p10', cedula:'8-455-778', correo:'s.rios@grafito.pa', tel:'+507 6110-5566', nacim:'21/07/1996', nacionalidad:'Panameña', civ:'Soltera', direccion:'Parque Lefevre', emergencia:{nombre:'Alma Ríos', tel:'+507 6110-5567', rel:'Madre'}, sucursal:'rh-suc-1', jefe:null, proyecto:null, centro:'cc1', tipoEmp:'Administrativo', tipoContrato:'Indefinido', fechaIngreso:'12/02/2024', fechaContrato:'12/02/2024', fechaFin:null, salario:1550, frecuencia:'Quincenal', horario:'h1', estado:'Activo', banco:'Banco General', cuenta:'03-4421-8890-9', iniciales:'SR'},
+  {id:'e5', nombre:'Roberto Chan',     cargo:'Contador', depto:'d3', puesto:'p3', cedula:'8-999-110', correo:'r.chan@grafito.pa', tel:'+507 6110-6655', nacim:'02/04/1980', nacionalidad:'Panameño', civ:'Casado', direccion:'Bella Vista', emergencia:{nombre:'Elena Chan', tel:'+507 6110-6656', rel:'Esposa'}, sucursal:'rh-suc-1', jefe:'e10', proyecto:null, centro:'cc1', tipoEmp:'Administrativo', tipoContrato:'Indefinido', fechaIngreso:'01/06/2020', fechaContrato:'01/06/2020', fechaFin:null, salario:2100, frecuencia:'Quincenal', horario:'h1', estado:'Activo', banco:'Banco General', cuenta:'03-4421-8891-0', iniciales:'RC'},
+  {id:'e6', nombre:'Julio Andrade',    cargo:'Jefe de obra', depto:'d4', puesto:'p6', cedula:'8-123-443', correo:'j.andrade@grafito.pa', tel:'+507 6110-7788', nacim:'05/10/1982', nacionalidad:'Panameño', civ:'Casado', direccion:'Arraiján', emergencia:{nombre:'Marta Andrade', tel:'+507 6110-7789', rel:'Esposa'}, sucursal:'rh-suc-2', jefe:'e10', proyecto:'pr1', centro:'cc2', tipoEmp:'Obra', tipoContrato:'Por obra determinada', fechaIngreso:'15/01/2026', fechaContrato:'15/01/2026', fechaFin:'31/12/2027', salario:2800, frecuencia:'Quincenal', horario:'h2', estado:'Activo', banco:'Banco Nacional', cuenta:'04-2211-9000-2', iniciales:'JA'},
+  {id:'e7', nombre:'Ana Guerra',       cargo:'Supervisora de obra', depto:'d4', puesto:'p8', cedula:'8-567-221', correo:'a.guerra@grafito.pa', tel:'+507 6110-8899', nacim:'09/12/1990', nacionalidad:'Panameña', civ:'Soltera', direccion:'Las Cumbres', emergencia:{nombre:'José Guerra', tel:'+507 6110-8800', rel:'Padre'}, sucursal:'rh-suc-2', jefe:'e6', proyecto:'pr1', centro:'cc2', tipoEmp:'Obra', tipoContrato:'Por obra determinada', fechaIngreso:'15/01/2026', fechaContrato:'15/01/2026', fechaFin:'31/12/2027', salario:1800, frecuencia:'Quincenal', horario:'h2', estado:'En vacaciones', banco:'Banco General', cuenta:'03-4421-8891-1', iniciales:'AG'},
+  {id:'e8', nombre:'Marcos Villar',    cargo:'Técnico de construcción', depto:'d4', puesto:'p7', cedula:'4-321-909', correo:'m.villar@grafito.pa', tel:'+507 6110-9900', nacim:'27/03/1993', nacionalidad:'Panameño', civ:'Soltero', direccion:'Chilibre', emergencia:{nombre:'Norma Villar', tel:'+507 6110-9901', rel:'Madre'}, sucursal:'rh-suc-2', jefe:'e6', proyecto:'pr1', centro:'cc2', tipoEmp:'Obra', tipoContrato:'Por obra determinada', fechaIngreso:'01/02/2026', fechaContrato:'01/02/2026', fechaFin:'31/12/2027', salario:1200, frecuencia:'Quincenal', horario:'h2', estado:'Activo', banco:'Banco General', cuenta:'03-4421-8891-2', iniciales:'MLV'},
+  {id:'e9', nombre:'Laura Batista',    cargo:'Bodeguera / logística', depto:'d5', puesto:'p9', cedula:'8-876-543', correo:'l.batista@grafito.pa', tel:'+507 6110-1010', nacim:'14/11/1998', nacionalidad:'Panameña', civ:'Soltera', direccion:'Chilibre', emergencia:{nombre:'Sandra Batista', tel:'+507 6110-1011', rel:'Hermana'}, sucursal:'rh-suc-2', jefe:'e6', proyecto:'pr2', centro:'cc3', tipoEmp:'Obra', tipoContrato:'Temporal · 6 meses', fechaIngreso:'01/09/2026', fechaContrato:'01/09/2026', fechaFin:'28/02/2027', salario:950, frecuencia:'Quincenal', horario:'h2', estado:'Activo', banco:'Banco Nacional', cuenta:'04-2211-9000-3', iniciales:'LB'},
+  {id:'e10', nombre:'Ricardo De Gracia',cargo:'Supervisor de administración', depto:'d6', puesto:'p11', cedula:'8-234-567', correo:'r.degracia@grafito.pa', tel:'+507 6110-2121', nacim:'23/06/1984', nacionalidad:'Panameño', civ:'Casado', direccion:'Ancón', emergencia:{nombre:'Pilar De Gracia', tel:'+507 6110-2122', rel:'Esposa'}, sucursal:'rh-suc-1', jefe:null, proyecto:null, centro:'cc1', tipoEmp:'Administrativo', tipoContrato:'Indefinido', fechaIngreso:'19/08/2019', fechaContrato:'19/08/2019', fechaFin:null, salario:1500, frecuencia:'Quincenal', horario:'h1', estado:'Activo', banco:'Banco General', cuenta:'03-4421-8891-3', iniciales:'RDG'},
+  {id:'e11', nombre:'Antonio Barría',  cargo:'Asistente contable', depto:'d3', puesto:'p12', cedula:'8-654-098', correo:'a.barria@grafito.pa', tel:'+507 6110-3232', nacim:'30/01/1989', nacionalidad:'Panameño', civ:'Casado', direccion:'Tocumen', emergencia:{nombre:'Iris Barría', tel:'+507 6110-3233', rel:'Esposa'}, sucursal:'rh-suc-1', jefe:'e5', proyecto:null, centro:'cc1', tipoEmp:'Administrativo', tipoContrato:'Indefinido', fechaIngreso:'12/08/2019', fechaContrato:'12/08/2019', fechaFin:'30/06/2026', salario:1050, frecuencia:'Quincenal', horario:'h1', estado:'Terminado', banco:'Banco General', cuenta:'03-4421-8891-4', iniciales:'AB'}
+];
+var RH_CONTRATOS=[
+  {id:'ct1', ref:'CT-2021-001', emp:'e1', tipo:'Indefinido', ini:'02/03/2021', fin:null, salario:820, jornada:'Jornada completa · 07:00–16:00', estado:'Vigente', adendas:[{ref:'AD-2026-002', fecha:'01/08/2026', desc:'Ajuste salarial 3%'}]},
+  {id:'ct2', ref:'CT-2022-002', emp:'e2', tipo:'Indefinido', ini:'10/03/2022', fin:null, salario:1100, jornada:'Jornada completa · 07:00–16:00', estado:'Vigente', adendas:[]},
+  {id:'ct3', ref:'CT-2023-003', emp:'e3', tipo:'Indefinido', ini:'05/01/2023', fin:null, salario:1350, jornada:'Jornada completa · 07:00–16:00', estado:'Vigente', adendas:[]},
+  {id:'ct4', ref:'CT-2024-004', emp:'e4', tipo:'Indefinido', ini:'12/02/2024', fin:null, salario:1550, jornada:'Jornada completa · 07:00–16:00', estado:'Vigente', adendas:[]},
+  {id:'ct5', ref:'CT-2020-005', emp:'e5', tipo:'Indefinido', ini:'01/06/2020', fin:null, salario:2100, jornada:'Jornada completa · 07:00–16:00', estado:'Vigente', adendas:[]},
+  {id:'ct6', ref:'CT-2026-006', emp:'e6', tipo:'Por obra determinada', ini:'15/01/2026', fin:'31/12/2027', salario:2800, jornada:'Jornada completa · obra', estado:'Vigente', adendas:[]},
+  {id:'ct7', ref:'CT-2026-007', emp:'e7', tipo:'Por obra determinada', ini:'15/01/2026', fin:'31/12/2027', salario:1800, jornada:'Jornada completa · obra', estado:'Vigente', adendas:[]},
+  {id:'ct8', ref:'CT-2026-008', emp:'e8', tipo:'Por obra determinada', ini:'01/02/2026', fin:'31/12/2027', salario:1200, jornada:'Jornada completa · obra', estado:'Vigente', adendas:[]},
+  {id:'ct9', ref:'CT-2026-009', emp:'e9', tipo:'Temporal · 6 meses', ini:'01/09/2026', fin:'28/02/2027', salario:950, jornada:'Jornada completa · obra', estado:'Vigente', adendas:[]},
+  {id:'ct10', ref:'CT-2019-010', emp:'e10', tipo:'Indefinido', ini:'19/08/2019', fin:null, salario:1500, jornada:'Jornada completa · 07:00–16:00', estado:'Vigente', adendas:[]},
+  {id:'ct11', ref:'CT-2019-011', emp:'e11', tipo:'Indefinido', ini:'12/08/2019', fin:'30/06/2026', salario:1050, jornada:'Jornada completa · 07:00–16:00', estado:'Terminado', adendas:[]}
+];
+var RH_HISTORIAL=[
+  {emp:'e2', fecha:'01/08/2026', campo:'Salario', anterior:'B/. 1,050', nuevo:'B/. 1,100', motivo:'Ajuste salarial anual', autor:'Diana Herrera'},
+  {emp:'e2', fecha:'01/03/2025', campo:'Puesto', anterior:'Recepcionista', nuevo:'Asistente administrativa', motivo:'Promoción interna', autor:'Diana Herrera'},
+  {emp:'e1', fecha:'05/09/2026', campo:'Proyecto', anterior:'PRY-2026-002', nuevo:'PRY-2026-003', motivo:'Reasignación de mantenimiento', autor:'Diana Herrera'},
+  {emp:'e7', fecha:'05/10/2026', campo:'Estado', anterior:'Activo', nuevo:'En vacaciones', motivo:'Vacaciones aprobadas · 5 días', autor:'Sofía Ríos'},
+  {emp:'e9', fecha:'01/09/2026', campo:'Contrato', anterior:'—', nuevo:'Temporal · 6 meses', motivo:'Contratación (onboarding)', autor:'Diana Herrera'},
+  {emp:'e11', fecha:'30/06/2026', campo:'Estado', anterior:'Activo', nuevo:'Terminado', motivo:'Cierre de plazo del contrato', autor:'Diana Herrera'}
+];
+var RH_HORARIOS=[
+  {id:'h1', nombre:'Administrativo', jornada:'07:00–16:00', dias:'L–V', descanso:'12:00–13:00'},
+  {id:'h2', nombre:'Obra · Torre Central', jornada:'06:30–15:30', dias:'L–S', descanso:'11:30–12:30'},
+  {id:'h3', nombre:'Turno nocturno', jornada:'22:00–06:00', dias:'L–D', descanso:'02:00–03:00'}
+];
+
+function rhEmp(id){ for(var i=0;i<RH_EMPLEADOS.length;i++){ if(RH_EMPLEADOS[i].id===id) return RH_EMPLEADOS[i]; } return null; }
+function rhDepto(id){ for(var i=0;i<RH_DEPARTAMENTOS.length;i++){ if(RH_DEPARTAMENTOS[i].id===id) return RH_DEPARTAMENTOS[i]; } return null; }
+function rhPuesto(id){ for(var i=0;i<RH_PUESTOS.length;i++){ if(RH_PUESTOS[i].id===id) return RH_PUESTOS[i]; } return null; }
+function rhProyecto(id){ for(var i=0;i<RH_PROYECTOS.length;i++){ if(RH_PROYECTOS[i].id===id) return RH_PROYECTOS[i]; } return null; }
+function rhCentro(id){ for(var i=0;i<RH_CENTROS.length;i++){ if(RH_CENTROS[i].id===id) return RH_CENTROS[i]; } return null; }
+function rhHorario(id){ for(var i=0;i<RH_HORARIOS.length;i++){ if(RH_HORARIOS[i].id===id) return RH_HORARIOS[i]; } return null; }
+function rhContrato(emp){ for(var i=0;i<RH_CONTRATOS.length;i++){ if(RH_CONTRATOS[i].emp===emp) return RH_CONTRATOS[i]; } return null; }
+function rhIniciales(n){ var p=(n||'').split(' '); return ((p[0]?p[0].charAt(0):'')+(p[1]?p[1].charAt(0):'')).toUpperCase(); }
+function rhEmpEstadoChip(e){ var st=e.estado; var cls='chip-neutral'; if(st==='Activo'||st==='En vacaciones'||st==='Ingreso pendiente') cls='chip-success'; if(st==='Suspendido'||st==='Incapacitado') cls='chip-warning'; if(st==='Terminado'||st==='Renunciado') cls='chip-danger'; return '<span class="chip '+cls+'">'+esc(st)+'</span>'; }
+var RH_MARCACIONES=[
+  {emp:'e8', fecha:'18/09/2026', entrada:'06:33', salida:'15:37', horas:8.1, tardia:0, proyecto:'pr1'},
+  {emp:'e7', fecha:'18/09/2026', entrada:'06:31', salida:'15:40', horas:8.2, tardia:0, proyecto:'pr1'},
+  {emp:'e9', fecha:'18/09/2026', entrada:'07:02', salida:'15:58', horas:7.9, tardia:0, proyecto:'pr2'},
+  {emp:'e1', fecha:'18/09/2026', entrada:'07:04', salida:'15:52', horas:7.8, tardia:0, proyecto:'pr3'},
+  {emp:'e2', fecha:'18/09/2026', entrada:'07:01', salida:'16:05', horas:8.1, tardia:0, proyecto:null},
+  {emp:'e4', fecha:'18/09/2026', entrada:'07:03', salida:'15:58', horas:7.9, tardia:0, proyecto:null},
+  {emp:'e6', fecha:'17/09/2026', entrada:'06:28', salida:'15:34', horas:8.1, tardia:0, proyecto:'pr1'},
+  {emp:'e8', fecha:'17/09/2026', entrada:'06:35', salida:'15:45', horas:8.2, tardia:0, proyecto:'pr1'},
+  {emp:'e1', fecha:'17/09/2026', entrada:'07:10', salida:'15:50', horas:7.7, tardia:10, proyecto:'pr3'},
+  {emp:'e2', fecha:'16/09/2026', entrada:'07:00', salida:'16:00', horas:8.0, tardia:0, proyecto:null},
+  {emp:'e9', fecha:'16/09/2026', entrada:'06:58', salida:'15:44', horas:7.8, tardia:0, proyecto:'pr2'},
+  {emp:'e8', fecha:'16/09/2026', entrada:'06:30', salida:'15:30', horas:8.0, tardia:0, proyecto:'pr1'}
+];
+var RH_HORAS_EXTRAS=[
+  {id:'HE-2026-018', emp:'e8', fecha:'18/09/2026', horas:3, tipo:'Extra diurna', proyecto:'pr1', motivo:'Avance de colado de losa', estado:'En revisión', aprobador:null},
+  {id:'HE-2026-017', emp:'e7', fecha:'17/09/2026', horas:2, tipo:'Extra nocturna', proyecto:'pr1', motivo:'Guardia de seguridad en obra', estado:'Aprobada', aprobador:'Julio Andrade'},
+  {id:'HE-2026-016', emp:'e6', fecha:'12/09/2026', horas:4, tipo:'Extra diurna', proyecto:'pr1', motivo:'Inspección final de estructura', estado:'Aprobada', aprobador:'Julio Andrade'},
+  {id:'HE-2026-015', emp:'e1', fecha:'05/09/2026', horas:1.5, tipo:'Extra diurna', proyecto:'pr3', motivo:'Recepción de materiales', estado:'Rechazada', aprobador:'Julio Andrade'},
+  {id:'HE-2026-014', emp:'e7', fecha:'10/09/2026', horas:2, tipo:'Extra diurna', proyecto:'pr1', motivo:'Colado de entrepiso', estado:'Pendiente', aprobador:null}
+];
+var RH_FERIADOS=[
+  {fecha:'01/01/2026', nombre:'Año Nuevo', ambito:'Nacional'},
+  {fecha:'09/01/2026', nombre:'Día de los Mártires', ambito:'Nacional'},
+  {fecha:'03/04/2026', nombre:'Viernes Santo', ambito:'Nacional'},
+  {fecha:'01/05/2026', nombre:'Día del Trabajo', ambito:'Nacional'},
+  {fecha:'03/11/2026', nombre:'Separación de Colombia', ambito:'Nacional'},
+  {fecha:'04/11/2026', nombre:'Día de la Bandera', ambito:'Nacional'},
+  {fecha:'05/11/2026', nombre:'Consolidación de la Separación', ambito:'Nacional'},
+  {fecha:'10/11/2026', nombre:'Primer Grito de Independencia', ambito:'Nacional'},
+  {fecha:'28/11/2026', nombre:'Independencia de España', ambito:'Nacional'},
+  {fecha:'08/12/2026', nombre:'Día de las Madres', ambito:'Nacional'},
+  {fecha:'25/12/2026', nombre:'Navidad', ambito:'Nacional'}
+];
+var RH_SALDO_VAC={e1:14, e2:12, e3:15, e4:18, e5:20, e6:10, e7:8, e8:9, e9:5, e10:22};
+var RH_VACACIONES=[
+  {id:'VAC-2026-001', emp:'e7', dias:5, ini:'05/10/2026', fin:'09/10/2026', estado:'Aprobada', aprobador:'Julio Andrade', creada:'15/09/2026'},
+  {id:'VAC-2026-002', emp:'e2', dias:3, ini:'12/10/2026', fin:'14/10/2026', estado:'En revisión', aprobador:null, creada:'16/09/2026'},
+  {id:'VAC-2026-003', emp:'e3', dias:5, ini:'20/12/2026', fin:'24/12/2026', estado:'Aprobada', aprobador:'Sofía Ríos', creada:'05/09/2026'},
+  {id:'VAC-2026-004', emp:'e4', dias:10, ini:'15/11/2026', fin:'24/11/2026', estado:'Aprobada', aprobador:'Sofía Ríos', creada:'02/09/2026'}
+];
+var RH_PERMISOS=[
+  {id:'PRM-2026-011', emp:'e1', motivo:'Cita médica', fecha:'22/09/2026', tipo:'2 horas', estado:'Aprobado', aprobador:'Sofía Ríos'},
+  {id:'PRM-2026-012', emp:'e2', motivo:'Trámite bancario', fecha:'18/09/2026', tipo:'3 horas', estado:'En revisión', aprobador:null},
+  {id:'PRM-2026-013', emp:'e8', motivo:'Asunto personal', fecha:'25/09/2026', tipo:'1 día', estado:'Aprobado', aprobador:'Julio Andrade'},
+  {id:'PRM-2026-014', emp:'e4', motivo:'Estudios · examen', fecha:'30/09/2026', tipo:'4 horas', estado:'Rechazado', aprobador:'Sofía Ríos'}
+];
+var RH_INCAPACIDADES=[
+  {id:'INC-RH-001', emp:'e7', ini:'24/09/2026', fin:'02/10/2026', dias:7, tipo:'Enfermedad común', doc:'CM-2026-881', reincorpora:'03/10/2026', estado:'En proceso'},
+  {id:'INC-RH-002', emp:'e9', ini:'01/10/2026', fin:'07/10/2026', dias:7, tipo:'Enfermedad común', doc:'CM-2026-884', reincorpora:'08/10/2026', estado:'En proceso'}
+];
+var RH_CONCEPTOS=[
+  {id:'c1', tipo:'INGRESO', nombre:'Salario base', base:'Mensual', gravable:true},
+  {id:'c2', tipo:'INGRESO', nombre:'Horas extras', base:'Tarifa por hora', gravable:true},
+  {id:'c3', tipo:'INGRESO', nombre:'Bonificación por desempeño', base:'Monto fijo', gravable:true},
+  {id:'c4', tipo:'INGRESO', nombre:'Viáticos', base:'Por día', gravable:false},
+  {id:'c5', tipo:'DEDUCCIÓN', nombre:'CSS · Cuota obrera', base:'Porcentaje del salario', gravable:false},
+  {id:'c6', tipo:'DEDUCCIÓN', nombre:'Préstamo de empleado', base:'Cuota fija', gravable:false},
+  {id:'c7', tipo:'DEDUCCIÓN', nombre:'Anticipo salarial', base:'Cuota fija', gravable:false},
+  {id:'c8', tipo:'DEDUCCIÓN', nombre:'Seguro complementario', base:'Monto fijo', gravable:false}
+];
+var RH_PRESTAMOS=[
+  {id:'PRE-2026-001', emp:'e1', monto:800, cuotas:10, pagadas:3, saldo:560, cuota:80, frecuencia:'Quincenal', estado:'Activo'},
+  {id:'PRE-2026-002', emp:'e3', monto:1500, cuotas:12, pagadas:7, saldo:625, cuota:125, frecuencia:'Quincenal', estado:'Activo'},
+  {id:'PRE-2026-003', emp:'e8', monto:600, cuotas:6, pagadas:0, saldo:600, cuota:100, frecuencia:'Quincenal', estado:'Activo'},
+  {id:'PRE-2025-004', emp:'e11', monto:400, cuotas:8, pagadas:8, saldo:0, cuota:50, frecuencia:'Quincenal', estado:'Liquidado'}
+];
+var RH_ANTICIPOS=[
+  {id:'ANT-2026-001', emp:'e7', monto:300, fecha:'10/09/2026', cuota:150, estado:'Aprobado'},
+  {id:'ANT-2026-002', emp:'e2', monto:200, fecha:'16/09/2026', cuota:100, estado:'Pendiente'},
+  {id:'ANT-2026-003', emp:'e8', monto:150, fecha:'05/09/2026', cuota:150, estado:'Pagado'}
+];
+var RH_PLANILLAS=[
+  {id:'pl1', ref:'PL-2026-008', nombre:'Agosto 2026', periodo:'01/08/2026 – 31/08/2026', fechaPago:'31/08/2026', frecuencia:'Mensual', estado:'Pagada', contabilizado:true},
+  {id:'pl2', ref:'PL-2026-009', nombre:'Quincena 1 · Septiembre 2026', periodo:'01/09/2026 – 15/09/2026', fechaPago:'15/09/2026', frecuencia:'Quincenal', estado:'Aprobada', contabilizado:false},
+  {id:'pl3', ref:'PL-2026-010', nombre:'Quincena 2 · Septiembre 2026', periodo:'16/09/2026 – 30/09/2026', fechaPago:'30/09/2026', frecuencia:'Quincenal', estado:'Revisada', contabilizado:false}
+];
+function rhPlanillaDetalle(pl){
+  var filas=[]; var tot={base:0, extras:0, css:0, presta:0, anticipo:0, neto:0};
+  for(var i=0;i<RH_EMPLEADOS.length;i++){
+    var e=RH_EMPLEADOS[i]; if(e.estado==='Terminado') continue;
+    var base=Math.round(e.salario/2); var extras=0; var presta=0; var anticipo=0;
+    for(var j=0;j<RH_HORAS_EXTRAS.length;j++){ var he=RH_HORAS_EXTRAS[j]; if(he.emp===e.id && (he.estado==='Aprobada'||he.estado==='En revisión')) extras+=he.horas*4.5; }
+    for(var k=0;k<RH_PRESTAMOS.length;k++){ var p=RH_PRESTAMOS[k]; if(p.emp===e.id && p.estado==='Activo') presta+=p.cuota; }
+    for(var l=0;l<RH_ANTICIPOS.length;l++){ var a=RH_ANTICIPOS[l]; if(a.emp===e.id && a.estado==='Aprobado') anticipo+=a.cuota; }
+    var css=Math.round(base*0.0975);
+    var neto=base+extras-css-presta-anticipo;
+    filas.push({emp:e, base:base, extras:Math.round(extras), css:css, presta:presta, anticipo:anticipo, neto:neto});
+    tot.base+=base; tot.extras+=Math.round(extras); tot.css+=css; tot.presta+=presta; tot.anticipo+=anticipo; tot.neto+=neto;
+  }
+  return {filas:filas, tot:tot};
+}
+var RH_LIQUIDACIONES=[
+  {id:'LIQ-2026-001', ref:'LIQ-2026-001', emp:'e11', motivo:'Terminación de contrato', fechaSalida:'30/06/2026', estado:'Pagada', monto:1450, conceptos:[{nombre:'Salario pendiente', monto:525},{nombre:'Vacaciones proporcionales', monto:390},{nombre:'Indemnización', monto:535}]},
+  {id:'LIQ-2026-002', ref:'LIQ-2026-002', emp:'e9', motivo:'Fin de contrato temporal', fechaSalida:'28/02/2027', estado:'En cálculo', monto:0, conceptos:[]}
+];
+var RH_VACANTES=[
+  {id:'VAC-2026-01', nombre:'Técnico electricista', depto:'d4', proyecto:'pr1', vacantes:2, estado:'Abierta', fecha:'01/09/2026'},
+  {id:'VAC-2026-02', nombre:'Asistente contable', depto:'d3', proyecto:null, vacantes:1, estado:'Abierta', fecha:'10/09/2026'},
+  {id:'VAC-2026-03', nombre:'Bodeguero / logística', depto:'d5', proyecto:'pr2', vacantes:1, estado:'En selección', fecha:'25/08/2026'}
+];
+var RH_CANDIDATOS=[
+  {id:'CAN-2026-001', vacante:'VAC-2026-01', nombre:'Pedro Jiménez', cedula:'8-456-789', etapa:'Entrevista técnica', estado:'En proceso', fecha:'05/09/2026'},
+  {id:'CAN-2026-002', vacante:'VAC-2026-01', nombre:'Yolanda Quirós', cedula:'4-123-778', etapa:'Preselección', estado:'En proceso', fecha:'06/09/2026'},
+  {id:'CAN-2026-003', vacante:'VAC-2026-02', nombre:'Marissa Lee', cedula:'8-777-221', etapa:'Oferta enviada', estado:'En proceso', fecha:'12/09/2026'},
+  {id:'CAN-2026-004', vacante:'VAC-2026-03', nombre:'Tomás Acosta', cedula:'8-333-909', etapa:'Contratado', estado:'Contratado', fecha:'02/09/2026'},
+  {id:'CAN-2026-005', vacante:'VAC-2026-01', nombre:'Manuel Quintero', cedula:'8-909-112', etapa:'Oferta enviada', estado:'En proceso', fecha:'15/09/2026'},
+  {id:'CAN-2026-006', vacante:'VAC-2026-01', nombre:'Sergio Aparicio', cedula:'4-717-940', etapa:'Oferta enviada', estado:'En proceso', fecha:'16/09/2026'}
+];
+var RH_ONBOARDING=[
+  {paso:'Expediente y documentos', ok:true}, {paso:'Firma de contrato', ok:true}, {paso:'Asignación de puesto y horario', ok:true}, {paso:'Usuario y permisos (Identity)', ok:true}, {paso:'Inducción y seguridad', ok:true}, {paso:'Entrega de equipos y EPP', ok:false}
+];
+var RH_OFFBOARDING=[
+  {paso:'Liquidación y finiquito', ok:true}, {paso:'Bloqueo de accesos', ok:true}, {paso:'Devolución de equipos', ok:true}, {paso:'Archivo del expediente', ok:true}
+];
+var RH_EVALUACIONES=[
+  {id:'EV-2026-001', emp:'e2', nombre:'Evaluación semestral · H1', fecha:'30/06/2026', nota:4.2, comentario:'Cumple objetivos; oportunidad de crecimiento en conciliaciones.', estado:'Completada', evaluador:'Diana Herrera'},
+  {id:'EV-2026-002', emp:'e6', nombre:'Evaluación anual · 2025', fecha:'15/12/2025', nota:4.5, comentario:'Excelente liderazgo de obra; mantiene cronograma.', estado:'Completada', evaluador:'Diana Herrera'},
+  {id:'EV-2026-003', emp:'e6', nombre:'Evaluación semestral · H2', fecha:'30/12/2026', nota:null, comentario:'', estado:'Pendiente', evaluador:'Diana Herrera'}
+];
+var RH_CAPACITACIONES=[
+  {id:'CAP-2026-001', nombre:'Trabajo en altura · certificación', fecha:'12/09/2026', participantes:8, costo:1200, proveedor:'SegurPro Panamá', estado:'Realizada'},
+  {id:'CAP-2026-002', nombre:'Manejo de extintores y primeros auxilios', fecha:'20/09/2026', participantes:15, costo:900, proveedor:'Cruz Roja Panameña', estado:'Realizada'},
+  {id:'CAP-2026-003', nombre:'Ley 81 · protección de datos personales', fecha:'05/10/2026', participantes:10, costo:0, proveedor:'Equipo GRAFITO', estado:'Planificada'}
+];
+var RH_EPP=[
+  {id:'EPP-001', equipo:'Casco de seguridad', emp:'e8', talla:'M', entregado:'01/02/2026', renovar:'01/02/2027', estado:'Vigente'},
+  {id:'EPP-002', equipo:'Botas de seguridad', emp:'e8', talla:'42', entregado:'01/02/2026', renovar:'01/02/2027', estado:'Vigente'},
+  {id:'EPP-003', equipo:'Chaleco reflectante', emp:'e7', talla:'S', entregado:'15/01/2026', renovar:'15/01/2027', estado:'Vigente'},
+  {id:'EPP-004', equipo:'Arnés de seguridad', emp:'e6', talla:'L', entregado:'15/01/2026', renovar:'15/01/2027', estado:'Por renovar'}
+];
+var RH_ACCIDENTES=[
+  {id:'ACC-001', nombre:'Caída de material desde andamio', fecha:'03/09/2026', emp:null, tipo:'Incidente sin lesión', estado:'En investigación'},
+  {id:'ACC-002', nombre:'Corte leve en mano con sierra', fecha:'15/08/2026', emp:'e8', tipo:'Accidente leve', estado:'Cerrada'}
+];
+var RH_EQUIPOS=[
+  {id:'EQ-001', equipo:'Laptop HP EliteBook', emp:'e2', entregado:'10/03/2022', condicion:'Bueno', devuelto:null},
+  {id:'EQ-002', equipo:'Teléfono móvil corporativo', emp:'e4', entregado:'12/02/2024', condicion:'Bueno', devuelto:null},
+  {id:'EQ-003', equipo:'Caja de herramientas de mano', emp:'e8', entregado:'01/02/2026', condicion:'Nuevo', devuelto:null},
+  {id:'EQ-004', equipo:'Candado y llaves de bodega', emp:'e9', entregado:'01/09/2026', condicion:'Nuevo', devuelto:null}
+];
+var RH_PORTAL_NOTIFS=[
+  {id:'rpn1', portal:'empleado', tipo:'Solicitud aprobada', texto:'Tus vacaciones del 05/10 al 09/10/2026 fueron aprobadas por Julio Andrade.', fecha:'16/09/2026', leida:false},
+  {id:'rpn2', portal:'empleado', tipo:'Documento disponible', texto:'Tu certificado de salario (quincena) está disponible en Documentos.', fecha:'16/09/2026', leida:false},
+  {id:'rpn3', portal:'supervisor', tipo:'Solicitud de horas extras', texto:'Marcos Villar solicitó 3 h extra para el colado de losa del 18/09.', fecha:'18/09/2026', leida:false},
+  {id:'rpn4', portal:'supervisor', tipo:'Ausencia pendiente', texto:'Ana Guerra solicitó 7 días por incapacidad (CM-2026-881).', fecha:'24/09/2026', leida:false}
+];
+function viewRhh(){
+  var activos = RH_EMPLEADOS.filter(function(e){ return e.estado!=='Terminado'; });
+  var d = rhPlanillaDetalle(RH_PLANILLAS[2]);
+  var hePend = RH_HORAS_EXTRAS.filter(function(h){ return h.estado==='En revisión' || h.estado==='Pendiente'; }).length;
+  var vacPend = RH_VACACIONES.filter(function(v){ return v.estado==='En revisión'; }).length;
+  var html = pageHead([{label:'Inicio', link:'#/app/resumen'},{label:'RRHH'}], 'Panel de Recursos Humanos',
+    'Septiembre 2026 · Organización, personal, planilla y portales', '');
+  html += '<div class="dash-toolbar"><span class="chip-select">'+ic('calendar',16)+'<span>Período: Septiembre 2026</span>'+ic('chevdown',14)+'</span><span class="muted small">Datos simulados · GRAFITO RH</span><span class="spacer"></span>'+
+    '<button class="btn btn-secondary" onclick="rhExportPanel()">'+ic('download',16)+' Exportar panel</button>'+
+    (hasPerm('rrhh.empleados.gestionar')
+      ? '<button class="btn btn-primary" onclick="location.hash=\'#/app/rrhh/altas\'">'+ic('userplus',16)+' Registrar empleado nuevo</button>'
+      : '<button class="btn btn-primary" disabled title="Se requiere el permiso rrhh.empleados.gestionar">'+ic('userplus',16)+' Registrar empleado nuevo</button>')+'</div>';
+  html += '<div class="kpis">'+
+    '<div class="card stat-card stat-card-h"><div class="stat-ico brand">'+ic('users',20)+'</div><div class="stat-body"><div class="stat-label">Plantilla activa</div><div class="stat-value">'+activos.length+'</div>'+
+      '<div class="stat-delta up">'+ic('arrowup',14)+' +1 vs agosto (preingreso)</div><div class="stat-meta">10 puestos · 11 contratos históricos</div></div></div>'+
+    '<div class="card stat-card stat-card-h"><div class="stat-ico succ">'+ic('calculator',20)+'</div><div class="stat-body"><div class="stat-label">Planilla · Q2 sept</div><div class="stat-value">'+fmtM(d.tot.neto)+'</div>'+
+      '<div class="stat-meta">Base '+fmtM(d.tot.base)+' · Deducciones '+fmtM(d.tot.css+d.tot.presta+d.tot.anticipo)+'</div></div></div>'+
+    '<div class="card stat-card stat-card-h"><div class="stat-ico warn">'+ic('clock',20)+'</div><div class="stat-body"><div class="stat-label">Pendientes</div><div class="stat-value">'+(hePend+vacPend)+'</div>'+
+      '<div class="stat-meta">'+hePend+' horas extra · '+vacPend+' vacaciones en revisión</div></div></div>'+
+    '<div class="card stat-card stat-card-h"><div class="stat-ico danger">'+ic('shield',20)+'</div><div class="stat-body"><div class="stat-label">Seguridad ocup.</div><div class="stat-value">'+RH_ACCIDENTES.filter(function(a){return a.estado!=='Cerrada';}).length+'</div>'+
+      '<div class="stat-meta">'+RH_CAPACITACIONES.filter(function(c){return c.estado==='Realizada';}).length+' capacitaciones realizadas</div></div></div>'+
+  '</div>';
+  html += '<div class="alert alert-info" style="margin-top:var(--sp-7)">'+ic('info',20)+'<div><h4>Módulo RH · demo</h4><p>El backend es la autoridad real: este panel simula expediente, asistencia, planilla y portales de empleado/responsable. Los montos son de demostración; la validación fiscal panameña (DGI · ITBMS/ISR/retenciones) sigue pendiente (supuesto PA-17).</p></div></div>';
+  html += '<div class="g3 rh-mod-grid">'+
+    '<button class="card card-hover rh-mod-card" onclick="location.hash=\'#/app/rrhh/organizacion\'"><div class="stat-ico brand">'+ic('building',18)+'</div><div class="rh-mod-info"><div class="strong">Organización</div><div class="small muted2">Empresas, sucursales y departamentos</div></div></button>'+
+    '<button class="card card-hover rh-mod-card" onclick="location.hash=\'#/app/rrhh/proyectos\'"><div class="stat-ico brand">'+ic('gauge',18)+'</div><div class="rh-mod-info"><div class="strong">Proyectos</div><div class="small muted2">Asignación de personal y centros de costo</div></div></button>'+
+    '<button class="card card-hover rh-mod-card" onclick="location.hash=\'#/app/rrhh/empleados\'"><div class="stat-ico succ">'+ic('users',18)+'</div><div class="rh-mod-info"><div class="strong">Empleados</div><div class="small muted2">Expediente, contratos y ficha individual</div></div></button>'+
+    '<button class="card card-hover rh-mod-card" onclick="location.hash=\'#/app/rrhh/asistencia\'"><div class="stat-ico succ">'+ic('clock',18)+'</div><div class="rh-mod-info"><div class="strong">Asistencia</div><div class="small muted2">Horarios, marcaciones y horas extras</div></div></button>'+
+    '<button class="card card-hover rh-mod-card" onclick="location.hash=\'#/app/rrhh/tiempo-libre\'"><div class="stat-ico warn">'+ic('calendar',18)+'</div><div class="rh-mod-info"><div class="strong">Tiempo libre</div><div class="small muted2">Vacaciones, permisos e incapacidades</div></div></button>'+
+    '<button class="card card-hover rh-mod-card" onclick="location.hash=\'#/app/rrhh/nomina\'"><div class="stat-ico warn">'+ic('wallet',18)+'</div><div class="rh-mod-info"><div class="strong">Nómina</div><div class="small muted2">Períodos, planilla y comprobantes</div></div></button>'+
+  '</div>';
+  return html;
+}
+function rhExportPanel(){ downloadCSV('panel-rh-sept-2026',['Concepto','Valor'], [['Plantilla activa', RH_EMPLEADOS.filter(function(e){return e.estado!=='Terminado';}).length],['Planilla Q2', rhPlanillaDetalle(RH_PLANILLAS[2]).tot.neto]]); }
+function rhPerfilVacante(v){
+  var p = {cargo:'Técnico electricista', depto:'d4', proyecto:'pr1', centro:'cc2', tipoEmp:'Obra', tipoContrato:'Por obra determinada', horario:'h2', salario:1250, jefe:'e6', sucursal:'rh-suc-2'};
+  if(v.id==='VAC-2026-02') p = {cargo:'Asistente contable', depto:'d3', proyecto:null, centro:'cc1', tipoEmp:'Administrativo', tipoContrato:'Indefinido', horario:'h1', salario:1150, jefe:'e10', sucursal:'rh-suc-1'};
+  if(v.id==='VAC-2026-03') p = {cargo:'Bodeguero / logística', depto:'d5', proyecto:'pr2', centro:'cc3', tipoEmp:'Obra', tipoContrato:'Temporal · 6 meses', horario:'h2', salario:950, jefe:'e6', sucursal:'rh-suc-2'};
+  return p;
+}
+function rhCorreo(n){
+  var p = (n||'').trim().split(/\s+/);
+  if(!p.length || !p[0]) return '';
+  var ape = (p[p.length-1]||'').toLowerCase().replace(/[^a-z]/gi,'');
+  return (p[0].charAt(0).toLowerCase()+'.'+ape+'@grafito.pa');
+}
+function rhContratarCandidato(cid){
+  var c = RH_CANDIDATOS.find(function(x){ return x.id===cid; });
+  if(!c || c.etapa!=='Oferta enviada'){ toast('El alta se habilita cuando el candidato supera la etapa final del reclutamiento (Oferta enviada).','info','Candidato no elegible'); return; }
+  if(!hasPerm('rrhh.empleados.gestionar')){ toast('Se requiere el permiso rrhh.empleados.gestionar para crear el preingreso.','error','Sin permiso'); return; }
+  var v = RH_VACANTES.find(function(x){ return x.id===c.vacante; }) || {};
+  var p = rhPerfilVacante(v);
+  var dep = rhDepto(p.depto);
+  var html = '<div class="alert alert-info">'+ic('userplus',20)+'<div><h4>Alta desde reclutamiento</h4><p>Este candidato <b>superó la etapa final del reclutamiento</b> (Oferta enviada); el preingreso se crea automáticamente con sus datos. RRHH completa el expediente (contacto, emergencia y banco) antes de activarlo (RN-RH-02).</p></div></div>'+
+    '<div class="g2"><div class="field"><label>Nombre</label><div class="input ro">'+esc(c.nombre)+'</div></div><div class="field"><label>Cédula</label><div class="input ro mono">'+esc(c.cedula)+'</div></div>'+
+    '<div class="field"><label>Cargo</label><div class="input ro">'+esc(p.cargo)+'</div></div><div class="field"><label>Departamento</label><div class="input ro">'+esc(dep?dep.nombre:'—')+'</div></div>'+
+    '<div class="field"><label>Proyecto</label><div class="input ro">'+esc((rhProyecto(p.proyecto)||{}).codigo||'—')+'</div></div><div class="field"><label>Salario mensual (B/.)</label><div class="input ro mono">'+fmtM(p.salario)+'</div></div>'+
+    '<div class="field"><label>Tipo de contrato</label><div class="input ro">'+esc(p.tipoContrato)+'</div></div><div class="field"><label>Fecha de ingreso</label><div class="input ro mono">21/09/2026</div></div></div>';
+  openModal(html, {title:'Confirmar preingreso', size:'w560'});
+  var m = document.querySelector('.modal-body');
+  var foot = document.createElement('div'); foot.className='modal-foot';
+  foot.innerHTML='<button class="btn btn-secondary" onclick="closeModal()">Cancelar</button>'+
+    '<button class="btn btn-primary" onclick="confirmarContratarCandidato(\''+cid+'\')">'+ic('userplus')+' Crear preingreso</button>';
+  m.after(foot);
+}
+function confirmarContratarCandidato(cid){
+  var c = RH_CANDIDATOS.find(function(x){ return x.id===cid; });
+  if(!c) return;
+  var v = RH_VACANTES.find(function(x){ return x.id===c.vacante; }) || {};
+  var p = rhPerfilVacante(v);
+  var id = 'e' + (RH_EMPLEADOS.length + 1);
+  RH_EMPLEADOS.push({id:id, nombre:c.nombre, cargo:p.cargo, depto:p.depto, puesto:null, cedula:c.cedula, correo:rhCorreo(c.nombre), tel:'—', nacim:'—', nacionalidad:'Panameña', civ:'Por completar', direccion:'Por completar en expediente', emergencia:{nombre:'—', tel:'—', rel:'—'}, sucursal:p.sucursal, jefe:p.jefe, proyecto:p.proyecto, centro:p.centro, tipoEmp:p.tipoEmp, tipoContrato:p.tipoContrato, fechaIngreso:'21/09/2026', fechaContrato:'21/09/2026', fechaFin:null, salario:p.salario, frecuencia:'Quincenal', horario:p.horario, estado:'Ingreso pendiente', banco:'Por definir', cuenta:'—', iniciales:rhIniciales(c.nombre)});
+  c.estado = 'Contratado'; c.etapa = 'Contratado';
+  closeModal();
+  toast('Preingreso creado para '+esc(c.nombre)+' ('+fmtM(p.salario)+'/mes). Sigue en Reclutamiento · Onboarding: entrega de equipos y EPP pendiente.','success','Alta desde reclutamiento');
+  rhFicha(id);
+}
+function viewRhhOrganizacion(){
+  var html = pageHead([{label:'Inicio', link:'#/app/resumen'},{label:'RRHH', link:'#/app/rrhh'},{label:'Organización'}], 'Organización', 'Empresas, sucursales, departamentos y centros de costo', '');
+  html += '<div class="g2">'+
+    '<div class="card"><div class="card-head"><div><div class="card-title">Empresas y sucursales</div><div class="card-sub">La empresa empleadora emite los documentos de nómina (Ley 81).</div></div></div><div class="card-body">'+
+      RH_EMPRESAS.map(function(em){ return '<div class="sol-row" style="border:none"><span class="s-ico">'+ic('building',20)+'</span><div style="flex:1"><strong>'+esc(em.nombre)+'</strong><small class="muted2">RUC '+esc(em.ruc)+'</small>'+
+        em.sucursales.map(function(s){ return '<small style="display:block">'+esc(s.nombre)+'</small>'; }).join('')+'</div></div>'; }).join('')+
+    '</div></div>'+
+    '<div class="card"><div class="card-head"><div><div class="card-title">Departamentos</div><div class="card-sub">'+RH_DEPARTAMENTOS.length+' áreas · cada puesto pertenece a un departamento.</div></div></div><div class="card-body">'+
+      RH_DEPARTAMENTOS.map(function(d){ return '<div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--border-subtle)"><span>'+esc(d.nombre)+'</span><span class="mono muted2 small">'+RH_EMPLEADOS.filter(function(e){return e.depto===d.id && e.estado!=='Terminado';}).length+' empleados</span></div>'; }).join('')+
+    '</div></div>'+
+  '</div>';
+  html += '<div class="card"><div class="card-head"><div><div class="card-title">Centros de costo</div><div class="card-sub">La planilla se distribuye por centro y cuenta contable (gasto de personal).</div></div></div><div class="card-body"><div class="tbl-wrap"><table class="tbl dense"><thead><tr><th>Código</th><th>Centro</th><th>Departamento</th><th class="num">Cuenta contable</th><th class="num">Personal</th></tr></thead><tbody>'+
+    RH_CENTROS.map(function(c){
+      var dep = rhDepto(c.depto);
+      return '<tr><td class="mono">'+esc(c.codigo)+'</td><td>'+esc(c.nombre)+'</td><td>'+esc(dep?dep.nombre:'—')+'</td><td class="num mono">'+esc(c.cuenta)+'</td><td class="num">'+RH_EMPLEADOS.filter(function(e){return e.centro===c.id && e.estado!=='Terminado';}).length+'</td></tr>';
+    }).join('')+'</tbody></table></div></div></div>';
+  return html;
+}
+function viewRhhProyectos(){
+  var html = pageHead([{label:'Inicio', link:'#/app/resumen'},{label:'RRHH', link:'#/app/rrhh'},{label:'Proyectos'}], 'Proyectos y asignaciones', 'Personal de obra asignado a cada proyecto (centro de costo CON-001)', '');
+  html += '<div class="g3">'+RH_PROYECTOS.map(function(p){
+    var sup = rhEmp(p.supervisor);
+    var equipo = RH_EMPLEADOS.filter(function(e){ return e.proyecto===p.id && e.estado!=='Terminado'; });
+    return '<div class="card card-hover" style="padding:16px"><div class="flex between" style="align-items:flex-start"><span class="mono strong">'+esc(p.codigo)+'</span><span class="chip chip-success">'+esc(p.etapa)+'</span></div>'+
+      '<div class="strong" style="margin:8px 0 2px">'+esc(p.nombre)+'</div><div class="small muted2">'+esc(p.ubic)+'</div>'+
+      '<div class="flex" style="gap:12px;margin-top:12px;font-size:13px"><span>'+ic('user',14)+' Resp.: '+esc(sup?sup.nombre:'—')+'</span><span class="mono">B/. '+fmtM(p.costoEstimado)+'</span></div>'+
+      '<div class="small" style="margin-top:6px"><span class="muted2">Equipo:</span> '+equipo.map(function(e){ return esc(e.nombre); }).join(', ')+'</div></div>';
+  }).join('')+'</div>';
+  return html;
+}
+function rhFicha(eid){ V.rrhhEmpVer = eid; location.hash = '#/app/rrhh/empleado'; }
+function rhhEmpRefresh(){ render(); }
+function viewRhhEmpleados(){
+  var s = V.rrhhEmp = V.rrhhEmp || {per:25, page:1};
+  var rows = slicePage(s, RH_EMPLEADOS);
+  var html = pageHead([{label:'Inicio', link:'#/app/resumen'},{label:'RRHH', link:'#/app/rrhh'},{label:'Empleados'}], 'Empleados', RH_EMPLEADOS.length+' registros · el registro se crea solo desde Reclutamiento',
+    (hasPerm('rrhh.empleados.gestionar')
+      ? '<button class="btn btn-primary" onclick="location.hash=\'#/app/rrhh/altas\'">'+ic('userplus')+' Registrar empleado nuevo</button>'
+      : '<button class="btn btn-primary" disabled title="Se requiere el permiso rrhh.empleados.gestionar">'+ic('userplus')+' Registrar empleado nuevo</button>'));
+  html += rhhEmpleadosTabs('empleados');
+  html += '<div class="rbac-note">'+ic('info',14)+'<span>Este listado es el <b>registro histórico</b> de la plantilla. Las altas de personal se crean únicamente desde <b>Registrar empleado nuevo</b>, alimentado por los candidatos de Reclutamiento que superaron el proceso.</span></div>';
+  html += '<div class="dash-toolbar"><span class="chip-select">'+ic('filter',16)+'<span>Todos los estados</span>'+ic('chevdown',14)+'</span><span class="muted small">Cifras en B/. · salario mensual</span><span class="spacer"></span></div>';
+  if(!rows.length) return html + emptyState('users','Sin empleados','No hay registros para los filtros seleccionados.','') + pagBar('rrhhEmp', RH_EMPLEADOS.length, s.per, s.page, 'rhhEmpRefresh');
+  html += '<div class="card"><div class="tbl-wrap"><table class="tbl dense"><thead><tr><th>Empleado</th><th>Cargo</th><th>Departamento</th><th>Contrato</th><th class="num">Salario</th><th>Estado</th><th></th></tr></thead><tbody>'+
+    rows.map(function(e){
+      var dep = rhDepto(e.depto);
+      return '<tr><td><div class="emp-id"><span class="avatar" style="width:30px;height:30px;font-size:11px">'+esc(e.iniciales)+'</span><div><strong>'+esc(e.nombre)+'</strong><small class="mono muted2">'+esc(e.cedula)+'</small></div></div></td>'+
+        '<td>'+esc(e.cargo)+'</td><td>'+esc(dep?dep.nombre:'—')+'</td><td class="small">'+esc(e.tipoContrato)+'</td>'+
+        '<td class="num mono">'+fmtM(e.salario)+'</td><td>'+rhEmpEstadoChip(e)+'</td>'+
+        '<td class="small"><button class="btn btn-secondary btn-compact" onclick="rhFicha(\''+e.id+'\')">'+ic('eye',14)+' Ficha</button></td></tr>';
+    }).join('')+'</tbody></table></div></div>'+pagBar('rrhhEmp', RH_EMPLEADOS.length, s.per, s.page, 'rhhEmpRefresh');
+  return html;
+}
+function rhhEmpleadosTabs(active){
+  var tabs = [['empleados','Registro de empleados'],['altas','Registrar empleado nuevo']];
+  return '<div class="tabs" role="tablist">'+tabs.map(function(t){
+    return '<button class="tab'+(t[0]===active?' active':'')+'" role="tab" aria-selected="'+(t[0]===active)+'" onclick="location.hash=\'#/app/rrhh/'+t[0]+'\'">'+esc(t[1])+'</button>';
+  }).join('')+'</div>';
+}
+function viewRhhNuevoEmpleado(){
+  var pool = RH_CANDIDATOS.filter(function(c){ return c.etapa==='Oferta enviada' && c.estado!=='Contratado'; });
+  var puedeGestionar = hasPerm('rrhh.empleados.gestionar');
+  var html = pageHead([{label:'Inicio', link:'#/app/resumen'},{label:'RRHH', link:'#/app/rrhh'},{label:'Empleados', link:'#/app/rrhh/empleados'},{label:'Registrar empleado nuevo'}], 'Registrar empleado nuevo',
+    'Altas de personal · solo candidatos que superaron el reclutamiento', '');
+  html += rhhEmpleadosTabs('altas');
+  html += '<div class="rbac-note" style="margin-top:0;margin-bottom:var(--sp-5)">'+ic('info',14)+'<span>Este listado proviene <b>únicamente</b> de Reclutamiento · Candidatos que completaron el proceso (etapa <b>Oferta enviada</b>). No existe captura manual de empleados: el preingreso se crea con los datos del candidato y el backend valida permiso y reglas (RN-S01, RN-RH-02).</span></div>';
+  if(!pool.length){
+    return html + emptyState('userplus','Sin candidatos para contratar','No hay candidatos que hayan superado la etapa final del reclutamiento en este momento.','<div class="flex" style="gap:8px;justify-content:center"><button class="btn btn-secondary" onclick="location.hash=\'#/app/rrhh/reclutamiento\'">'+ic('userplus')+' Ir a Reclutamiento</button></div>');
+  }
+  html += '<div class="card" style="margin-bottom:var(--sp-5)"><div class="tbl-wrap"><table class="tbl dense"><thead><tr><th>Candidato</th><th>Cédula</th><th>Vacante</th><th>Departamento</th><th class="num">Propuesta salarial</th><th>Proceso</th><th></th></tr></thead><tbody>'+
+    pool.map(function(c){
+      var v = RH_VACANTES.find(function(x){ return x.id===c.vacante; }) || {};
+      var dep = rhDepto(v.depto);
+      var p = rhPerfilVacante(v);
+      return '<tr><td><div class="emp-id"><span class="avatar" style="width:30px;height:30px;font-size:11px">'+esc(rhIniciales(c.nombre))+'</span><div><strong>'+esc(c.nombre)+'</strong><small class="mono muted2">'+esc(c.id)+'</small></div></div></td>'+
+        '<td class="mono">'+esc(c.cedula)+'</td><td class="small">'+esc(v.nombre||c.vacante)+'</td><td class="small">'+esc(dep?dep.nombre:'—')+'</td>'+
+        '<td class="num mono">'+fmtM(p.salario)+'</td>'+
+        '<td><span class="chip chip-success">'+esc(c.etapa)+'</span> <span class="muted2 small">Etapa final · '+esc(c.fecha)+'</span></td>'+
+        '<td class="small"><button class="btn btn-primary btn-compact" onclick="rhContratarCandidato(\''+c.id+'\')" '+(puedeGestionar?'':'disabled title="Se requiere el permiso rrhh.empleados.gestionar"')+' aria-label="Crear empleado desde '+esc(c.nombre)+'">'+ic('userplus',14)+' Crear empleado</button></td></tr>';
+    }).join('')+'</tbody></table></div></div>';
+  html += '<div class="alert alert-info">'+ic('userplus',18)+'<div><h4>¿Cómo se crea un empleado?</h4><p>Selecciona un candidato de la lista para abrir el preingreso con sus datos (cargo, departamento, salario y contrato propuestos desde la vacante). RRHH completa el expediente antes de activarlo.</p></div></div>';
+  return html;
+}
+function viewRhhEmpleado(){
+  var e = rhEmp(V.rrhhEmpVer || 'e2');
+  if(!e) return viewRhhEmpleados();
+  var dep = rhDepto(e.depto), pue = rhPuesto(e.puesto), con = rhContrato(e.id), cen = rhCentro(e.centro), pro = rhProyecto(e.proyecto), hr = rhHorario(e.horario);
+  var hist = RH_HISTORIAL.filter(function(h){ return h.emp===e.id; });
+  var equi = RH_EQUIPOS.filter(function(x){ return x.emp===e.id && !x.devuelto; });
+  var prest = RH_PRESTAMOS.filter(function(x){ return x.emp===e.id && x.estado==='Activo'; });
+  var vac = RH_VACACIONES.filter(function(x){ return x.emp===e.id; });
+  var html = pageHead([{label:'Inicio', link:'#/app/resumen'},{label:'RRHH', link:'#/app/rrhh'},{label:'Empleados', link:'#/app/rrhh/empleados'},{label:e.nombre}], e.nombre, e.cargo+' · Cédula '+e.cedula, '');
+  html += '<div class="g2">'+
+    '<div class="card"><div class="card-head"><div><div class="card-title">Datos personales</div><div class="card-sub">'+(pue? pue.nombre+' · '+esc(dep?dep.nombre:'') : '')+'</div></div></div><div class="card-body">'+
+      '<div style="display:flex;align-items:center;gap:14px;margin-bottom:14px"><div class="avatar" style="width:52px;height:52px;font-size:18px">'+esc(e.iniciales)+'</div><div><div class="strong">'+esc(e.nombre)+'</div><div>'+rhEmpEstadoChip(e)+'</div></div></div>'+
+      '<div class="g2"><div class="field"><label>Correo</label><div class="input-like">'+esc(e.correo)+'</div></div><div class="field"><label>Teléfono</label><div class="input-like">'+esc(e.tel)+'</div></div></div>'+
+      '<div class="g2"><div class="field"><label>Nacimiento</label><div class="input-like">'+esc(e.nacim)+' · '+esc(e.nacionalidad)+'</div></div><div class="field"><label>Estado civil</label><div class="input-like">'+esc(e.civ)+'</div></div></div>'+
+      '<div class="field"><label>Dirección</label><div class="input-like">'+esc(e.direccion)+'</div></div>'+
+      '<div class="field"><label>Contacto de emergencia</label><div class="input-like">'+esc(e.emergencia.nombre)+' ('+esc(e.emergencia.rel)+') · '+esc(e.emergencia.tel)+'</div></div>'+
+    '</div></div>'+
+    '<div class="card"><div class="card-head"><div><div class="card-title">Relación laboral</div><div class="card-sub">Contrato y condiciones (RN-RH-03)</div></div></div><div class="card-body">'+
+      '<div class="field"><label>Contrato</label><div class="input-like">'+esc(con?con.ref:'—')+' · '+esc(e.tipoContrato)+'</div></div>'+
+      '<div class="g2"><div class="field"><label>Ingreso</label><div class="input-like">'+esc(e.fechaIngreso)+'</div></div><div class="field"><label>Fin de contrato</label><div class="input-like">'+esc(e.fechaFin||'Indefinido')+'</div></div></div>'+
+      '<div class="g2"><div class="field"><label>Salario mensual</label><div class="input-like mono">'+fmtM(e.salario)+'</div></div><div class="field"><label>Frecuencia</label><div class="input-like">'+esc(e.frecuencia)+'</div></div></div>'+
+      '<div class="g2"><div class="field"><label>Horario</label><div class="input-like">'+esc(hr?hr.nombre+' · '+hr.jornada:'—')+'</div></div><div class="field"><label>Centro de costo</label><div class="input-like">'+esc(cen?cen.codigo+' · '+cen.nombre:'—')+'</div></div></div>'+
+      '<div class="g2"><div class="field"><label>Proyecto</label><div class="input-like">'+esc(pro?pro.codigo+' · '+pro.nombre:'—')+'</div></div><div class="field"><label>Banco / cuenta</label><div class="input-like">'+esc(e.banco)+' · '+esc(e.cuenta)+'</div></div></div>'+
+      '<div class="field"><label>Jefe inmediato</label><div class="input-like">'+esc(e.jefe? (rhEmp(e.jefe)||{}).nombre || '—' : '—')+'</div></div>'+
+      (prest.length? '<div class="alert alert-warning">'+ic('bank',18)+'<div><h4>Préstamos activos</h4><p>'+prest.map(function(p){ return esc(p.id)+' · saldo '+fmtM(p.saldo); }).join('<br>')+'</p></div></div>':'')+
+    '</div></div>'+
+  '</div>';
+  html += '<div class="g2">'+
+    '<div class="card"><div class="card-head"><div><div class="card-title">Historial de cambios</div><div class="card-sub">Bitácora append-only de la hoja de vida laboral</div></div></div><div class="card-body">'+
+      (hist.length? hist.map(function(h){ return '<div style="padding:8px 0;border-bottom:1px solid var(--border-subtle)"><div class="flex between"><span class="strong small">'+esc(h.campo)+'</span><span class="mono muted2 small">'+esc(h.fecha)+'</span></div><div class="small">'+esc(h.anterior)+' → '+esc(h.nuevo)+'</div><div class="muted2 small">'+esc(h.motivo)+' · '+esc(h.autor)+'</div></div>'; }).join('') : '<p class="small muted2">Sin cambios registrados.</p>')+
+    '</div></div>'+
+    '<div class="card"><div class="card-head"><div><div class="card-title">Equipos y solicitudes</div><div class="card-sub">Activos entregados y vacaciones</div></div></div><div class="card-body">'+
+      (equi.length? equi.map(function(x){ return '<div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--border-subtle)"><span>'+esc(x.equipo)+'</span><span class="mono small muted2">'+esc(x.entregado)+'</span></div>'; }).join('') : '<p class="small muted2">Sin equipos asignados.</p>')+
+      (vac.length? '<div style="margin-top:10px"><div class="small strong">Vacaciones</div>'+vac.map(function(v){ return '<div style="display:flex;justify-content:space-between;padding:6px 0"><span class="small">'+esc(v.ini)+' → '+esc(v.fin)+' ('+v.dias+' días)</span>'+'<span class="chip '+(v.estado==='Aprobada'?'chip-success':'chip-warning')+'">'+esc(v.estado)+'</span></div>'; }).join('')+'</div>':'')+
+    '</div></div>'+
+  '</div>';
+  return html;
+}
+function viewRhhContratos(){
+  var html = pageHead([{label:'Inicio', link:'#/app/resumen'},{label:'RRHH', link:'#/app/rrhh'},{label:'Contratos'}], 'Contratos de personal', 'Vigencia y condiciones laborales de cada empleado', '');
+  html += '<div class="card"><div class="tbl-wrap"><table class="tbl dense"><thead><tr><th>Contrato</th><th>Empleado</th><th>Tipo</th><th>Vigencia</th><th class="num">Salario</th><th>Adendas</th><th>Estado</th><th></th></tr></thead><tbody>'+
+    RH_CONTRATOS.map(function(c){
+      var e = rhEmp(c.emp);
+      return '<tr><td class="mono">'+esc(c.ref)+'</td><td>'+esc(e?e.nombre:'—')+'</td><td class="small">'+esc(c.tipo)+'</td>'+
+        '<td class="small">'+esc(c.ini)+' → '+esc(c.fin||'Indefinido')+'</td><td class="num mono">'+fmtM(c.salario)+'</td>'+
+        '<td class="small">'+(c.adendas.length? c.adendas.map(function(a){return a.ref;}).join(', ') : '—')+'</td>'+
+        '<td><span class="chip '+(c.estado==='Vigente'?'chip-success':'chip-neutral')+'">'+esc(c.estado)+'</span></td>'+
+        '<td class="small"><button class="btn btn-secondary btn-compact" onclick="rhFicha(\''+c.emp+'\')">'+ic('eye',14)+' Ver</button></td></tr>';
+    }).join('')+'</tbody></table></div></div>';
+  html += '<div class="alert alert-info">'+ic('contract',18)+'<div><h4>Adendas</h4><p>Ajuste salarial y modificaciones contractuales se documentan como adendas (RN-RH-07) e impactan la siguiente planilla.</p></div></div>';
+  return html;
+}
+
+function viewRhhAsistencia(){
+  V.rhhTabAsist = V.rhhTabAsist || 'marcaciones';
+  var tabs = [['marcaciones','Marcaciones'],['horarios','Horarios'],['extras','Horas extras'],['feriados','Feriados']];
+  var html = pageHead([{label:'Inicio', link:'#/app/resumen'},{label:'RRHH', link:'#/app/rrhh'},{label:'Asistencia'}], 'Asistencia', 'Marcaciones, horarios, horas extras y feriados',
+    '<button class="btn btn-primary" onclick="rhRegistrarMarcacion()">'+ic('plus')+' Registrar marcación</button>');
+  html += '<div class="tabs">'+tabs.map(function(t){ return '<button class="tab'+(V.rhhTabAsist===t[0]?' active':'')+'" onclick="V.rhhTabAsist=\''+t[0]+'\';render()">'+esc(t[1])+'</button>'; }).join('')+'</div>';
+  if(V.rhhTabAsist==='marcaciones'){
+    html += '<div class="card"><div class="card-head"><div><div class="card-title">Semana del 14 al 18 de septiembre</div><div class="card-sub">Entrada y salida por empleado · tardías en minutos</div></div><div class="flex" style="gap:8px"><button class="btn btn-secondary btn-compact" onclick="rhExportMarc()">'+ic('download',14)+' CSV</button></div></div>'+
+      '<div class="tbl-wrap"><table class="tbl dense"><thead><tr><th>Empleado</th><th>Fecha</th><th>Entrada</th><th>Salida</th><th class="num">Horas</th><th class="num">Tardía</th><th>Proyecto</th></tr></thead><tbody>'+
+      RH_MARCACIONES.map(function(m){
+        var e = rhEmp(m.emp);
+        return '<tr><td>'+esc(e?e.nombre:'—')+'</td><td class="mono">'+esc(m.fecha)+'</td><td class="mono">'+esc(m.entrada)+'</td><td class="mono">'+esc(m.salida)+'</td><td class="num mono">'+m.horas.toFixed(1)+'</td>'+
+          '<td class="num">'+(m.tardia? '<span class="chip chip-warning">'+m.tardia+' min</span>' : '<span class="muted2">—</span>')+'</td><td class="small">'+esc(m.proyecto? (rhProyecto(m.proyecto)||{}).codigo||m.proyecto : 'Administración')+'</td></tr>';
+      }).join('')+'</tbody></table></div>'+
+      '<div class="pagination"><span class="small muted2">'+RH_MARCACIONES.length+' marcaciones registradas automáticamente desde el reloj de obra / portal.</span></div></div>';
+  } else if(V.rhhTabAsist==='horarios'){
+    html += '<div class="g3">'+RH_HORARIOS.map(function(h){ return '<div class="card card-hover" style="padding:16px"><div class="strong">'+esc(h.nombre)+'</div><div class="mono small" style="margin:6px 0">'+esc(h.jornada)+' · '+esc(h.dias)+'</div><div class="small muted2">Descanso '+esc(h.descanso)+'</div></div>'; }).join('')+'</div>';
+  } else if(V.rhhTabAsist==='extras'){
+    html += '<div class="card"><div class="tbl-wrap"><table class="tbl dense"><thead><tr><th>Referencia</th><th>Empleado</th><th>Fecha</th><th class="num">Horas</th><th>Tipo</th><th>Proyecto</th><th>Motivo</th><th>Estado</th><th></th></tr></thead><tbody>'+
+      RH_HORAS_EXTRAS.map(function(h){
+        var e = rhEmp(h.emp);
+        var chip = h.estado==='Aprobada' ? 'chip-success' : h.estado==='Rechazada' ? 'chip-danger' : 'chip-warning';
+        return '<tr><td class="mono">'+esc(h.id)+'</td><td>'+esc(e?e.nombre:'—')+'</td><td class="mono">'+esc(h.fecha)+'</td><td class="num">'+h.horas+'</td><td class="small">'+esc(h.tipo)+'</td>'+
+          '<td class="small">'+esc((rhProyecto(h.proyecto)||{}).codigo||'—')+'</td><td class="small">'+esc(h.motivo)+'</td><td><span class="chip '+chip+'">'+esc(h.estado)+'</span></td>'+
+          '<td class="small">'+(h.estado==='En revisión'||h.estado==='Pendiente'? '<button class="btn btn-primary btn-compact" onclick="rhAprobarHE(\''+h.id+'\')">'+ic('check',14)+' Aprobar</button> <button class="btn btn-secondary btn-compact" onclick="rhRechazarHE(\''+h.id+'\')">'+ic('x',14)+'</button>' : '<span class="small muted2">'+esc(h.aprobador||'—')+'</span>')+'</td></tr>';
+      }).join('')+'</tbody></table></div></div>';
+  } else {
+    html += '<div class="card"><div class="tbl-wrap"><table class="tbl dense"><thead><tr><th>Fecha</th><th>Feriado</th><th>Ámbito</th></tr></thead><tbody>'+
+      RH_FERIADOS.map(function(f){ return '<tr><td class="mono">'+esc(f.fecha)+'</td><td>'+esc(f.nombre)+'</td><td><span class="chip chip-neutral">'+esc(f.ambito)+'</span></td></tr>'; }).join('')+'</tbody></table></div></div>';
+  }
+  return html;
+}
+function rhRegistrarMarcacion(){
+  openModal('<div class="alert alert-info">'+ic('clock',20)+'<div><h4>Registrar marcación manual</h4><p>Úsalo solo cuando el reloj no capturó la entrada/salida. La marcación queda auditada con autor y fecha.</p></div></div>'+
+    '<div class="field"><label for="rm-emp">Empleado <span class="req">*</span></label><select class="input" id="rm-emp"><option>Luis Sandoval</option><option>María Vega</option><option>Marcos Villar</option><option>Laura Batista</option></select></div>'+
+    '<div class="g2"><div class="field"><label>Entrada</label><input class="input mono" value="07:02"></div><div class="field"><label>Salida</label><input class="input mono" value="15:56"></div></div>',
+    {title:'Marcación manual', size:'w520'});
+  var m = document.querySelector('.modal-body');
+  var foot = document.createElement('div'); foot.className='modal-foot';
+  foot.innerHTML='<button class="btn btn-secondary" onclick="closeModal()">Cancelar</button>'+
+    '<button class="btn btn-primary" onclick="confirmarMarcacionManual()">'+ic('check')+' Guardar</button>';
+  m.after(foot);
+}
+function confirmarMarcacionManual(){ closeModal(); toast('Marcación registrada con vigencia inmediata.','success','Marcación guardada'); if(typeof render==='function') render(); }
+function rhExportMarc(){ downloadCSV('marcaciones-sept',['Empleado','Fecha','Entrada','Salida','Horas','Tardia'], RH_MARCACIONES.map(function(m){ return [rhEmp(m.emp)?rhEmp(m.emp).nombre:'',m.fecha,m.entrada,m.salida,m.horas,m.tardia]; })); }
+function rhAprobarHE(id){ var h=RH_HORAS_EXTRAS.find(function(x){return x.id===id;}); if(h){ h.estado='Aprobada'; h.aprobador='Ana Guerra'; } toast('Horas extra aprobadas. Se sumarán a la próxima planilla.','success','Horas extra aprobadas'); render(); }
+function rhRechazarHE(id){ var h=RH_HORAS_EXTRAS.find(function(x){return x.id===id;}); if(h){ h.estado='Rechazada'; h.aprobador='Ana Guerra'; } toast('Solicitud de horas extra rechazada.','info','Rechazada'); render(); }
+function viewRhhTiempoLibre(){
+  V.rhhTabFree = V.rhhTabFree || 'vacaciones';
+  var tabs = [['vacaciones','Vacaciones'],['permisos','Permisos'],['incapacidades','Incapacidades']];
+  var html = pageHead([{label:'Inicio', link:'#/app/resumen'},{label:'RRHH', link:'#/app/rrhh'},{label:'Tiempo libre'}], 'Tiempo libre', 'Vacaciones, permisos e incapacidades del personal', '');
+  html += '<div class="tabs">'+tabs.map(function(t){ return '<button class="tab'+(V.rhhTabFree===t[0]?' active':'')+'" onclick="V.rhhTabFree=\''+t[0]+'\';render()">'+esc(t[1])+'</button>'; }).join('')+'</div>';
+  if(V.rhhTabFree==='vacaciones'){
+    html += '<div class="g3">'+RH_EMPLEADOS.filter(function(e){return e.estado!=='Terminado';}).map(function(e){
+      return '<div class="card" style="padding:14px"><div class="flex between"><span class="strong small">'+esc(e.nombre)+'</span><span class="mono small">'+(RH_SALDO_VAC[e.id]||0)+' días</span></div><div class="small muted2">'+esc(e.cargo)+'</div></div>';
+    }).join('')+'</div>';
+    html += '<div class="card"><div class="card-head"><div><div class="card-title">Solicitudes de vacaciones</div><div class="card-sub">Aprobación del jefe inmediato y RRHH</div></div></div><div class="card-body">'+
+      RH_VACACIONES.map(function(v){
+        var e = rhEmp(v.emp);
+        return '<div class="sol-row">'+ic('calendar',20)+'<div style="flex:1"><strong>'+esc(e?e.nombre:'—')+'</strong><small>'+esc(v.ini)+' → '+esc(v.fin)+' · '+v.dias+' días · solic. '+esc(v.creada)+'</small></div>'+
+          '<span class="chip '+(v.estado==='Aprobada'?'chip-success':'chip-warning')+'">'+esc(v.estado)+'</span>'+
+          (v.estado==='En revisión'? '<button class="btn btn-primary btn-compact" onclick="rhAprobarVac(\''+v.id+'\')">'+ic('check',14)+' Aprobar</button>' : '')+'</div>';
+      }).join('')+ (RH_VACACIONES.length?'':'<p class="small muted2">Sin solicitudes.</p>')+'</div></div>';
+  } else if(V.rhhTabFree==='permisos'){
+    html += '<div class="card"><div class="card-body">'+RH_PERMISOS.map(function(p){
+      var e = rhEmp(p.emp);
+      return '<div class="sol-row">'+ic('shield',20)+'<div style="flex:1"><strong>'+esc(e?e.nombre:'—')+'</strong><small>'+esc(p.motivo)+' · '+esc(p.tipo)+' · '+esc(p.fecha)+'</small></div>'+
+        '<span class="chip '+(p.estado==='Aprobado'?'chip-success':p.estado==='Rechazado'?'chip-danger':'chip-warning')+'">'+esc(p.estado)+'</span></div>';
+    }).join('')+'</div></div>';
+  } else {
+    html += '<div class="card"><div class="card-body">'+RH_INCAPACIDADES.map(function(i){
+      var e = rhEmp(i.emp);
+      return '<div class="sol-row">'+ic('file',20)+'<div style="flex:1"><strong>'+esc(e?e.nombre:'—')+'</strong><small>'+esc(i.tipo)+' · '+esc(i.ini)+' → '+esc(i.fin)+' ('+i.dias+' días) · Doc. '+esc(i.doc)+'</small></div>'+
+        '<span class="chip chip-warning">'+esc(i.estado)+'</span></div>';
+    }).join('')+'</div></div>';
+  }
+  return html;
+}
+function rhAprobarVac(id){ var v=RH_VACACIONES.find(function(x){return x.id===id;}); if(v){ v.estado='Aprobada'; v.aprobador='Sofía Ríos'; } toast('Vacaciones aprobadas. El empleado recibe la notificación en su portal.','success','Vacaciones aprobadas'); render(); }
+function viewRhhCompensaciones(){
+  V.rhhTabComp = V.rhhTabComp || 'conceptos';
+  var tabs = [['conceptos','Conceptos'],['prestamos','Préstamos'],['anticipos','Anticipos']];
+  var html = pageHead([{label:'Inicio', link:'#/app/resumen'},{label:'RRHH', link:'#/app/rrhh'},{label:'Compensaciones'}], 'Compensaciones', 'Conceptos salariales, préstamos y anticipos', '');
+  html += '<div class="tabs">'+tabs.map(function(t){ return '<button class="tab'+(V.rhhTabComp===t[0]?' active':'')+'" onclick="V.rhhTabComp=\''+t[0]+'\';render()">'+esc(t[1])+'</button>'; }).join('')+'</div>';
+  if(V.rhhTabComp==='conceptos'){
+    html += '<div class="card"><div class="tbl-wrap"><table class="tbl dense"><thead><tr><th>Concepto</th><th>Tipo</th><th>Base de cálculo</th><th>Gravable</th></tr></thead><tbody>'+
+      RH_CONCEPTOS.map(function(c){ return '<tr><td>'+esc(c.nombre)+'</td><td><span class="chip '+(c.tipo==='INGRESO'?'chip-success':'chip-neutral')+'">'+esc(c.tipo)+'</span></td><td class="small">'+esc(c.base)+'</td><td>'+(c.gravable?'<span class="chip chip-warning">Sí</span>':'<span class="chip chip-neutral">No</span>')+'</td></tr>'; }).join('')+'</tbody></table></div></div>';
+  } else if(V.rhhTabComp==='prestamos'){
+    html += '<div class="card"><div class="tbl-wrap"><table class="tbl dense"><thead><tr><th>Ref</th><th>Empleado</th><th class="num">Monto</th><th class="num">Cuota</th><th class="num">Pagadas</th><th class="num">Saldo</th><th>Estado</th></tr></thead><tbody>'+
+      RH_PRESTAMOS.map(function(p){
+        var e = rhEmp(p.emp);
+        return '<tr><td class="mono">'+esc(p.id)+'</td><td>'+esc(e?e.nombre:'—')+'</td><td class="num mono">'+fmtM(p.monto)+'</td><td class="num mono">'+fmtM(p.cuota)+'</td><td class="num">'+p.pagadas+' / '+p.cuotas+'</td><td class="num mono">'+fmtM(p.saldo)+'</td><td><span class="chip '+(p.estado==='Activo'?'chip-warning':'chip-neutral')+'">'+esc(p.estado)+'</span></td></tr>';
+      }).join('')+'</tbody></table></div></div>';
+  } else {
+    html += '<div class="card"><div class="tbl-wrap"><table class="tbl dense"><thead><tr><th>Ref</th><th>Empleado</th><th class="num">Monto</th><th class="num">Cuota</th><th>Fecha</th><th>Estado</th></tr></thead><tbody>'+
+      RH_ANTICIPOS.map(function(a){
+        var e = rhEmp(a.emp);
+        return '<tr><td class="mono">'+esc(a.id)+'</td><td>'+esc(e?e.nombre:'—')+'</td><td class="num mono">'+fmtM(a.monto)+'</td><td class="num mono">'+fmtM(a.cuota)+'</td><td class="mono">'+esc(a.fecha)+'</td><td><span class="chip '+(a.estado==='Aprobado'?'chip-warning':'chip-neutral')+'">'+esc(a.estado)+'</span></td></tr>';
+      }).join('')+'</tbody></table></div></div>';
+  }
+  return html;
+}
+function rhPlanilla(pid){ V.rrhhPlanillaVer = pid || 'pl3'; if(location.hash.indexOf('#/app/rrhh/planilla')!==0) location.hash = '#/app/rrhh/planilla'; window.scrollTo(0,0); render(); }
+function viewRhhNomina(){
+  V.rhhPla = V.rhhPla || 'pl3';
+  var html = pageHead([{label:'Inicio', link:'#/app/resumen'},{label:'RRHH', link:'#/app/rrhh'},{label:'Nómina'}], 'Nómina y planilla', 'Períodos, estados del flujo y comprobantes de pago',
+    '<button class="btn btn-primary" onclick="rhCrearPeriodo()">'+ic('plus')+' Crear período</button>');
+  html += '<div class="g2">'+RH_PLANILLAS.map(function(pl){
+    var d = rhPlanillaDetalle(pl);
+    var st = pl.estado;
+    var chip = st==='Pagada' ? 'chip-success' : st==='Aprobada' ? 'chip-neutral' : st==='Revisada' ? 'chip-warning' : 'chip-neutral';
+    var actions = '';
+    if(st==='Revisada') actions = '<button class="btn btn-primary btn-compact" onclick="rhAprobarPlanilla(\''+pl.id+'\')">'+ic('check',14)+' Aprobar</button>';
+    else if(st==='Aprobada') actions = '<button class="btn btn-primary btn-compact" onclick="rhGenerarACH(\''+pl.id+'\')">'+ic('bank',14)+' Generar ACH</button> <button class="btn btn-secondary btn-compact" onclick="rhContabilizarPlanilla(\''+pl.id+'\')">'+ic('calculator',14)+' Contabilizar</button>';
+    else if(st==='Pagada') actions = '<button class="btn btn-secondary btn-compact" onclick="rhReabrirPlanilla(\''+pl.id+'\')">'+ic('refresh',14)+' Reabrir</button>';
+    return '<div class="card" style="padding:16px"><div class="flex between" style="align-items:flex-start"><div><div class="strong">'+esc(pl.nombre)+'</div><div class="small muted2 mono">'+esc(pl.ref)+' · '+esc(pl.frecuencia)+'</div></div><span class="chip '+chip+'">'+esc(pl.estado)+'</span></div>'+
+      '<div class="small" style="margin:10px 0"><span class="muted2">Período:</span> '+esc(pl.periodo)+'<br><span class="muted2">Pago:</span> '+esc(pl.fechaPago)+'</div>'+
+      '<div class="g2" style="font-size:13px"><div><div class="muted2 small">Total neto</div><div class="mono strong">'+fmtM(d.tot.neto)+'</div></div><div><div class="muted2 small">Empleados</div><div class="strong">'+d.filas.length+'</div></div></div>'+
+      '<div class="flex" style="gap:8px;margin-top:12px;flex-wrap:wrap"><button class="btn btn-secondary btn-compact" onclick="rhPlanilla(\''+pl.id+'\')">'+ic('eye',14)+' Detalle</button>'+actions+'</div></div>';
+  }).join('')+'</div>';
+  html += '<div class="rbac-note">'+ic('info',14)+'<span>Flujo: Borrador → Calculada → Revisada → <b>Aprobada</b> → <b>Pagada</b> (ACH) → Reabierta. El asiento de gasto se genera al contabilizar y es inmutable.</span></div>';
+  return html;
+}
+function rhCrearPeriodo(){
+  openModal('<div class="alert alert-info">'+ic('calculator',20)+'<div><h4>Nuevo período de planilla</h4><p>El período se crea en estado <b>Borrador</b>; el cálculo de conceptos se ejecuta en segundo plano y lo revisa el Analista.</p></div></div>'+
+    '<div class="g2"><div class="field"><label>Período</label><select class="input"><option>Quincena 1 · Octubre 2026</option><option>Quincena 2 · Octubre 2026</option></select></div><div class="field"><label>Frecuencia</label><select class="input"><option>Quincenal</option><option>Mensual</option></select></div></div>',
+    {title:'Crear período', size:'w520'});
+  var m = document.querySelector('.modal-body');
+  var foot = document.createElement('div'); foot.className='modal-foot';
+  foot.innerHTML='<button class="btn btn-secondary" onclick="closeModal()">Cancelar</button>'+
+    '<button class="btn btn-primary" onclick="confirmarCrearPeriodo()">'+ic('plus')+' Crear en borrador</button>';
+  m.after(foot);
+}
+function confirmarCrearPeriodo(){ closeModal(); toast('Período creado en borrador. El sistema calculará los conceptos en segundo plano.','success','Período creado'); }
+function rhAprobarPlanilla(id){ var pl=RH_PLANILLAS.find(function(x){return x.id===id;}); if(pl) pl.estado='Aprobada'; toast('Planilla aprobada. El Pagador podrá generar el ACH.','success','Planilla aprobada'); render(); }
+function rhGenerarACH(id){ var pl=RH_PLANILLAS.find(function(x){return x.id===id;}); if(pl){ pl.estado='Pagada'; pl.contabilizado=false; } toast('Orden de pago ACH generada por '+fmtM(rhPlanillaDetalle(pl).tot.neto)+'. Los comprobantes quedaron emitidos.','success','ACH generado'); render(); }
+function rhContabilizarPlanilla(id){ var pl=RH_PLANILLAS.find(function(x){return x.id===id;}); if(pl) pl.contabilizado=true; toast('Asiento de gasto de personal contabilizado en Contabilidad (inmutable).','success','Contabilizada'); render(); }
+function rhReabrirPlanilla(id){ var pl=RH_PLANILLAS.find(function(x){return x.id===id;}); if(pl){ pl.estado='Aprobada'; pl.contabilizado=false; } toast('Planilla reabierta para correcciones. Contabilidad invalidó el asiento previo.','info','Reabierta'); render(); }
+function viewRhhPlanilla(){
+  var pl = RH_PLANILLAS.find(function(x){ return x.id===V.rrhhPlanillaVer; }) || RH_PLANILLAS[2];
+  var d = rhPlanillaDetalle(pl);
+  var html = pageHead([{label:'Inicio', link:'#/app/resumen'},{label:'RRHH', link:'#/app/rrhh'},{label:'Nómina', link:'#/app/rrhh/nomina'},{label:pl.nombre}], pl.nombre, pl.periodo+' · Ref. '+pl.ref, '');
+  html += '<div class="g3">'+
+    '<div class="card stat-card"><div class="stat-label">Total base</div><div class="stat-value mono">'+fmtM(d.tot.base)+'</div></div>'+
+    '<div class="card stat-card"><div class="stat-label">Horas extras</div><div class="stat-value mono">'+fmtM(d.tot.extras)+'</div></div>'+
+    '<div class="card stat-card"><div class="stat-label">Deducciones</div><div class="stat-value mono">'+fmtM(d.tot.css+d.tot.presta+d.tot.anticipo)+'</div></div>'+
+  '</div>';
+  html += '<div class="card"><div class="card-head"><div><div class="card-title">Detalle por empleado</div><div class="card-sub">Estado: <b>'+esc(pl.estado)+'</b> · Los comprobantes individuales se emiten al pagar</div></div>'+
+    (pl.estado==='Revisada'? '<button class="btn btn-primary btn-compact" onclick="rhAprobarPlanilla(\''+pl.id+'\')">'+ic('check',14)+' Aprobar</button>' : '')+'</div>'+
+    '<div class="tbl-wrap"><table class="tbl dense"><thead><tr><th>Empleado</th><th>Centro</th><th class="num">Base</th><th class="num">Extras</th><th class="num">CSS</th><th class="num">Préstamo</th><th class="num">Anticipo</th><th class="num">Neto</th></tr></thead><tbody>'+
+    d.filas.map(function(f){
+      var cen = rhCentro(f.emp.centro);
+      return '<tr><td>'+esc(f.emp.nombre)+'</td><td class="small">'+esc(cen?cen.codigo:'—')+'</td><td class="num mono">'+fmtM(f.base)+'</td><td class="num mono">'+fmtM(f.extras)+'</td><td class="num mono">'+fmtM(f.css)+'</td><td class="num mono">'+fmtM(f.presta)+'</td><td class="num mono">'+fmtM(f.anticipo)+'</td><td class="num mono strong">'+fmtM(f.neto)+'</td></tr>';
+    }).join('')+'</tbody><tfoot><tr><td colspan="7" class="num">Total</td><td class="num mono strong">'+fmtM(d.tot.neto)+'</td></tr></tfoot></table></div></div>';
+  html += '<div class="rbac-note">'+ic('lock',14)+'<span>El monto neto es la suma de conceptos gravables menos CSS (9.75% demostrativo), préstamos y anticipos. La validación fiscal DGI está pendiente (PA-17).</span></div>';
+  return html;
+}
+function viewRhhLiquidaciones(){
+  var html = pageHead([{label:'Inicio', link:'#/app/resumen'},{label:'RRHH', link:'#/app/rrhh'},{label:'Liquidaciones'}], 'Liquidaciones', 'Cálculo de finiquito al término de la relación laboral', '');
+  html += '<div class="card"><div class="tbl-wrap"><table class="tbl dense"><thead><tr><th>Ref</th><th>Empleado</th><th>Motivo</th><th>Salida</th><th class="num">Monto</th><th>Estado</th></tr></thead><tbody>'+
+    RH_LIQUIDACIONES.map(function(l){
+      var e = rhEmp(l.emp);
+      return '<tr><td class="mono">'+esc(l.ref)+'</td><td>'+esc(e?e.nombre:'—')+'</td><td class="small">'+esc(l.motivo)+'</td><td class="mono">'+esc(l.fechaSalida)+'</td><td class="num mono">'+(l.monto? fmtM(l.monto):'—')+'</td>'+
+        '<td><span class="chip '+(l.estado==='Pagada'?'chip-success':'chip-warning')+'">'+esc(l.estado)+'</span></td></tr>';
+    }).join('')+'</tbody></table></div></div>';
+  html += '<div class="alert alert-warning">'+ic('scale',18)+'<div><h4>Supuesto de cálculo</h4><p>Los montos se obtienen de vacaciones proporcionales, salario pendiente e indemnización por los períodos del contrato. La validación legal/fiscal (DGI) sigue pendiente (PA-17).</p></div></div>';
+  return html;
+}
+function viewRhhReclutamiento(){
+  V.rhhTabRec = V.rhhTabRec || 'vacantes';
+  var tabs = [['vacantes','Vacantes'],['candidatos','Candidatos'],['onboarding','Onboarding'],['offboarding','Offboarding']];
+  var html = pageHead([{label:'Inicio', link:'#/app/resumen'},{label:'RRHH', link:'#/app/rrhh'},{label:'Reclutamiento'}], 'Reclutamiento y selección', 'Vacantes, candidatos y ciclo de incorporación / salida',
+    '<button class="btn btn-primary" onclick="rhNuevaVacante()">'+ic('plus')+' Nueva vacante</button>');
+  html += '<div class="tabs">'+tabs.map(function(t){ return '<button class="tab'+(V.rhhTabRec===t[0]?' active':'')+'" onclick="V.rhhTabRec=\''+t[0]+'\';render()">'+esc(t[1])+'</button>'; }).join('')+'</div>';
+  if(V.rhhTabRec==='vacantes'){
+    html += '<div class="g3">'+RH_VACANTES.map(function(v){
+      var dep = rhDepto(v.depto);
+      return '<div class="card" style="padding:16px"><div class="strong">'+esc(v.nombre)+'</div><div class="small muted2">'+esc(dep?dep.nombre:'—')+(v.proyecto? ' · '+esc((rhProyecto(v.proyecto)||{}).codigo||v.proyecto) : '')+'</div>'+
+        '<div style="margin:8px 0"><span class="chip '+(v.estado==='Abierta'?'chip-success':'chip-warning')+'">'+esc(v.estado)+'</span> <span class="small muted2">'+v.vacantes+' vacante(s)</span></div>'+
+        '<div class="flex" style="gap:8px"><button class="btn btn-secondary btn-compact" onclick="toast(\'El proceso de selección abre la etapa de candidatos.\',\'info\',\'Vacante\')">'+ic('user',14)+' Ver proceso</button></div></div>';
+    }).join('')+'</div>';
+  } else if(V.rhhTabRec==='candidatos'){
+    var puedeGestionar = hasPerm('rrhh.empleados.gestionar');
+    html += '<div class="card"><div class="tbl-wrap"><table class="tbl dense"><thead><tr><th>Candidato</th><th>Cédula</th><th>Vacante</th><th>Etapa</th><th>Estado</th><th></th></tr></thead><tbody>'+
+      RH_CANDIDATOS.map(function(c){
+        var elegible = c.etapa==='Oferta enviada';
+        var title = !elegible ? 'El alta se habilita cuando el candidato supera la etapa final (Oferta enviada)' : (!puedeGestionar ? 'Se requiere el permiso rrhh.empleados.gestionar' : '');
+        return '<tr><td>'+esc(c.nombre)+'</td><td class="mono">'+esc(c.cedula)+'</td><td class="small">'+esc((RH_VACANTES.find(function(v){return v.id===c.vacante;})||{}).nombre||c.vacante)+'</td><td class="small">'+esc(c.etapa)+'</td>'+
+          '<td><span class="chip '+(elegible||c.estado==='Contratado'?'chip-success':'chip-neutral')+'">'+esc(c.estado)+'</span></td>'+
+          '<td class="small"><button class="btn btn-primary btn-compact" onclick="rhContratarCandidato(\''+c.id+'\')" '+(elegible&&puedeGestionar?'':'disabled title="'+title+'"')+' aria-label="Contratar a '+esc(c.nombre)+'">'+ic('userplus',14)+' Contratar</button></td></tr>';
+      }).join('')+'</tbody></table></div></div>';
+    html += '<div class="rbac-note">'+ic('info',14)+'<span>Los candidatos que superan el reclutamiento (etapa <b>Oferta enviada</b>) aparecen además en <b>Empleados · Registrar empleado nuevo</b>, desde donde se crea el preingreso con los datos del candidato. No hay captura manual (RN-S01).</span></div>';
+  } else if(V.rhhTabRec==='onboarding'){
+    html += '<div class="card"><div class="card-head"><div><div class="card-title">Incorporación · Laura Batista (e9)</div><div class="card-sub">Checklist de alta · 5 de 6 completados</div></div></div><div class="card-body">'+
+      RH_ONBOARDING.map(function(o){ return '<div style="display:flex;gap:10px;align-items:center;padding:8px 0;border-bottom:1px solid var(--border-subtle)">'+(o.ok? '<span class="chip chip-success">'+ic('check',12)+' Ok</span>' : '<span class="chip chip-warning">Pendiente</span>')+'<span class="small">'+esc(o.paso)+'</span></div>'; }).join('')+
+      '<div class="flex" style="gap:8px;margin-top:12px"><button class="btn btn-primary btn-compact" onclick="rhCompletarOnboarding()">'+ic('check',14)+' Marcar entrega de equipos</button></div></div></div>';
+  } else {
+    html += '<div class="card"><div class="card-head"><div><div class="card-title">Salida · Antonio Barría (e11)</div><div class="card-sub">Checklist concluido · liquidación LIQ-2026-001 pagada</div></div></div><div class="card-body">'+
+      RH_OFFBOARDING.map(function(o){ return '<div style="display:flex;gap:10px;align-items:center;padding:8px 0;border-bottom:1px solid var(--border-subtle)"><span class="chip chip-success">'+ic('check',12)+' Ok</span><span class="small">'+esc(o.paso)+'</span></div>'; }).join('')+'</div></div>';
+  }
+  return html;
+}
+function rhNuevaVacante(){
+  openModal('<div class="alert alert-info">'+ic('user',20)+'<div><h4>Nueva vacante</h4><p>La vacante se publica internamente. El aviso y los requisitos los aprueba el Gerente antes de divulgarse.</p></div></div>'+
+    '<div class="field"><label>Puesto <span class="req">*</span></label><select class="input"><option>Técnico electricista</option><option>Asistente contable</option><option>Bodeguero / logística</option></select></div>'+
+    '<div class="g2"><div class="field"><label>Departamento</label><select class="input"><option>Construcción</option><option>Finanzas</option><option>Mantenimiento</option></select></div><div class="field"><label>Cantidad <span class="req">*</span></label><input class="input mono" value="1"></div></div>',
+    {title:'Abrir vacante', size:'w520'});
+  var m = document.querySelector('.modal-body');
+  var foot = document.createElement('div'); foot.className='modal-foot';
+  foot.innerHTML='<button class="btn btn-secondary" onclick="closeModal()">Cancelar</button>'+
+    '<button class="btn btn-primary" onclick="confirmarNuevaVacante()">'+ic('user')+' Abrir vacante</button>';
+  m.after(foot);
+}
+function confirmarNuevaVacante(){ closeModal(); toast('Vacante abierta. Los candidatos podrán postular desde el portal interno.','success','Vacante publicada'); if(typeof render==='function') render(); }
+function rhCompletarOnboarding(){ var p=RH_ONBOARDING.find(function(o){return !o.ok;}); if(p) p.ok=true; toast('Entrega de equipos y EPP confirmada. Onboarding completado al 100%.','success','Onboarding completado'); render(); }
+function viewRhhDesarrollo(){
+  V.rhhTabDes = V.rhhTabDes || 'evaluaciones';
+  var tabs = [['evaluaciones','Evaluaciones'],['capacitaciones','Capacitaciones']];
+  var html = pageHead([{label:'Inicio', link:'#/app/resumen'},{label:'RRHH', link:'#/app/rrhh'},{label:'Desarrollo'}], 'Desarrollo y desempeño', 'Evaluaciones de desempeño y capacitaciones', '');
+  html += '<div class="tabs">'+tabs.map(function(t){ return '<button class="tab'+(V.rhhTabDes===t[0]?' active':'')+'" onclick="V.rhhTabDes=\''+t[0]+'\';render()">'+esc(t[1])+'</button>'; }).join('')+'</div>';
+  if(V.rhhTabDes==='evaluaciones'){
+    html += '<div class="card"><div class="tbl-wrap"><table class="tbl dense"><thead><tr><th>Evaluación</th><th>Empleado</th><th>Fecha</th><th class="num">Nota</th><th>Estado</th><th>Evaluador</th></tr></thead><tbody>'+
+      RH_EVALUACIONES.map(function(ev){
+        var e = rhEmp(ev.emp);
+        return '<tr><td>'+esc(ev.nombre)+'</td><td>'+esc(e?e.nombre:'—')+'</td><td class="mono">'+esc(ev.fecha)+'</td><td class="num">'+(ev.nota? ev.nota.toFixed(1)+' / 5' : '<span class="muted2">—</span>')+'</td>'+
+          '<td><span class="chip '+(ev.estado==='Completada'?'chip-success':'chip-warning')+'">'+esc(ev.estado)+'</span></td><td class="small">'+esc(ev.evaluador)+'</td></tr>';
+      }).join('')+'</tbody></table></div></div>';
+  } else {
+    html += '<div class="card"><div class="tbl-wrap"><table class="tbl dense"><thead><tr><th>Capacitación</th><th>Fecha</th><th class="num">Participantes</th><th class="num">Costo</th><th>Proveedor</th><th>Estado</th></tr></thead><tbody>'+
+      RH_CAPACITACIONES.map(function(c){
+        return '<tr><td>'+esc(c.nombre)+'</td><td class="mono">'+esc(c.fecha)+'</td><td class="num">'+c.participantes+'</td><td class="num mono">'+fmtM(c.costo)+'</td><td class="small">'+esc(c.proveedor)+'</td>'+
+          '<td><span class="chip '+(c.estado==='Realizada'?'chip-success':'chip-warning')+'">'+esc(c.estado)+'</span></td></tr>';
+      }).join('')+'</tbody></table></div></div>';
+  }
+  return html;
+}
+function viewRhhSeguridad(){
+  V.rhhTabSeg = V.rhhTabSeg || 'epp';
+  var tabs = [['epp','EPP'],['accidentes','Accidentes'],['equipos','Equipos']];
+  var html = pageHead([{label:'Inicio', link:'#/app/resumen'},{label:'RRHH', link:'#/app/rrhh'},{label:'Seguridad ocupacional'}], 'Seguridad y salud ocupacional', 'Equipo de protección, incidentes y equipos entregados', '');
+  html += '<div class="tabs">'+tabs.map(function(t){ return '<button class="tab'+(V.rhhTabSeg===t[0]?' active':'')+'" onclick="V.rhhTabSeg=\''+t[0]+'\';render()">'+esc(t[1])+'</button>'; }).join('')+'</div>';
+  if(V.rhhTabSeg==='epp'){
+    html += '<div class="card"><div class="tbl-wrap"><table class="tbl dense"><thead><tr><th>Equipo</th><th>Empleado</th><th>Talla</th><th>Entregado</th><th>Renovación</th><th>Estado</th></tr></thead><tbody>'+
+      RH_EPP.map(function(p){
+        var e = rhEmp(p.emp);
+        return '<tr><td>'+esc(p.equipo)+'</td><td>'+esc(e?e.nombre:'—')+'</td><td>'+esc(p.talla)+'</td><td class="mono">'+esc(p.entregado)+'</td><td class="mono">'+esc(p.renovar)+'</td>'+
+          '<td><span class="chip '+(p.estado==='Vigente'?'chip-success':'chip-warning')+'">'+esc(p.estado)+'</span></td></tr>';
+      }).join('')+'</tbody></table></div></div>';
+  } else if(V.rhhTabSeg==='accidentes'){
+    html += '<div class="card"><div class="card-body">'+ (RH_ACCIDENTES.length? RH_ACCIDENTES.map(function(a){
+      return '<div class="sol-row">'+ic('shield',20)+'<div style="flex:1"><strong>'+esc(a.nombre)+'</strong><small class="muted2">'+esc(a.fecha)+(a.emp? ' · '+esc(rhEmp(a.emp)?rhEmp(a.emp).nombre:'—') : '')+'</small></div><span class="chip '+(a.estado==='Cerrada'?'chip-success':'chip-warning')+'">'+esc(a.estado)+'</span></div>';
+    }).join('') : '<p class="small muted2">Sin incidentes registrados.</p>')+'</div></div>';
+  } else {
+    html += '<div class="card"><div class="tbl-wrap"><table class="tbl dense"><thead><tr><th>Equipo</th><th>Empleado</th><th>Entregado</th><th>Condición</th></tr></thead><tbody>'+
+      RH_EQUIPOS.map(function(eq){
+        var e = rhEmp(eq.emp);
+        return '<tr><td>'+esc(eq.equipo)+'</td><td>'+esc(e?e.nombre:'—')+'</td><td class="mono">'+esc(eq.entregado)+'</td><td class="small">'+esc(eq.condicion)+'</td></tr>';
+      }).join('')+'</tbody></table></div></div>';
+  }
+  return html;
+}
+function viewRhhReportes(){
+  var d = rhPlanillaDetalle(RH_PLANILLAS[2]);
+  var html = pageHead([{label:'Inicio', link:'#/app/resumen'},{label:'RRHH', link:'#/app/rrhh'},{label:'Reportes'}], 'Reportes RH', 'Indicadores de personal y exportaciones',
+    '<button class="btn btn-secondary" onclick="rhExportReportes()">'+ic('download',16)+' Exportar CSV</button>');
+  html += '<div class="grid" style="grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px">'+
+    '<div class="card" style="padding:18px"><div class="strong">Costo mensual de planilla</div><div class="mono" style="font-size:20px;margin:8px 0">'+fmtM(d.tot.base*2)+'</div><div class="small muted2">Base quincenal × 2 · acumulado septiembre</div></div>'+
+    '<div class="card" style="padding:18px"><div class="strong">Rotación de personal</div><div class="mono" style="font-size:20px;margin:8px 0">1 salida / '+(2026-2019)+' años</div><div class="small muted2">Tasa anual 9% · retroceso histórico conservador</div></div>'+
+    '<div class="card" style="padding:18px"><div class="strong">Ausentismo de septiembre</div><div class="mono" style="font-size:20px;margin:8px 0">2 días</div><div class="small muted2">2 marcaciones tardías · sin faltas injustificadas</div></div>'+
+    '<div class="card" style="padding:18px"><div class="strong">Horas extras del período</div><div class="mono" style="font-size:20px;margin:8px 0">12.5 h</div><div class="small muted2">'+fmtM(d.tot.extras)+' en la quincena 2 · 5 solicitudes</div></div>'+
+  '</div>';
+  html += '<div class="rbac-note">'+ic('info',14)+'<span>Los reportes son de demostración. En producción, el BFF agrega los datos y responde solo lo permitido por rol (RN-S01).</span></div>';
+  return html;
+}
+function rhExportReportes(){ downloadCSV('reporte-rh-sept-2026',['Empleado','Cargo','Depto','Salario','Estado'], RH_EMPLEADOS.map(function(e){ return [e.nombre, e.cargo, (rhDepto(e.depto)||{}).nombre||'', e.salario, e.estado]; })); }
+function viewRhhConfiguracion(){
+  var html = pageHead([{label:'Inicio', link:'#/app/resumen'},{label:'RRHH', link:'#/app/rrhh'},{label:'Configuración'}], 'Configuración RH', 'Parámetros de la operación (solo rol RRHH con permiso rrhh.configuracion)', '');
+  html += '<div class="g2">'+
+    '<div class="card"><div class="card-head"><div><div class="card-title">Parámetros de nómina</div><div class="card-sub">Motor parametrizable · supuesto PA-17</div></div></div><div class="card-body">'+
+      '<div class="field"><label>Porcentaje CSS (cuota obrera)</label><input class="input mono" value="9.75%"></div>'+
+      '<div class="field"><label>Días de vacaciones anuales</label><input class="input mono" value="30"></div>'+
+      '<div class="field"><label>Límite de horas extra por período</label><input class="input mono" value="40 h"></div>'+
+      '<div class="field"><label>Días de preaviso para anticipo</label><input class="input mono" value="3"></div>'+
+      '<button class="btn btn-primary" onclick="toast(\'Los parámetros se guardan como versión auditada.\',\'success\',\'Guardado\')">'+ic('check')+' Guardar parámetros</button>'+
+    '</div></div>'+
+    '<div class="card"><div class="card-head"><div><div class="card-title">Flags de funcionalidad</div><div class="card-sub">Los activa el operador según el plan (kill-switch de módulos)</div></div></div><div class="card-body">'+
+      ['feature RH','Nómina y planilla','Asistencia y marcación','Portal del empleado','Reclutamiento','Seguridad ocupacional'].map(function(f,i){
+        return '<label class="check" style="display:flex;gap:10px;align-items:center;padding:8px 0;border-bottom:1px solid var(--border-subtle)"><input type="checkbox" checked>'+(i===0||i===1?' checked':'')+'<span><strong>'+esc(f)+'</strong></span></label>';
+      }).join('')+
+      '<div class="alert alert-warning" style="margin-top:12px">'+ic('shield',16)+'<div><h4>RBAC</h4><p>El backend es la autoridad real: aquí solo se controla la experiencia del frontend. Los flags se sincronizan con el catálogo de permisos <code>modulo.accion</code>.</p></div></div>'+
+    '</div></div>'+
+  '</div>';
+  return html;
+}
+function nuevoPagoEnLineaPortal(){
+  var pa = contratoPortal(); if(!pa) return;
+  var html = '<div class="alert alert-info">'+ic('info',20)+'<div><h4>Débito ACH · mandato</h4><p>Con tu consentimiento (Ley 81) la administración debita el canon de tu cuenta el día 5 de cada mes. El demo simula la orden SEPA/ACH.</p></div></div>'+
+    '<div class="field"><label for="ach-cuenta">Cuenta a debitar <span class="req">*</span></label><select class="input" id="ach-cuenta"><option>Cuenta corriente · 0123-456-789 · Banco General</option></select></div>'+
+    '<div class="field"><label for="ach-dia">Día de débito</label><select class="input" id="ach-dia"><option>5 · mensual</option></select></div>';
+  var m = openModal(html, {title:'Pagar en línea · Débito ACH', size:'w520'});
+  var foot = document.createElement('div'); foot.className='modal-foot';
+  foot.innerHTML='<button class="btn btn-secondary" onclick="closeModal()">Cancelar</button>'+
+    '<button class="btn btn-primary" onclick="confirmarMandatoACH()">'+ic('check')+' Aceptar mandato</button>';
+  m.querySelector('.modal-body').after(foot);
+}
+function nuevoPagoYappyPortal(){
+  var rcs = recibosPortal().filter(function(r){ return r.estado!=='Pagado'; });
+  if(rcs.length && Number(rcs[0].monto) > 1000){ toast('Yappy tiene un límite de B/. 1,000 por transacción. Este recibo supera el monto: usa Débito ACH o adjunta un comprobante.','warning','Yappy no disponible'); return; }
+  var pa = contratoPortal(); if(!pa) return;
+  var rcs = recibosPortal().filter(function(r){ return r.estado!=='Pagado'; });
+  if(!rcs.length){ toast('Todos tus recibos están pagados.','info','Sin pendientes'); return; }
+  var opts = rcs.map(function(r){ return '<option value="'+esc(r.folio)+'">'+esc(r.folio)+' · '+esc(r.periodo)+' · '+fmtM(r.monto)+'</option>'; }).join('');
+  var html = '<div class="alert alert-success">'+ic('smartphone',20)+'<div><h4>Yappy · Banco General</h4><p>Elige el recibo, configura el monto y genera el pago Yappy. Luego <b>sube el comprobante</b> para que la administración lo valide.</p></div></div>'+
+    '<div class="field"><label for="y-folio">Recibo a pagar <span class="req">*</span></label><select class="input" id="y-folio">'+opts+'</select></div>'+
+    '<div class="field"><label for="y-monto">Monto (B/.) <span class="req">*</span></label><input class="input mono" id="y-monto" value="'+rcs[0].monto+'"></div>'+
+    '<div class="field"><label for="y-corr">Correo / móvil del inquilino <span class="req">*</span></label><input class="input" id="y-corr" value="'+(pa.inquilino? esc(persona(pa.inquilino).correo) : '')+'"></div>';
+  var m = openModal(html, {title:'Pagar con Yappy · Generar pago', size:'w520'});
+  var foot = document.createElement('div'); foot.className='modal-foot';
+  foot.innerHTML='<button class="btn btn-secondary" onclick="closeModal()">Cancelar</button>'+
+    '<button class="btn btn-primary" onclick="generarPagoYappy()">'+ic('smartphone')+' Generar pago Yappy</button>';
+  m.querySelector('.modal-body').after(foot);
+}
+function generarPagoYappy(){
+  var sel = document.getElementById('y-folio'); if(!sel) return;
+  var folio = sel.value;
+  var r = RECIBOS.find(function(x){ return x.folio===folio; }); if(!r) return;
+  var monto = (document.getElementById('y-monto')||{}).value||'';
+  closeModal();
+  toast('Pago Yappy B/. '+monto+' generado para '+folio+'. Abre la app de Yappy para completar el pago y luego sube el comprobante.','info','Yappy');
+  // en producción el BFF crea el link de pago Yappy; aquí lo simulamos
+  openModal('<div class="alert alert-success">'+ic('smartphone',28)+'<div><h4>Yappy listo para tu inquilino</h4><p>Se envió la solicitud de pago a la app Yappy de <span class="mono">'+esc(persona(r.contrato? r.contrato : 'p1').correo)+'</span>. Cuando el inquilino complete el pago, sube aquí el comprobante para validarlo.</p></div></div>'+
+    '<div class="field"><label for="yc-file">Comprobante (captura / PDF) <span class="req">*</span></label><input class="input" type="file" id="yc-file" accept="image/*,.pdf"></div>',
+    {title:'Yappy · Subir comprobante', size:'w520'});
+  var foot = document.createElement('div'); foot.className='modal-foot';
+  foot.innerHTML='<button class="btn btn-secondary" onclick="closeModal()">Cancelar</button>'+
+    '<button class="btn btn-primary" onclick="subirComprobanteYappy(\''+folio+'\')">'+ic('upload')+' Subir comprobante</button>';
+  document.querySelector('#overlay-root .modal .modal-body').after(foot);
+}
+function subirComprobanteYappy(folio){
+  var file = document.getElementById('yc-file');
+  if(!file || !file.files || !file.files.length){ toast('Adjunta la captura o el PDF del comprobante Yappy.','warning','Falta archivo'); return; }
+  var r = RECIBOS.find(function(x){ return x.folio===folio; }); if(!r) return;
+  r.estado = 'Pagado'; r.pago = '01'+fmt?? 
+  closeModal();
+  toast('Comprobante Yappy recibido · pago B/. '+r.monto+' validado. Se notificó a la administración.','success','Pago Yappy validado');
+  render();
+}
+function rhActual(){ if(!session || (session.type!=='empleado' && session.type!=='supervisor')) return null; return rhEmp(session.user && session.user.rhId) || null; }
+function viewPortalEmpResumen(){
+  var e = rhActual(); if(!e) return guardScreen('Portal del empleado');
+  var saldo = RH_SALDO_VAC[e.id]||0;
+  var misMarc = RH_MARCACIONES.filter(function(m){ return m.emp===e.id; });
+  var pendientes = RH_ANTICIPOS.filter(function(a){ return a.emp===e.id && a.estado==='Pendiente'; }).length +
+    RH_VACACIONES.filter(function(v){ return v.emp===e.id && v.estado==='En revisión'; }).length;
+  var html = pageHead([{label:'Mi portal', link:'#/portal/empleado/resumen'}], 'Hola, '+e.nombre.split(' ')[0], 'Septiembre 2026 · Panel del empleado', '');
+  html += '<div class="dash-toolbar"><span class="chip-select">'+ic('calendar',16)+'<span>Período: Septiembre 2026</span>'+ic('chevdown',14)+'</span><span class="muted small">'+esc(e.estado)+' · '+esc(e.cargo)+'</span><span class="spacer"></span></div>';
+  html += '<div class="kpis">'+
+    '<div class="card stat-card stat-card-h"><div class="stat-ico brand">'+ic('calendar',20)+'</div><div class="stat-body"><div class="stat-label">Saldo de vacaciones</div><div class="stat-value">'+saldo+' días</div><div class="stat-meta">Acumulado al cierre de agosto</div></div></div>'+
+    '<div class="card stat-card stat-card-h"><div class="stat-ico succ">'+ic('clock',20)+'</div><div class="stat-body"><div class="stat-label">Marcaciones</div><div class="stat-value">'+misMarc.length+'</div><div class="stat-meta">Semana del 14 al 18 de septiembre</div></div></div>'+
+    '<div class="card stat-card stat-card-h"><div class="stat-ico warn">'+ic('wallet',20)+'</div><div class="stat-body"><div class="stat-label">Próxima planilla</div><div class="stat-value">Q2 · Sept</div><div class="stat-meta">Pago el 30/09/2026</div></div></div>'+
+    '<div class="card stat-card stat-card-h"><div class="stat-ico danger">'+ic('alert',20)+'</div><div class="stat-body"><div class="stat-label">Pendientes</div><div class="stat-value">'+pendientes+'</div><div class="stat-meta">Solicitudes en revisión</div></div></div>'+
+  '</div>';
+  html += '<div class="g2">'+
+    '<div class="card"><div class="card-head"><div><div class="card-title">Mis datos</div><div class="card-sub">Información del expediente laboral</div></div><a href="#/portal/empleado/datos" class="btn btn-ghost btn-sm">Ver datos</a></div><div class="card-body">'+
+      '<div class="emp-id"><span class="avatar">'+esc(e.iniciales)+'</span><div><strong>'+esc(e.nombre)+'</strong><small class="muted2">'+esc(e.cargo)+' · '+esc((rhDepto(e.depto)||{}).nombre||'—')+'</small></div></div>'+
+      '<div class="g2" style="margin-top:12px"><div><div class="muted2 small">Fechas de ingreso</div><div class="mono">'+esc(e.fechaIngreso)+'</div></div><div><div class="muted2 small">Contrato</div><div class="mono">'+esc(e.tipoContrato)+'</div></div></div>'+
+    '</div></div>'+
+    '<div class="card"><div class="card-head"><div><div class="card-title">Solicitudes recientes</div><div class="card-sub">Vacaciones, permisos y anticipos</div></div><a href="#/portal/empleado/solicitudes" class="btn btn-ghost btn-sm">Ver todas</a></div><div class="card-body">'+
+      (function(){
+        var rows = [];
+        RH_VACACIONES.filter(function(v){return v.emp===e.id;}).forEach(function(v){ rows.push([ic('calendar',16), 'Vacaciones · '+v.dias+' días', v.estado, v.ini+' → '+v.fin]); });
+        RH_PERMISOS.filter(function(p){return p.emp===e.id;}).forEach(function(p){ rows.push([ic('shield',16), 'Permiso · '+p.tipo, p.estado, p.fecha]); });
+        RH_ANTICIPOS.filter(function(a){return a.emp===e.id;}).forEach(function(a){ rows.push([ic('wallet',16), 'Anticipo · '+fmtM(a.monto), a.estado, a.fecha]); });
+        if(!rows.length) rows.push([ic('info',16), 'Sin solicitudes recientes', '—', '']);
+        return rows.map(function(r){
+          return '<div class="sol-row">'+r[0]+'<div style="flex:1"><strong class="small">'+r[1]+'</strong><small class="muted2">'+r[3]+'</small></div><span class="chip '+(r[2]==='Aprobada'||r[2]==='Aprobado'||r[2]==='Pagado'?'chip-success':r[2]==='Rechazado'?'chip-danger':'chip-warning')+'">'+r[2]+'</span></div>';
+        }).join('');
+      })()+
+    '</div></div>'+
+  '</div>';
+  html += '<div class="card"><div class="card-head"><div><div class="card-title">Mis marcaciones</div><div class="card-sub">Automáticas desde el reloj de obra / portal</div></div><a href="#/portal/empleado/asistencia" class="btn btn-ghost btn-sm">Ver asistencia</a></div>'+
+    '<div class="tbl-wrap"><table class="tbl dense"><thead><tr><th>Fecha</th><th>Entrada</th><th>Salida</th><th class="num">Horas</th><th class="num">Tardía</th></tr></thead><tbody>'+
+    (misMarc.length? misMarc.map(function(m){
+      return '<tr><td class="mono">'+esc(m.fecha)+'</td><td class="mono">'+esc(m.entrada)+'</td><td class="mono">'+esc(m.salida)+'</td><td class="num mono">'+m.horas.toFixed(1)+'</td><td class="num">'+(m.tardia? '<span class="chip chip-warning">'+m.tardia+' min</span>':'<span class="muted2">—</span>')+'</td></tr>';
+    }).join('') : '<tr><td colspan="5" class="muted2 small">Sin marcaciones esta semana.</td></tr>')+
+    '</tbody></table></div></div>';
+  return html;
+}
+function viewPortalEmpRecibos(){
+  var e = rhActual(); if(!e) return guardScreen('Portal del empleado');
+  var filas = rhPlanillaDetalle(RH_PLANILLAS[2]).filas.filter(function(f){ return f.emp.id===e.id; })[0];
+  var html = pageHead([{label:'Mi portal', link:'#/portal/empleado/resumen'},{label:'Recibos'}], 'Mis recibos de pago', 'Comprobantes de nómina por período', '<button class="btn btn-secondary" onclick="rhExportRecibos()">'+ic('download',16)+' Exportar</button>');
+  html += '<div class="alert alert-info">'+ic('info',20)+'<div><h4>Recibo digital</h4><p>Cada recibo se emite contra la planilla cerrada y es inmutable. Si detectas una diferencia, escríbenos al correo de RRHH.</p></div></div>';
+  html += '<div class="card"><div class="tbl-wrap"><table class="tbl dense"><thead><tr><th>Período</th><th>N.º</th><th>Base</th><th class="num">Extras</th><th class="num">Deducciones</th><th class="num">Neto</th><th>Estado</th></tr></thead><tbody>'+
+    RH_PLANILLAS.slice().reverse().map(function(pl){
+      var det = rhPlanillaDetalle(pl).filas.filter(function(f){ return f.emp.id===e.id; })[0];
+      if(!det) return '';
+      var ded = det.css+det.presta+det.anticipo;
+      return '<tr><td>'+esc(pl.nombre)+'</td><td class="mono">'+esc(pl.ref)+'</td><td class="num mono">'+fmtM(det.base)+'</td><td class="num mono">'+fmtM(det.extras)+'</td><td class="num mono">-'+fmtM(ded)+'</td><td class="num mono strong">'+fmtM(det.neto)+'</td>'+
+        '<td><span class="chip '+(pl.estado==='Pagada'?'chip-success':pl.estado==='Aprobada'?'chip-warning':'chip-neutral')+'">'+esc(pl.estado)+'</span></td></tr>';
+    }).join('')+'</tbody></table></div></div>';
+  html += '<div class="rbac-note">'+ic('shield',14)+'<span>Los recibos se generan en el backend y no pueden modificarse desde este portal (RN-RH-05).</span></div>';
+  return html;
+}
+function rhExportRecibos(){
+  var e = rhActual();
+  downloadCSV('recibos-de-pago', ['Periodo','Base','Extras','Deducciones','Neto','Estado'], RH_PLANILLAS.filter(function(pl){ return rhPlanillaDetalle(pl).filas.some(function(f){ return f.emp.id===e.id; }); }).map(function(pl){
+    var det = rhPlanillaDetalle(pl).filas.filter(function(f){ return f.emp.id===e.id; })[0];
+    return [pl.nombre, det.base, det.extras, det.css+det.presta+det.anticipo, det.neto, pl.estado];
+  }));
+}
+function viewPortalEmpAsistencia(){
+  var e = rhActual(); if(!e) return guardScreen('Portal del empleado');
+  var misMarc = RH_MARCACIONES.filter(function(m){ return m.emp===e.id; });
+  var misHE = RH_HORAS_EXTRAS.filter(function(h){ return h.emp===e.id; });
+  var hor = rhHorario(e.horario);
+  var html = pageHead([{label:'Mi portal', link:'#/portal/empleado/resumen'},{label:'Asistencia'}], 'Mi asistencia', 'Horario, marcaciones y horas extra',
+    '<button class="btn btn-primary" onclick="rhSolicitarPortal(\'horas-extra\')">'+ic('plus')+' Solicitar hora extra</button>');
+  html += '<div class="g2">'+
+    '<div class="card"><div class="card-head"><div><div class="card-title">Mi horario</div><div class="card-sub">Asignado por RRHH</div></div></div><div class="card-body">'+
+      (hor? '<div class="strong">'+esc(hor.nombre)+'</div><div class="mono" style="margin:6px 0">'+esc(hor.jornada)+' · '+esc(hor.dias)+'</div><div class="small muted2">Descanso '+esc(hor.descanso)+'</div>' : '<p class="muted2 small">Sin horario asignado.</p>')+
+    '</div></div>'+
+    '<div class="card"><div class="card-head"><div><div class="card-title">Resumen de la semana</div><div class="card-sub">Del 14 al 18 de septiembre</div></div></div><div class="card-body">'+
+      '<div class="g2"><div><div class="muted2 small">Marcaciones</div><div class="strong">'+misMarc.length+'</div></div><div><div class="muted2 small">Tardías</div><div class="strong" style="color:var(--warn)">'+misMarc.filter(function(m){return m.tardia;}).length+'</div></div></div>'+
+    '</div></div>'+
+  '</div>';
+  html += '<div class="card"><div class="card-head"><div><div class="card-title">Mis horas extra</div><div class="card-sub">Solicitudes y estado</div></div></div>'+
+    '<div class="tbl-wrap"><table class="tbl dense"><thead><tr><th>Ref</th><th>Fecha</th><th class="num">Horas</th><th>Tipo</th><th>Estado</th></tr></thead><tbody>'+
+    (misHE.length? misHE.map(function(h){
+      return '<tr><td class="mono">'+esc(h.id)+'</td><td class="mono">'+esc(h.fecha)+'</td><td class="num">'+h.horas+'</td><td class="small">'+esc(h.tipo)+'</td><td><span class="chip '+(h.estado==='Aprobada'?'chip-success':h.estado==='Rechazada'?'chip-danger':'chip-warning')+'">'+esc(h.estado)+'</span></td></tr>';
+    }).join('') : '<tr><td colspan="5" class="muted2 small">Sin solicitudes de horas extra.</td></tr>')+
+    '</tbody></table></div></div>';
+  return html;
+}
+function viewPortalEmpTiempoLibre(){
+  var e = rhActual(); if(!e) return guardScreen('Portal del empleado');
+  var saldo = RH_SALDO_VAC[e.id]||0;
+  var html = pageHead([{label:'Mi portal', link:'#/portal/empleado/resumen'},{label:'Tiempo libre'}], 'Tiempo libre', 'Solicitudes de vacaciones, permisos e incapacidades',
+    '<button class="btn btn-primary" onclick="rhSolicitarPortal(\'vacaciones\')">'+ic('plus')+' Solicitar vacaciones</button>');
+  html += '<div class="kpis">'+
+    '<div class="card stat-card stat-card-h"><div class="stat-ico brand">'+ic('calendar',20)+'</div><div class="stat-body"><div class="stat-label">Saldo de vacaciones</div><div class="stat-value">'+saldo+' días</div><div class="stat-meta">Próxima solicitud permite hasta '+Math.min(saldo,15)+' días</div></div></div>'+
+  '</div>';
+  html += '<div class="g2">'+
+    '<div class="card"><div class="card-head"><div><div class="card-title">Vacaciones</div><div class="card-sub">Aprobadas por el jefe inmediato y RRHH</div></div></div><div class="card-body">'+
+      (RH_VACACIONES.filter(function(v){return v.emp===e.id;}).length? RH_VACACIONES.filter(function(v){return v.emp===e.id;}).map(function(v){
+        return '<div class="sol-row">'+ic('calendar',20)+'<div style="flex:1"><strong>'+esc(v.dias)+' días</strong><small>'+esc(v.ini)+' → '+esc(v.fin)+'</small></div><span class="chip '+(v.estado==='Aprobada'?'chip-success':'chip-warning')+'">'+esc(v.estado)+'</span></div>';
+      }).join('') : '<p class="small muted2">Sin solicitudes de vacaciones.</p>')+
+    '</div></div>'+
+    '<div class="card"><div class="card-head"><div><div class="card-title">Permisos e incapacidades</div><div class="card-sub">Historial del expediente</div></div></div><div class="card-body">'+
+      (RH_PERMISOS.filter(function(p){return p.emp===e.id;}).concat(RH_INCAPACIDADES.filter(function(i){return i.emp===e.id;})).length?
+        RH_PERMISOS.filter(function(p){return p.emp===e.id;}).map(function(p){
+          return '<div class="sol-row">'+ic('shield',20)+'<div style="flex:1"><strong>Permiso · '+esc(p.tipo)+'</strong><small>'+esc(p.motivo)+' · '+esc(p.fecha)+'</small></div><span class="chip '+(p.estado==='Aprobado'?'chip-success':p.estado==='Rechazado'?'chip-danger':'chip-warning')+'">'+esc(p.estado)+'</span></div>';
+        }).join('') + RH_INCAPACIDADES.filter(function(i){return i.emp===e.id;}).map(function(i){
+          return '<div class="sol-row">'+ic('file',20)+'<div style="flex:1"><strong>Incapacidad · '+esc(i.tipo)+'</strong><small>'+esc(i.ini)+' → '+esc(i.fin)+' ('+i.dias+' días)</small></div><span class="chip chip-warning">'+esc(i.estado)+'</span></div>';
+        }).join('') : '<p class="small muted2">Sin permisos ni incapacidades registrados.</p>')+
+    '</div></div>'+
+  '</div>';
+  return html;
+}
+function rhSolicitarPortal(tipo){
+  var e = rhActual();
+  var body = '<div class="alert alert-info">'+ic('info',20)+'<div><h4>Solicitud</h4><p>Al enviar, tu jefe inmediato recibe la notificación para aprobarla. RRHH la confirma antes de guardar el cambio en el expediente.</p></div></div>';
+  if(tipo==='vacaciones'){
+    body += '<div class="g2"><div class="field"><label for="vl-ini">Inicio <span class="req">*</span></label><input class="input mono" id="vl-ini" placeholder="DD/MM/YYYY"></div><div class="field"><label for="vl-fin">Fin <span class="req">*</span></label><input class="input mono" id="vl-fin" placeholder="DD/MM/YYYY"></div></div>'+
+      '<div class="field"><label for="vl-dias">Días <span class="req">*</span></label><input class="input mono" id="vl-dias" placeholder="2"></div>';
+  } else {
+    body += '<div class="field"><label for="he-fecha">Fecha <span class="req">*</span></label><input class="input mono" id="he-fecha" placeholder="DD/MM/YYYY"></div>'+
+      '<div class="g2"><div class="field"><label for="he-horas">Horas <span class="req">*</span></label><input class="input mono" id="he-horas" placeholder="2"></div><div class="field"><label for="he-tipo">Tipo</label><select class="input" id="he-tipo"><option>Extra diurna</option><option>Extra nocturna</option></select></div></div>'+
+      '<div class="field"><label for="he-motivo">Motivo <span class="req">*</span></label><input class="input" id="he-motivo" placeholder="Avance de obra, soporte, etc."></div>';
+  }
+  openModal(body, {title: tipo==='vacaciones'?'Solicitar vacaciones':'Solicitar horas extra', size:'w520'});
+  var m = document.querySelector('.modal-body');
+  var foot = document.createElement('div'); foot.className='modal-foot';
+  foot.innerHTML='<button class="btn btn-secondary" onclick="closeModal()">Cancelar</button>'+
+    '<button class="btn btn-primary" onclick="confirmarSolicitudPortal(\''+tipo+'\')">'+ic('check')+' Enviar solicitud</button>';
+  m.after(foot);
+}
+function confirmarSolicitudPortal(tipo){
+  closeModal();
+  toast(tipo==='vacaciones' ? 'Solicitud de vacaciones enviada. Tu jefe inmediato la revisará.' : 'Solicitud de horas extra enviada.','success','Solicitud enviada');
+  if(typeof render==='function') render();
+}
+function viewPortalEmpSolicitudes(){
+  var e = rhActual(); if(!e) return guardScreen('Portal del empleado');
+  var items = [];
+  RH_VACACIONES.filter(function(v){return v.emp===e.id;}).forEach(function(v){ items.push({icon:'calendar', txt:'Vacaciones · '+v.dias+' días', sub:v.ini+' → '+v.fin, est:v.estado, fecha:v.creada}); });
+  RH_PERMISOS.filter(function(p){return p.emp===e.id;}).forEach(function(p){ items.push({icon:'shield', txt:'Permiso · '+p.tipo, sub:p.motivo+' · '+p.fecha, est:p.estado, fecha:p.fecha}); });
+  RH_HORAS_EXTRAS.filter(function(h){return h.emp===e.id;}).forEach(function(h){ items.push({icon:'clock', txt:'Horas extra · '+h.horas+' h', sub:h.fecha+' · '+h.tipo, est:h.estado, fecha:h.fecha}); });
+  RH_ANTICIPOS.filter(function(a){return a.emp===e.id;}).forEach(function(a){ items.push({icon:'wallet', txt:'Anticipo · '+fmtM(a.monto), sub:a.fecha, est:a.estado, fecha:a.fecha}); });
+  items.sort(function(a,b){ return a.fecha<b.fecha?1:-1; });
+  var html = pageHead([{label:'Mi portal', link:'#/portal/empleado/resumen'},{label:'Solicitudes'}], 'Mis solicitudes', 'Historial y estado de cada trámite', '');
+  html += '<div class="card"><div class="card-body">'+
+    (items.length? items.map(function(it){
+      return '<div class="sol-row">'+ic(it.icon,20)+'<div style="flex:1"><strong>'+esc(it.txt)+'</strong><small>'+esc(it.sub)+' · '+esc(it.fecha)+'</small></div>'+
+        '<span class="chip '+(it.est==='Aprobada'||it.est==='Aprobado'||it.est==='Pagado'?'chip-success':it.est==='Rechazada'||it.est==='Rechazado'?'chip-danger':'chip-warning')+'">'+esc(it.est)+'</span></div>';
+    }).join('') : '<p class="small muted2">Aún no tienes solicitudes. Usa Asistencia o Tiempo libre para crear la primera.</p>')+
+  '</div></div>';
+  return html;
+}
+function viewPortalEmpPrestamos(){
+  var e = rhActual(); if(!e) return guardScreen('Portal del empleado');
+  var prest = RH_PRESTAMOS.filter(function(p){ return p.emp===e.id; });
+  var antic = RH_ANTICIPOS.filter(function(a){ return a.emp===e.id; });
+  var html = pageHead([{label:'Mi portal', link:'#/portal/empleado/resumen'},{label:'Préstamos y anticipos'}], 'Préstamos y anticipos', 'Deducciones activas y solicitudes de anticipo',
+    '<button class="btn btn-primary" onclick="rhSolicitarAnticipo()">'+ic('plus')+' Solicitar anticipo</button>');
+  html += '<div class="card"><div class="card-head"><div><div class="card-title">Préstamos</div><div class="card-sub">Cuota quincenal descontada en planilla</div></div></div>'+
+    '<div class="tbl-wrap"><table class="tbl dense"><thead><tr><th>Ref</th><th class="num">Monto</th><th class="num">Cuota</th><th class="num">Pagadas</th><th class="num">Saldo</th><th>Estado</th></tr></thead><tbody>'+
+    (prest.length? prest.map(function(p){
+      return '<tr><td class="mono">'+esc(p.id)+'</td><td class="num mono">'+fmtM(p.monto)+'</td><td class="num mono">'+fmtM(p.cuota)+'</td><td class="num">'+p.pagadas+' / '+p.cuotas+'</td><td class="num mono">'+fmtM(p.saldo)+'</td><td><span class="chip '+(p.estado==='Activo'?'chip-warning':'chip-neutral')+'">'+esc(p.estado)+'</span></td></tr>';
+    }).join('') : '<tr><td colspan="6" class="muted2 small">Sin préstamos activos.</td></tr>')+
+    '</tbody></table></div></div>';
+  html += '<div class="card"><div class="card-head"><div><div class="card-title">Anticipos</div><div class="card-sub">Aprobación de RRHH, descuento en siguiente planilla</div></div></div>'+
+    '<div class="tbl-wrap"><table class="tbl dense"><thead><tr><th>Ref</th><th class="num">Monto</th><th class="num">Cuota</th><th>Fecha</th><th>Estado</th></tr></thead><tbody>'+
+    (antic.length? antic.map(function(a){
+      return '<tr><td class="mono">'+esc(a.id)+'</td><td class="num mono">'+fmtM(a.monto)+'</td><td class="num mono">'+fmtM(a.cuota)+'</td><td class="mono">'+esc(a.fecha)+'</td><td><span class="chip '+(a.estado==='Pagado'?'chip-success':a.estado==='Aprobado'?'chip-warning':'chip-neutral')+'">'+esc(a.estado)+'</span></td></tr>';
+    }).join('') : '<tr><td colspan="5" class="muted2 small">Sin anticipos.</td></tr>')+
+    '</tbody></table></div></div>';
+  return html;
+}
+function rhSolicitarAnticipo(){
+  openModal('<div class="alert alert-info">'+ic('wallet',20)+'<div><h4>Solicitud de anticipo</h4><p>El anticipo se descuenta en la siguiente planilla. RRHH lo aprueba y registra la deducción.</p></div></div>'+
+    '<div class="field"><label for="an-monto">Monto (B/.) <span class="req">*</span></label><input class="input mono" id="an-monto" placeholder="150.00"></div>'+
+    '<div class="field"><label for="an-motivo">Motivo <span class="req">*</span></label><input class="input" id="an-motivo" placeholder="Gastos médicos, arreglo del vehículo, etc."></div>',
+    {title:'Solicitar anticipo', size:'w520'});
+  var m = document.querySelector('.modal-body');
+  var foot = document.createElement('div'); foot.className='modal-foot';
+  foot.innerHTML='<button class="btn btn-secondary" onclick="closeModal()">Cancelar</button>'+
+    '<button class="btn btn-primary" onclick="closeModal();toast(\'Anticipo solicitado. RRHH lo evalúa y te notifica.\',\'success\',\'Solicitud enviada\');render()">'+ic('check')+' Enviar</button>';
+  m.after(foot);
+}
+function viewPortalEmpDocumentos(){
+  var e = rhActual(); if(!e) return guardScreen('Portal del empleado');
+  var docs = [
+    {nombre:'Certificado de salario · Quincena 2', fecha:'30/09/2026', tipo:'PDF', ref:'CERT-2026-108'},
+    {nombre:'Carta de constancia laboral', fecha:'16/09/2026', tipo:'PDF', ref:'CART-2026-054'},
+    {nombre:'Recibo PL-2026-009 · Quincena 1', fecha:'15/09/2026', tipo:'PDF', ref:'REC-2026-009'},
+    {nombre:'Contrato de trabajo · '+esc(e.tipoContrato), fecha:'10/03/2022', tipo:'PDF', ref:rhContrato(e.id)?rhContrato(e.id).ref:'—'}
+  ];
+  var html = pageHead([{label:'Mi portal', link:'#/portal/empleado/resumen'},{label:'Documentos'}], 'Mis documentos', 'Certificados, constancias y recibos que puedes descargar', '');
+  html += '<div class="card"><div class="card-body">'+
+    docs.map(function(d){
+      return '<div class="sol-row">'+ic('file',20)+'<div style="flex:1"><strong class="small">'+d.nombre+'</strong><small class="muted2">'+d.ref+' · '+d.fecha+'</small></div><span class="chip chip-neutral">'+d.tipo+'</span><button class="btn btn-secondary btn-compact" onclick="toast(\'Descarga simulada: '+esc(d.ref)+'\',\'success\',\'Documento\')">'+ic('download',14)+'</button></div>';
+    }).join('')+
+  '</div></div>';
+  html += '<div class="rbac-note">'+ic('shield',14)+'<span>Los certificados son generados por RRHH; este portal solo permite su descarga (RN-RH-06).</span></div>';
+  return html;
+}
+function viewPortalEmpDatos(){
+  var e = rhActual(); if(!e) return guardScreen('Portal del empleado');
+  var html = pageHead([{label:'Mi portal', link:'#/portal/empleado/resumen'},{label:'Datos'}], 'Mis datos', 'Información personal y de contacto (lee lo que el backend expone)', '<button class="btn btn-primary" onclick="rhEditarDatosPortal()">'+ic('edit')+' Actualizar contacto</button>');
+  html += '<div class="g2">'+
+    '<div class="card"><div class="card-head"><div><div class="card-title">Información personal</div><div class="card-sub">Expediente laboral</div></div></div><div class="card-body">'+
+      '<div class="field"><label>Nombre completo</label><div class="input-like">'+esc(e.nombre)+'</div></div>'+
+      '<div class="field"><label>Cédula</label><div class="input-like mono">'+esc(e.cedula)+'</div></div>'+
+      '<div class="field"><label>Fecha de nacimiento</label><div class="input-like mono">'+esc(e.nacim)+'</div></div>'+
+      '<div class="field"><label>Estado civil</label><div class="input-like">'+esc(e.civ)+'</div></div>'+
+      '<div class="field"><label>Nacionalidad</label><div class="input-like">'+esc(e.nacionalidad)+'</div></div>'+
+    '</div></div>'+
+    '<div class="card"><div class="card-head"><div><div class="card-title">Contacto y contracto</div><div class="card-sub">Solo tú y RRHH pueden editar estos campos</div></div></div><div class="card-body">'+
+      '<div class="field"><label>Correo corporativo</label><div class="input-like">'+esc(e.correo)+'</div></div>'+
+      '<div class="field"><label>Teléfono</label><div class="input-like">'+esc(e.tel)+'</div></div>'+
+      '<div class="field"><label>Dirección</label><div class="input-like">'+esc(e.direccion)+'</div></div>'+
+      '<div class="field"><label>Contacto de emergencia</label><div class="input-like">'+esc(e.emergencia.nombre+' · '+e.emergencia.rel+' · '+e.emergencia.tel)+'</div></div>'+
+      '<div class="field"><label>Banco / cuenta</label><div class="input-like mono">'+esc(e.banco+' · '+e.cuenta)+'</div></div>'+
+    '</div></div>'+
+  '</div>';
+  return html;
+}
+function rhEditarDatosPortal(){
+  openModal('<div class="alert alert-info">'+ic('edit',20)+'<div><h4>Actualizar datos de contacto</h4><p>Los cambios quedan en revisión y RRHH los confirma para mantener el expediente auditado.</p></div></div>'+
+    '<div class="field"><label>Teléfono</label><input class="input" value="+507 6110-3345"></div>'+
+    '<div class="field"><label>Dirección</label><input class="input" value="Vía Argentina, Panamá"></div>',
+    {title:'Actualizar contacto', size:'w520'});
+  var m = document.querySelector('.modal-body');
+  var foot = document.createElement('div'); foot.className='modal-foot';
+  foot.innerHTML='<button class="btn btn-secondary" onclick="closeModal()">Cancelar</button>'+
+    '<button class="btn btn-primary" onclick="closeModal();toast(\'Solicitud de actualización enviada a RRHH.\',\'success\',\'En revisión\');render()">'+ic('check')+' Enviar</button>';
+  m.after(foot);
+}
+function viewPortalEmpPerfil(){
+  var e = rhActual(); if(!e) return guardScreen('Portal del empleado');
+  var html = pageHead([{label:'Mi portal', link:'#/portal/empleado/resumen'},{label:'Perfil'}], 'Mi perfil', 'Preferencias y manejo de tu cuenta', '');
+  html += '<div class="g2">'+
+    '<div class="card"><div class="card-head"><div><div class="card-title">Cuenta</div><div class="card-sub">Credenciales gestionadas por Identity (BFF)</div></div></div><div class="card-body">'+
+      '<div class="field"><label>Usuario</label><div class="input-like mono">'+esc(e.correo)+'</div></div>'+
+      '<div class="field"><label>Contraseña</label><div class="input-like">•••••••• <a href="#/olvide-contrasena?email='+encodeURIComponent(e.correo)+'" style="margin-left:8px">Cambiar</a></div></div>'+
+      '<button class="btn btn-secondary" onclick="toast(\'La desconexión se simula en el demo.\',\'info\',\'Sesiones\')">'+ic('logout',16)+' Cerrar otras sesiones</button>'+
+    '</div></div>'+
+    '<div class="card"><div class="card-head"><div><div class="card-title">Preferencias</div><div class="card-sub">Notificaciones del portal</div></div></div><div class="card-body">'+
+      '<label class="check" style="display:flex;gap:10px;align-items:center;padding:8px 0"><input type="checkbox" checked><span><strong>Recibir correo al aprobar solicitudes</strong></span></label>'+
+      '<label class="check" style="display:flex;gap:10px;align-items:center;padding:8px 0"><input type="checkbox" checked><span><strong>Recibir aviso de planilla emitida</strong></span></label>'+
+      '<label class="check" style="display:flex;gap:10px;align-items:center;padding:8px 0"><input type="checkbox"><span><strong>Resumen mensual de marcaciones</strong></span></label>'+
+    '</div></div>'+
+  '</div>';
+  return html;
+}
+function viewPortalSupResumen(){
+  var e = rhActual(); if(!e) return guardScreen('Portal del supervisor');
+  var equipo = RH_EMPLEADOS.filter(function(x){ return x.jefe===e.id; });
+  var marcHoy = RH_MARCACIONES.filter(function(m){ return equipo.some(function(x){ return x.id===m.emp; }) && m.fecha==='18/09/2026'; });
+  var hePend = RH_HORAS_EXTRAS.filter(function(h){ return (h.estado==='En revisión'||h.estado==='Pendiente') && equipo.some(function(x){ return x.id===h.emp; }); });
+  var ausPend = RH_VACACIONES.filter(function(v){ return v.estado==='En revisión' && equipo.some(function(x){ return x.id===v.emp; }); }).length +
+    RH_INCAPACIDADES.filter(function(i){ return equipo.some(function(x){ return x.id===i.emp; }); }).length;
+  var html = pageHead([{label:'Mi portal', link:'#/portal/supervisor/resumen'}], 'Hola, '+e.nombre.split(' ')[0], 'Septiembre 2026 · Panel del supervisor', '');
+  html += '<div class="dash-toolbar"><span class="chip-select">'+ic('users',16)+'<span>Equipo: '+equipo.length+' colaboradores</span>'+ic('chevdown',14)+'</span><span class="muted small">'+esc((rhProyecto(e.proyecto)||{}).codigo||'Administración')+'</span><span class="spacer"></span></div>';
+  html += '<div class="kpis">'+
+    '<div class="card stat-card stat-card-h"><div class="stat-ico brand">'+ic('users',20)+'</div><div class="stat-body"><div class="stat-label">Mi equipo</div><div class="stat-value">'+equipo.length+'</div><div class="stat-meta">'+(rhProyecto(e.proyecto)||{}).nombre||'Central'+'</div></div></div>'+
+    '<div class="card stat-card stat-card-h"><div class="stat-ico succ">'+ic('clock',20)+'</div><div class="stat-body"><div class="stat-label">Marcaciones hoy</div><div class="stat-value">'+marcHoy.length+' / '+equipo.length+'</div><div class="stat-meta">Viernes 18/09/2026</div></div></div>'+
+    '<div class="card stat-card stat-card-h"><div class="stat-ico warn">'+ic('clock',20)+'</div><div class="stat-body"><div class="stat-label">Horas extra por revisar</div><div class="stat-value">'+hePend.length+'</div><div class="stat-meta">Solicitudes en revisión</div></div></div>'+
+    '<div class="card stat-card stat-card-h"><div class="stat-ico danger">'+ic('calendar',20)+'</div><div class="stat-body"><div class="stat-label">Ausencias activas</div><div class="stat-value">'+ausPend+'</div><div class="stat-meta">Incapacidades y vacaciones en revisión</div></div></div>'+
+  '</div>';
+  html += '<div class="alert alert-info">'+ic('info',20)+'<div><h4>Pendientes de aprobación</h4><p>Las solicitudes de tu equipo llegan aquí. Aprobarlas notifica a RRHH para continuar el flujo (RN-RH-04).</p></div></div>';
+  html += '<div class="g2">'+
+    '<div class="card"><div class="card-head"><div><div class="card-title">Horas extra pendientes</div><div class="card-sub">Requieren tu aprobación</div></div><a href="#/portal/supervisor/horas-extras" class="btn btn-ghost btn-sm">Ver todas</a></div><div class="card-body">'+
+      (hePend.length? hePend.map(function(h){
+        var x = rhEmp(h.emp);
+        return '<div class="sol-row">'+ic('clock',20)+'<div style="flex:1"><strong class="small">'+esc(x?x.nombre:'—')+'</strong><small>'+esc(h.fecha)+' · '+h.horas+' h · '+esc(h.motivo)+'</small></div>'+
+          '<button class="btn btn-primary btn-compact" onclick="rhAprobarHEPortal(\''+h.id+'\')">'+ic('check',14)+'</button> <button class="btn btn-secondary btn-compact" onclick="closeModal();toast(\'Solicitud devuelta al empleado.\',\'info\')">'+ic('x',14)+'</button></div>';
+      }).join('') : '<p class="small muted2">Sin horas extra pendientes. Todo está al día.</p>')+
+    '</div></div>'+
+    '<div class="card"><div class="card-head"><div><div class="card-title">Mi equipo</div><div class="card-sub">Colaboradores a mi cargo</div></div><a href="#/portal/supervisor/equipo" class="btn btn-ghost btn-sm">Ver equipo</a></div><div class="card-body">'+
+      equipo.map(function(x){
+        return '<div class="sol-row"><span class="avatar" style="width:30px;height:30px;font-size:11px">'+esc(x.iniciales)+'</span><div style="flex:1"><strong class="small">'+esc(x.nombre)+'</strong><small class="muted2">'+esc(x.cargo)+'</small></div>'+rhEmpEstadoChip(x)+'</div>';
+      }).join('')+
+    '</div></div>'+
+  '</div>';
+  return html;
+}
+function viewPortalSupEquipo(){
+  var e = rhActual(); if(!e) return guardScreen('Portal del supervisor');
+  var equipo = RH_EMPLEADOS.filter(function(x){ return x.jefe===e.id; });
+  var html = pageHead([{label:'Mi portal', link:'#/portal/supervisor/resumen'},{label:'Equipo'}], 'Mi equipo', 'Colaboradores a mi cargo y su estado', '');
+  html += '<div class="card"><div class="tbl-wrap"><table class="tbl dense"><thead><tr><th>Empleado</th><th>Cargo</th><th>Contrato</th><th>Ingreso</th><th>Horario</th><th>Estado</th></tr></thead><tbody>'+
+    equipo.map(function(x){
+      return '<tr><td><div class="emp-id"><span class="avatar" style="width:30px;height:30px;font-size:11px">'+esc(x.iniciales)+'</span><div><strong>'+esc(x.nombre)+'</strong><small class="mono muted2">'+esc(x.cedula)+'</small></div></div></td>'+
+        '<td>'+esc(x.cargo)+'</td><td class="small">'+esc(x.tipoContrato)+'</td><td class="mono">'+esc(x.fechaIngreso)+'</td><td class="small">'+esc((rhHorario(x.horario)||{}).jornada||'—')+'</td><td>'+rhEmpEstadoChip(x)+'</td></tr>';
+    }).join('')+'</tbody></table></div></div>';
+  return html;
+}
+function viewPortalSupAsistencia(){
+  var e = rhActual(); if(!e) return guardScreen('Portal del supervisor');
+  var equipo = RH_EMPLEADOS.filter(function(x){ return x.jefe===e.id; }).map(function(x){ return x.id; });
+  var marc = RH_MARCACIONES.filter(function(m){ return equipo.indexOf(m.emp)>=0; });
+  var html = pageHead([{label:'Mi portal', link:'#/portal/supervisor/resumen'},{label:'Asistencia'}], 'Asistencia del equipo', 'Marcaciones de la semana del 14 al 18 de septiembre', '');
+  html += '<div class="card"><div class="tbl-wrap"><table class="tbl dense"><thead><tr><th>Empleado</th><th>Fecha</th><th>Entrada</th><th>Salida</th><th class="num">Horas</th><th class="num">Tardía</th></tr></thead><tbody>'+
+    (marc.length? marc.map(function(m){
+      var x = rhEmp(m.emp);
+      return '<tr><td>'+esc(x?x.nombre:'—')+'</td><td class="mono">'+esc(m.fecha)+'</td><td class="mono">'+esc(m.entrada)+'</td><td class="mono">'+esc(m.salida)+'</td><td class="num mono">'+m.horas.toFixed(1)+'</td><td class="num">'+(m.tardia? '<span class="chip chip-warning">'+m.tardia+' min</span>':'<span class="muted2">—</span>')+'</td></tr>';
+    }).join('') : '<tr><td colspan="6" class="muted2 small">Sin marcaciones del equipo esta semana.</td></tr>')+
+    '</tbody></table></div></div>';
+  return html;
+}
+function rhAprobarHEPortal(id){ var h=RH_HORAS_EXTRAS.find(function(x){return x.id===id;}); if(h){ h.estado='Aprobada'; h.aprobador=rhActual()?rhActual().nombre:'Supervisor'; } toast('Horas extra aprobadas. RRHH las considerará en la próxima planilla.','success','Horas extra aprobadas'); render(); }
+function viewPortalSupHorasExtras(){
+  var e = rhActual(); if(!e) return guardScreen('Portal del supervisor');
+  var equipo = RH_EMPLEADOS.filter(function(x){ return x.jefe===e.id; }).map(function(x){ return x.id; });
+  var he = RH_HORAS_EXTRAS.filter(function(h){ return equipo.indexOf(h.emp)>=0; });
+  var html = pageHead([{label:'Mi portal', link:'#/portal/supervisor/resumen'},{label:'Horas extra'}], 'Horas extra del equipo', 'Solicitudes por aprobar y aprobadas', '');
+  html += '<div class="card"><div class="tbl-wrap"><table class="tbl dense"><thead><tr><th>Ref</th><th>Empleado</th><th>Fecha</th><th class="num">Horas</th><th>Tipo</th><th>Motivo</th><th>Estado</th><th></th></tr></thead><tbody>'+
+    (he.length? he.map(function(h){
+      var x = rhEmp(h.emp);
+      return '<tr><td class="mono">'+esc(h.id)+'</td><td>'+esc(x?x.nombre:'—')+'</td><td class="mono">'+esc(h.fecha)+'</td><td class="num">'+h.horas+'</td><td class="small">'+esc(h.tipo)+'</td><td class="small">'+esc(h.motivo)+'</td><td><span class="chip '+(h.estado==='Aprobada'?'chip-success':h.estado==='Rechazada'?'chip-danger':'chip-warning')+'">'+esc(h.estado)+'</span></td>'+
+        '<td class="small">'+(h.estado==='En revisión'||h.estado==='Pendiente'? '<button class="btn btn-primary btn-compact" onclick="rhAprobarHEPortal(\''+h.id+'\')">'+ic('check',14)+' Aprobar</button> <button class="btn btn-secondary btn-compact" onclick="rhRechazarHE(\''+h.id+'\')">'+ic('x',14)+'</button>' : '<span class="muted2 small">'+esc(h.aprobador||'—')+'</span>')+'</td></tr>';
+    }).join('') : '<tr><td colspan="8" class="muted2 small">Sin solicitudes de horas extra.</td></tr>')+
+    '</tbody></table></div></div>';
+  return html;
+}
+function viewPortalSupAusencias(){
+  var e = rhActual(); if(!e) return guardScreen('Portal del supervisor');
+  var equipo = RH_EMPLEADOS.filter(function(x){ return x.jefe===e.id; }).map(function(x){ return x.id; });
+  var vac = RH_VACACIONES.filter(function(v){ return equipo.indexOf(v.emp)>=0; });
+  var perm = RH_PERMISOS.filter(function(p){ return equipo.indexOf(p.emp)>=0; });
+  var incap = RH_INCAPACIDADES.filter(function(i){ return equipo.indexOf(i.emp)>=0; });
+  var html = pageHead([{label:'Mi portal', link:'#/portal/supervisor/resumen'},{label:'Ausencias'}], 'Ausencias del equipo', 'Vacaciones, permisos e incapacidades por aprobar', '');
+  html += '<div class="card"><div class="card-head"><div><div class="card-title">Vacaciones</div><div class="card-sub">Aprobación del supervisor y RRHH</div></div></div><div class="card-body">'+
+    (vac.length? vac.map(function(v){
+      var x = rhEmp(v.emp);
+      return '<div class="sol-row">'+ic('calendar',20)+'<div style="flex:1"><strong class="small">'+esc(x?x.nombre:'—')+'</strong><small>'+esc(v.ini)+' → '+esc(v.fin)+' · '+v.dias+' días</small></div>'+
+        '<span class="chip '+(v.estado==='Aprobada'?'chip-success':'chip-warning')+'">'+esc(v.estado)+'</span>'+
+        (v.estado==='En revisión'? '<button class="btn btn-primary btn-compact" onclick="rhAprobarVac(\''+v.id+'\')">'+ic('check',14)+' Aprobar</button>':'')+'</div>';
+    }).join('') : '<p class="small muted2">Sin solicitudes de vacaciones del equipo.</p>')+
+  '</div></div>';
+  html += '<div class="g2">'+
+    '<div class="card"><div class="card-head"><div><div class="card-title">Permisos</div><div class="card-sub">Solicitudes del equipo</div></div></div><div class="card-body">'+
+      (perm.length? perm.map(function(p){
+        var x = rhEmp(p.emp);
+        return '<div class="sol-row">'+ic('shield',20)+'<div style="flex:1"><strong class="small">'+esc(x?x.nombre:'—')+'</strong><small>'+esc(p.motivo)+' · '+esc(p.fecha)+'</small></div><span class="chip '+(p.estado==='Aprobado'?'chip-success':p.estado==='Rechazado'?'chip-danger':'chip-warning')+'">'+esc(p.estado)+'</span></div>';
+      }).join('') : '<p class="small muted2">Sin permisos del equipo.</p>')+
+    '</div></div>'+
+    '<div class="card"><div class="card-head"><div><div class="card-title">Incapacidades</div><div class="card-sub">Documentos médicos</div></div></div><div class="card-body">'+
+      (incap.length? incap.map(function(i){
+        var x = rhEmp(i.emp);
+        return '<div class="sol-row">'+ic('file',20)+'<div style="flex:1"><strong class="small">'+esc(x?x.nombre:'—')+'</strong><small>'+esc(i.tipo)+' · '+esc(i.ini)+' → '+esc(i.fin)+' · Doc. '+esc(i.doc)+'</small></div><span class="chip chip-warning">'+esc(i.estado)+'</span></div>';
+      }).join('') : '<p class="small muted2">Sin incapacidades del equipo.</p>')+
+    '</div></div>'+
+  '</div>';
+  return html;
+}
+function viewPortalSupEvaluaciones(){
+  var e = rhActual(); if(!e) return guardScreen('Portal del supervisor');
+  var equipo = RH_EMPLEADOS.filter(function(x){ return x.jefe===e.id; }).map(function(x){ return x.id; });
+  var evs = RH_EVALUACIONES.filter(function(v){ return equipo.indexOf(v.emp)>=0; });
+  var html = pageHead([{label:'Mi portal', link:'#/portal/supervisor/resumen'},{label:'Evaluaciones'}], 'Evaluaciones del equipo', 'Desempeño por período (las carga RRHH)', '');
+  html += '<div class="card"><div class="tbl-wrap"><table class="tbl dense"><thead><tr><th>Evaluación</th><th>Empleado</th><th>Fecha</th><th class="num">Nota</th><th>Estado</th><th>Evaluador</th></tr></thead><tbody>'+
+    (evs.length? evs.map(function(ev){
+      var x = rhEmp(ev.emp);
+      return '<tr><td>'+esc(ev.nombre)+'</td><td>'+esc(x?x.nombre:'—')+'</td><td class="mono">'+esc(ev.fecha)+'</td><td class="num">'+(ev.nota? ev.nota.toFixed(1)+' / 5' : '<span class="muted2">—</span>')+'</td><td><span class="chip '+(ev.estado==='Completada'?'chip-success':'chip-warning')+'">'+esc(ev.estado)+'</span></td><td class="small">'+esc(ev.evaluador)+'</td></tr>';
+    }).join('') : '<tr><td colspan="6" class="muted2 small">Sin evaluaciones del equipo.</td></tr>')+
+    '</tbody></table></div></div>';
+  return html;
+}
+function viewPortalSupNotificaciones(){ return viewPortalNotificaciones(); }
+function viewPortalSupPerfil(){
+  var e = rhActual(); if(!e) return guardScreen('Portal del supervisor');
+  var html = pageHead([{label:'Mi portal', link:'#/portal/supervisor/resumen'},{label:'Perfil'}], 'Mi perfil', 'Preferencias del portal del supervisor', '');
+  html += '<div class="g2">'+
+    '<div class="card"><div class="card-head"><div><div class="card-title">Cuenta</div><div class="card-sub">Credenciales gestionadas por Identity (BFF)</div></div></div><div class="card-body">'+
+      '<div class="field"><label>Usuario</label><div class="input-like mono">'+esc(e.correo)+'</div></div>'+
+      '<div class="field"><label>Cargo</label><div class="input-like">'+esc(e.cargo)+'</div></div>'+
+      '<button class="btn btn-secondary" onclick="toast(\'La desconexión se simula en el demo.\',\'info\',\'Sesiones\')">'+ic('logout',16)+' Cerrar otras sesiones</button>'+
+    '</div></div>'+
+    '<div class="card"><div class="card-head"><div><div class="card-title">Preferencias</div><div class="card-sub">Avisos de aprobación</div></div></div><div class="card-body">'+
+      '<label class="check" style="display:flex;gap:10px;align-items:center;padding:8px 0"><input type="checkbox" checked><span><strong>Notificarme toda solicitud nueva del equipo</strong></span></label>'+
+      '<label class="check" style="display:flex;gap:10px;align-items:center;padding:8px 0"><input type="checkbox" checked><span><strong>Resumen semanal de asistencia</strong></span></label>'+
+    '</div></div>'+
+  '</div>';
   return html;
 }
 function exportPagosPortal(){
@@ -4529,13 +5890,42 @@ function viewPortalNotificaciones(){
 /* ============================================================
    ROUTER / DISPATCH / INIT
    ============================================================ */
-function appShell(activeNav, inner){
-  return '<div class="shell">'+sidebarAdmin(activeNav)+
+function groupKeyForRoute(view, sub){
+  var m = {clientes:'gest',inmuebles:'gest',contratos:'gest',cobros:'gest',liquidaciones:'gest',incidencias:'ops',lineablanca:'ops',notificaciones:'sys',administracion:'sys'};
+  if(view==='contabilidad') return 'cont';
+  if(view==='rrhh') return 'rrhh';
+  if(view==='reportes') return sub ? 'rrhh' : 'sys';
+  return m[sub||view] || null;
+}
+function appShell(activeNav, inner, activeGroup){
+  return '<div class="shell">'+sidebarAdmin(activeNav, activeGroup)+
     '<div class="main"><div class="nav-scrim" onclick="document.body.classList.remove(\'nav-open\')"></div>'+topbarAdmin(activeNav)+
     '<main class="content">'+inner+'</main></div></div>';
 }
 function dispatchAdmin(v, sub){
   if(v==='resumen') return viewResumen();
+  if(v==='rrhh'){
+    if(!can('rrhh')) return guardScreen(neededPerm('rrhh'));
+    if(sub==='empleados') return viewRhhEmpleados();
+    if(sub==='altas') return viewRhhNuevoEmpleado();
+    if(sub==='empleado') return viewRhhEmpleado();
+    if(sub==='contratos') return viewRhhContratos();
+    if(sub==='organizacion') return viewRhhOrganizacion();
+    if(sub==='proyectos') return viewRhhProyectos();
+    if(sub==='asistencia') return viewRhhAsistencia();
+    if(sub==='tiempo-libre') return viewRhhTiempoLibre();
+    if(sub==='compensaciones') return viewRhhCompensaciones();
+    if(sub==='nomina') return viewRhhNomina();
+    if(sub==='planilla') return viewRhhPlanilla();
+    if(sub==='liquidaciones') return viewRhhLiquidaciones();
+    if(sub==='reclutamiento') return viewRhhReclutamiento();
+    if(sub==='desarrollo') return viewRhhDesarrollo();
+    if(sub==='seguridad') return viewRhhSeguridad();
+    if(sub==='reportes') return viewRhhReportes();
+    if(sub==='configuracion') return viewRhhConfiguracion();
+    return viewRhh();
+  }
+  if(v==='empleados' && can('rrhh')) return viewRhhEmpleados();
   if(v==='clientes') return can('clientes') ? viewClientes() : guardScreen(neededPerm('clientes'));
   if(v==='inmuebles') return can('inmuebles') ? viewInmuebles() : guardScreen(neededPerm('inmuebles'));
   if(v==='contratos') return can('contratos') ? viewContratos() : guardScreen(neededPerm('contratos'));
@@ -4570,6 +5960,30 @@ function dispatchPortal(tipo, view, sub){
     if(view==='perfil') return viewPortalInqPerfil();
     return viewPortalInqResumen();
   }
+  if(tipo==='empleado'){
+    if(view==='resumen') return viewPortalEmpResumen();
+    if(view==='recibos') return viewPortalEmpRecibos();
+    if(view==='asistencia') return viewPortalEmpAsistencia();
+    if(view==='tiempo-libre') return viewPortalEmpTiempoLibre();
+    if(view==='solicitudes') return viewPortalEmpSolicitudes();
+    if(view==='prestamos') return viewPortalEmpPrestamos();
+    if(view==='documentos') return viewPortalEmpDocumentos();
+    if(view==='datos') return viewPortalEmpDatos();
+    if(view==='notificaciones') return viewPortalNotificaciones();
+    if(view==='perfil') return viewPortalEmpPerfil();
+    return viewPortalEmpResumen();
+  }
+  if(tipo==='supervisor'){
+    if(view==='resumen') return viewPortalSupResumen();
+    if(view==='equipo') return viewPortalSupEquipo();
+    if(view==='asistencia') return viewPortalSupAsistencia();
+    if(view==='horas-extras') return viewPortalSupHorasExtras();
+    if(view==='ausencias') return viewPortalSupAusencias();
+    if(view==='evaluaciones') return viewPortalSupEvaluaciones();
+    if(view==='notificaciones') return viewPortalSupNotificaciones();
+    if(view==='perfil') return viewPortalSupPerfil();
+    return viewPortalSupResumen();
+  }
   if(view==='resumen') return viewPortalPropResumen();
   if(view==='pagos') return viewPortalPropPagos();
   if(view==='notificaciones') return viewPortalNotificaciones();
@@ -4592,14 +6006,15 @@ function render(){
   } else if(r.area==='app'){
     if(!session || session.type!=='admin'){ location.hash = session ? homeForSession() : '#/login'; return; }
     document.body.classList.remove('portal-body');
-    var activeNav = r.sub || r.view;
-    html = appShell(activeNav, dispatchAdmin(r.view, r.sub));
+    var activeNav = (r.sub==='altas') ? 'empleados' : (r.sub || r.view);
+    html = appShell(activeNav, dispatchAdmin(r.view, r.sub), groupKeyForRoute(r.view, r.sub));
     document.title = 'Constructora Especializada · Admin';
   } else if(r.area==='portal'){
     if(!session || session.type!==r.portal){ location.hash = session ? homeForSession() : '#/login'; return; }
     document.body.classList.add('portal-body');
     html = portalShell(r.portal, r.view, dispatchPortal(r.portal, r.view, r.sub));
-    document.title = 'Constructora Especializada · Portal '+(r.portal==='inquilino'?'Inquilino':'Propietario');
+    var portalNombres = {inquilino:'Inquilino', propietario:'Propietario', empleado:'Empleado', supervisor:'Supervisor'};
+    document.title = 'Constructora Especializada · Portal '+(portalNombres[r.portal]||'');
   } else {
     if(session){ location.hash = homeForSession(); return; }
     document.title = 'Constructora Especializada · Acceso';
