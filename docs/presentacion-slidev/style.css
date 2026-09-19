@@ -75,6 +75,22 @@ html, body, #app, #page-root, #slide-content, .slidev-page {
   background: var(--bg-canvas);
 }
 
+/* ---------- Pantalla completa (sin barras laterales) ---------- */
+/* Las diapositivas llenan todo el viewport estirándose al canvas principal */
+#slide-container {
+  width: 100% !important;
+  height: 100% !important;
+}
+#slide-content {
+  left: 0 !important;
+  top: 0 !important;
+  right: auto !important;
+  bottom: auto !important;
+  transform: none !important;
+  width: 100% !important;
+  height: 100% !important;
+}
+
 /* ---------- Escala tipográfica (jerarquía única) ---------- */
 .slidev-layout h1 { font-weight: 700; letter-spacing: -0.02em; color: var(--text-p); font-size: 2.9em; line-height: 1.06; margin: 0 0 0.35em; }
 .slidev-layout h2 { font-weight: 700; letter-spacing: -0.015em; color: var(--text-p); font-size: 1.7em; line-height: 1.15; margin: 0 0 0.45em; }
@@ -379,7 +395,7 @@ html, body, #app, #page-root, #slide-content, .slidev-page {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  padding: 3rem 3.5rem;
+  padding: clamp(3.5rem, 10vh, 5.5rem) clamp(3.5rem, 9vw, 7rem);
 }
 .slidev-layout.g-portada h1 { color: #fff; font-size: 3.1em; margin: 14px 0 16px; letter-spacing: -0.02em; line-height: 1.05; }
 .g-cover-kicker {
@@ -420,7 +436,7 @@ html, body, #app, #page-root, #slide-content, .slidev-page {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  padding: 3rem 3.5rem;
+  padding: clamp(3.5rem, 10vh, 5.5rem) clamp(3.5rem, 9vw, 7rem);
   background:
     radial-gradient(1100px 500px at 85% -10%, rgba(42, 52, 65, 0.75), transparent 60%),
     radial-gradient(900px 480px at -5% 110%, rgba(31, 39, 51, 0.9), transparent 55%),
