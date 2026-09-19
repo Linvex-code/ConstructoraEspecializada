@@ -2,9 +2,9 @@
 
 | Campo | Valor |
 |---|---|
-| **Versión** | 1.0 |
-| **Fecha** | 12/09/2026 |
-| **Estado** | Documento oficial de versiones v1.0. Registro maestro de los documentos por módulo |
+| **Versión** | 1.1 |
+| **Fecha** | 18/09/2026 |
+| **Estado** | Documento oficial de versiones v1.1. Registro maestro de los documentos por módulo. v1.1 incorpora features transversales: pagos en línea + ACH (Cobros), firma electrónica (Contratos), KYC (Clientes), mantenimiento preventivo (Incidencias), control de llaves (Inmuebles), KPIs + analítica (Reportes) y MFA + privacidad (Administración y Seguridad) |
 | **Documento base** | `docs/ui/requerimientos-modulos.md` (v0.1) |
 
 ---
@@ -34,16 +34,16 @@ Esto permite:
 
 | Módulo | Documento | Versión | Fecha | Estado | Sección origen (v0.1) |
 |---|---|---|---|---|---|
-| Clientes | [`clientes.md`](clientes.md) | 1.0 | 12/09/2026 | Oficial v1.0 | §1 |
-| Inmuebles | [`inmuebles.md`](inmuebles.md) | 1.0 | 12/09/2026 | Oficial v1.0 | §2 |
-| Contratos | [`contratos.md`](contratos.md) | 1.0 | 12/09/2026 | Oficial v1.0 | §3 |
-| Cobros | [`cobros.md`](cobros.md) | 1.0 | 12/09/2026 | Oficial v1.0 | §4 |
+| Clientes | [`clientes.md`](clientes.md) | 1.1 | 18/09/2026 | Oficial v1.1 (KYC) | §1 |
+| Inmuebles | [`inmuebles.md`](inmuebles.md) | 1.1 | 18/09/2026 | Oficial v1.1 (control de llaves) | §2 |
+| Contratos | [`contratos.md`](contratos.md) | 1.1 | 18/09/2026 | Oficial v1.1 (firma electrónica) | §3 |
+| Cobros | [`cobros.md`](cobros.md) | 1.1 | 18/09/2026 | Oficial v1.1 (pagos en línea + ACH) | §4 |
 | Liquidaciones | [`liquidaciones.md`](liquidaciones.md) | 1.0 | 12/09/2026 | Oficial v1.0 | §5 |
-| Incidencias | [`incidencias.md`](incidencias.md) | 1.0 | 12/09/2026 | Oficial v1.0 | §6 |
+| Incidencias | [`incidencias.md`](incidencias.md) | 1.1 | 18/09/2026 | Oficial v1.1 (mantenimiento preventivo) | §6 |
 | Línea blanca | [`linea-blanca.md`](linea-blanca.md) | 1.0 | 12/09/2026 | Oficial v1.0 | §7 |
 | Contabilidad | [`contabilidad.md`](contabilidad.md) | 1.0 | 12/09/2026 | Oficial v1.0 (vincula a `docs/modulo-contabilidad.md` v1.0) | §8 |
-| Reportes | [`reportes.md`](reportes.md) | 1.0 | 12/09/2026 | Oficial v1.0 | §9 |
-| Administración y Seguridad | [`administracion-seguridad.md`](administracion-seguridad.md) | 1.0 | 12/09/2026 | Oficial v1.0 (transversal) | §10 |
+| Reportes | [`reportes.md`](reportes.md) | 1.1 | 18/09/2026 | Oficial v1.1 (KPIs + analítica) | §9 |
+| Administración y Seguridad | [`administracion-seguridad.md`](administracion-seguridad.md) | 1.1 | 18/09/2026 | Oficial v1.1 (MFA + privacidad Ley 81) | §10 |
 | Portal inquilino | [`portal-inquilino.md`](portal-inquilino.md) | 1.0 | 12/09/2026 | Oficial v1.0 (alcance propio) | §11 |
 
 > La fuente original `docs/ui/requerimientos-modulos.md` (v0.1) queda como **ficha técnica/borrador de discusión**. Los documentos de `docs/modulos/` son la fuente oficial por módulo.
@@ -57,19 +57,28 @@ Esto permite:
 | Clientes | `clientes.read` | Ver listado/ficha/exportar |
 | | `clientes.create` **[P]** | Registrar |
 | | `clientes.update` **[P]** | Editar |
+| | `clientes.estado.cambiar` **[P]** | Cambiar estado gestionado (Activo ↔ Inactivo) |
+| | `clientes.documentos.gestionar` **[P]** | Cargar/gestionar documentos de la ficha |
+| | `clientes.solicitudes.gestionar` **[P]** | Gestionar solicitudes de arrendamiento (pipeline KYC) |
+| | `clientes.verificacion.ejecutar` **[P]** | Ejecutar verificación KYC (OCR, referencias, checklist) |
 | | `clientes.delete` **[P]** | Desactivar/eliminar |
 | Inmuebles | `inmuebles.read` | Ver catálogo/ficha |
 | | `inmuebles.create` **[P]** | Registrar |
 | | `inmuebles.update` **[P]** | Editar |
+| | `inmuebles.llaves.gestionar` **[P]** | Control de llaves/pases (entrega, custodia) |
 | | `inmuebles.delete` **[P]** | Eliminar/desactivar |
 | Contratos | `contratos.read` | Ver |
 | | `contratos.create` **[P]** | Crear |
 | | `contratos.update` **[P]** | Editar (antes de firma) |
+| | `contratos.firmar` **[P]** | Firmar electrónicamente (empresa/inquilino) |
+| | `contratos.firmas.gestionar` **[P]** | Gestionar/revocar firmas |
 | | `contratos.terminar` **[P]** | Terminar anticipadamente |
 | | `contratos.anular` **[P]** | Anular |
 | Cobros | `cobros.recibos.generar` | Generar recibos (masivo/individual) |
 | | `cobros.recibos.anular` **[P]** | Anular recibo |
 | | `cobros.pagos.registrar` | Registrar pagos/cobros |
+| | `cobros.pagos.en-linea` **[P]** | Pagar en línea (portal inquilino) |
+| | `cobros.pagos.reembolsar` **[P]** | Reembolsar pago |
 | | `cobros.mora.consultar` | Consultar mora |
 | Liquidaciones | `liquidaciones.generar` | Generar liquidaciones |
 | | `liquidaciones.confirmar` | Confirmar pago a propietario |
@@ -81,6 +90,7 @@ Esto permite:
 | | `incidencias.registrar_costo` **[P]** | Registrar presupuesto/costo |
 | | `incidencias.cerrar` | Cerrar |
 | | `incidencias.visitas.programar` | Programar visitas |
+| | `incidencias.planes.gestionar` **[P]** | Gestionar planes de mantenimiento preventivo |
 | Línea blanca | `lineablanca.read` | Ver inventario/ficha |
 | | `lineablanca.create` **[P]** | Registrar equipo |
 | | `lineablanca.update` **[P]** | Editar equipo |
@@ -96,11 +106,15 @@ Esto permite:
 | | `estados-financieros.ver` | Ver EF (también da acceso al portal contable en dashboard) |
 | Reportes | `reportes.ver` | Ver/consultar reportes habilitados |
 | | `reportes.generar` **[P]** | Generar bajo demanda / programar |
+| | `reportes.kpis.ver` **[P]** | Ver KPIs ejecutivos |
+| | `analitica.ver` **[P]** | Ver score de morosidad / sugerencia de canon |
 | Administración | `admin.usuarios` | Usuarios |
 | | `admin.roles` | Roles |
 | | `admin.permisos` | Catálogo/asignación |
 | | `admin.configuracion` | Parámetros globales |
 | | `admin.feature-flags` | Feature flags |
+| | `admin.mfa.gestionar` **[P]** | Política MFA y recuperación de usuarios |
+| | `admin.privacidad` **[P]** | Privacidad Ley 81 (ARCO, inventario, transferencias) |
 | Portal | `portal.ver` **[P]** | Ingreso del inquilino al portal |
 
 ---
@@ -149,4 +163,4 @@ Admin ──► Todos (permisos + flags)
 
 ---
 
-*Documento de registro v1.0. Los documentos de módulo se versionan de forma independiente a partir de esta estructura.*
+*Documento de registro v1.1. Los documentos de módulo se versionan de forma independiente a partir de esta estructura. Las features v1.1 se detallan en los documentos de cada módulo y en `docs/diseno-arquitectura.md` v1.4 (ADRs 019–021).*
