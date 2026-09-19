@@ -2,14 +2,14 @@
 
 | Campo | Valor |
 |---|---|
-| **Versión** | 1.0 |
-| **Fecha** | 12/09/2026 |
-| **Estado** | Documento oficial del módulo v1.0 |
+| **Versión** | 1.1 |
+| **Fecha** | 18/09/2026 |
+| **Estado** | Documento oficial del módulo v1.1 — incorpora **control de llaves/pases** por unidad (RF-INM-06…07) |
 | **Documento base** | `docs/ui/requerimientos-modulos.md` (v0.1) — sección 2 |
-| **Documentos relacionados** | `docs/diseno-arquitectura.md` (v1.1) — §9 · `docs/modulos/README.md` (v1.0) |
-| **Esquema BD (referencia)** | `properties` |
-| **Feature flag** | `features.inmuebles` (convención transversal; ver Administración y Seguridad) |
-| **Permisos del catálogo** | `inmuebles.read` · `inmuebles.create` **[P]** · `inmuebles.update` **[P]** · `inmuebles.delete` **[P]** |
+| **Documentos relacionados** | `docs/diseno-arquitectura.md` (v1.4) — §9 · `docs/modulos/README.md` (v1.1) |
+| **Esquema BD (referencia)** | `properties` (incluye `SetLlaves`) |
+| **Feature flag** | `features.inmuebles` · `features.control-llaves` (convención transversal; ver Administración y Seguridad) |
+| **Permisos del catálogo** | `inmuebles.read` · `inmuebles.create` **[P]** · `inmuebles.update` **[P]** · `inmuebles.delete` **[P]** · `inmuebles.llaves.gestionar` **[P]** |
 
 > Transversal RN-S01: el backend valida siempre `permiso` + feature flag + regla de negocio; el frontend solo controla UX.
 
@@ -26,6 +26,8 @@ Catálogo de unidades bajo administración (apartamentos, locales, casas, oficin
 - **RF-INM-03** Ficha con datos, titularidad, contrato vigente, incidencias activas, equipos de línea blanca asociados.
 - **RF-INM-04** Vista de ocupación: total, alquilados, disponibles por tipo (dato del widget y de Reportes).
 - **RF-INM-05** Historial de estados con fechas **[P]** (para trazabilidad).
+- **RF-INM-06** **Control de llaves/pases por unidad**: sets de llaves registrados (cantidad, referencia, candidato), estado `En oficina / Prestadas / Entregadas al inquilino / Perdidas`, con custodia y trazabilidad de movimientos (quién recibió/devolvió, cuándo).
+- **RF-INM-07** **Entrega/recuperación de llaves** ligadas al contrato: al iniciar/término de un arrendamiento se registra la entrega al inquilino y la devolución con ocurrencias (llaves faltantes, costo de reposición).
 
 ## 3. Campos
 
@@ -43,6 +45,7 @@ Catálogo de unidades bajo administración (apartamentos, locales, casas, oficin
 | serv | texto | servicios incluidos |
 | prop | texto | titularidad (puede ser `—` admin) |
 | **fechaAdquisicion / costo / avaluo** **[P]** | fecha/número | opcional · solo gerencia |
+| **llaves** **[P]** | array | `{set, qty, estado, custodia, movimientos}` (control de llaves) |
 
 ## 4. Permisos
 
@@ -50,6 +53,7 @@ Catálogo de unidades bajo administración (apartamentos, locales, casas, oficin
 |---|---|
 | Ver | `inmuebles.read` |
 | Crear / editar | `inmuebles.create` / `inmuebles.update` |
+| Gestionar llaves/pases | `inmuebles.llaves.gestionar` |
 | Eliminar/desactivar | `inmuebles.delete` |
 
 ## 5. Restricciones de datos (RD)
@@ -58,12 +62,14 @@ Catálogo de unidades bajo administración (apartamentos, locales, casas, oficin
 - **RD-INM-02** `Alquilado` y `Reservado` **requieren** contrato de arrendamiento vigente o previsto (reserva sin firmar) `[DECISIÓN: ¿Reservado admite 0 contratos?]`.
 - **RD-INM-03** `En mantenimiento` admite incidencias de obra pero **bloquea nuevos contratos**.
 - **RD-INM-04** No se borra físicamente si tiene historial → `Desactivado` **[P]** (estado adicional o `delete` con restricción). `[DECISIÓN]`
+- **RD-INM-05** Los movimientos de llaves forman un **historial append-only** (quién, qué set, cuándo, hacia dónde); el estado `Perdidas` exige motivo y genera reposición opcional (costo en incidencia).
 
 ## 6. Restricciones de flujo (FL)
 
 - **FL-INM-01** Transiciones válidas: `Disponible → Reservado → Alquilado` (reserva opcional), `Alquilado → Disponible` solo tras **fin/terminación de contrato** (lo hace Contratos, no Inmuebles), `Disponible/Alquilado → En mantenimiento` (requiere aviso si hay ocupante), `En mantenimiento → Disponible`.
 - **FL-INM-02** Un inmueble `En mantenimiento` con inquilino activo: los cobros siguen, pero las incidencias internas se marcan como obra. `[DECISIÓN: ¿se inhabilita reporte de incidencia del ocupante? NO, preferido mantener reporte.]`
 - **FL-INM-03** No puede haber dos contratos vigentes sobre el mismo inmueble (validado en Contratos, visible aquí).
+- **FL-INM-04** Llaves: `En oficina → Prestadas / Entregadas al inquilino → En oficina`; la entrega se registra al inicio del arrendamiento y la devolución al término (invocado desde Contratos, FL-CON-02), con ocurrencias si faltan juegos.
 
 ## 7. Casos de uso (CU)
 
@@ -71,6 +77,8 @@ Catálogo de unidades bajo administración (apartamentos, locales, casas, oficin
 - **CU-INM-02 Consultar ficha** (contrato, incidencias, equipos, estados). Precond: `inmuebles.read`.
 - **CU-INM-03 Cambiar estado** con validación de FL-INM-01. Precond: `inmuebles.update`.
 - **CU-INM-04 Ver ocupación por tipo.** Precond: `inmuebles.read`.
+- **CU-INM-05 Registrar set de llaves.** Precond: `inmuebles.llaves.gestionar`. Resultado: set con custodia inicial.
+- **CU-INM-06 Registrar entrega/devolución de llaves.** Precond: `inmuebles.llaves.gestionar`. Resultado: movimiento con responsable y ocurrencias si aplica.
 
 ## 8. Resumen en dashboard
 
@@ -90,12 +98,14 @@ Widget **Inmuebles**: Total 7 · Alquilados 5 · Disponibles 1 · En mantenimien
 | D1 | ¿`Reservado` admite 0 contratos (reserva sin firmar)? |
 | D2 (global #2) | ¿Borrado físico con restricción (Admin central + auditoría) o `Desactivado` permanente? |
 | D3 | ¿En mantenimiento con inquilino activo: se mantiene el reporte de incidencias del ocupante? (preferido: sí) |
+| D4 | Control de llaves: ¿se integra la reposición de llaves perdidas como incidencia/proceso separado? |
 
 ## 11. Control de versiones
 
 | Versión | Fecha | Cambios | Autor |
 |---|---|---|---|
 | 1.0 | 12/09/2026 | Versión inicial del módulo. Extraída y consolidada desde `docs/ui/requerimientos-modulos.md` (v0.1) §2. | Equipo de diseño |
+| 1.1 | 18/09/2026 | **Control de llaves/pases por unidad** (RF-INM-06…07): sets con custodia, entrega/recuperación ligada al contrato e historial append-only. Permiso `inmuebles.llaves.gestionar` **[P]**, flag `features.control-llaves`, tabla `SetLlaves`. | Equipo de diseño |
 
 ---
 
