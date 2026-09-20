@@ -6120,7 +6120,7 @@ function render(){
   if(session && (session.type==='empleado' || session.type==='supervisor')){
     session.type = 'admin';
     session.rol = session.rol || (session.user && session.user.rhId==='e6' ? 'JEFE' : 'COLABORADOR');
-    try{ sessionStorage.setItem('grafito.session', JSON.stringify(session)); }catch(e){}
+    try{ sessionStorage.setItem('grafito.session', JSON.stringify(session)); }catch(e){} 
   }
   var html = '';
   if(r.area==='auth'){
