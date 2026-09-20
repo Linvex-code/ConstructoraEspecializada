@@ -1,1229 +1,527 @@
-# Sistema de Diseño — **GRAFITO**
-## Diseño UI/UX para la Plataforma de Administración de Inmuebles, Portales y Contabilidad (Panamá)
+# GRAFITO — Sistema de diseño v1.6
+
+> Documento de referencia de componentes para la Plataforma de Administración de Inmuebles, Portales y Contabilidad (Constructora Especializada · Panamá).
+> Define **un solo sistema de estilo**: cada componente tiene una única implementación canónica y cada componente mantiene una separación explícita y consistente respecto a los elementos que lo rodean.
 
 | Campo | Valor |
-|---|---|
-| **Versión** | 1.7 |
-| **Fecha** | 16/09/2026 |
-| **Estado** | Aprobado para implementación (open design). **Validado con el motor de diseño `ui-ux-pro-max`** (ver Anexo A) y **con prototipo HTML ejecutable** (ver Anexo B). Pendiente de branding del cliente — el sistema usa **paleta neutra provisional** lista para reemplazar. **Actualización v1.5:** lenguaje de negocio (módulo "Cobranza"→"Cobros"), formato único de fechas, regla clara de tamaños de iconos y adaptativo sin desplazamiento horizontal. **Actualización v1.6:** cambio de estado gestionado de clientes (patrón §5.9 + diálogo §6.9), menú de fila ⋮ sin borde heredado del navegador (§6.1/§6.5/§8.4), y exclusividad de ocupación con selección de inmuebles por estado candidato + defensa en profundidad backend (§5.8). **Actualización v1.7:** carga de contrato firmado obligatorio en arrendamiento (zona de carga §6.29, pestaña Documentos §6.30, RF-CON-07), gestión de documentos en ficha de cliente (`clientes.documentos.gestionar`). |
-| **Documentos base** | `docs/diseno-arquitectura.md` (v1.0), `docs/modulo-contabilidad.md` (v1.0) |
-| **Archivos de diseño** | `docs/ui/diseno-ui-design-system.md` (este documento), `docs/ui/tokens.dtcg.json` (tokens W3C DTCG), `docs/ui/tokens.css` (variables CSS), `docs/ui/prototipo-validacion.html` (prototipo de validación de fidelidad, autocontenido) |
-| **Stack de UI (objetivo)** | Blazor Web App (ASP.NET Core 10) + MudBlazor — pero el sistema es **tool-agnostic**: estos tokens y componentes se implementan en cualquier stack |
-| **Áreas** | Admin `/app/*`, Portal Inquilino `/portal/inquilino/*`, Portal Propietario `/portal/propietario/*` |
+| --- | --- |
+| Versión | 1.5 |
+| Estado | En uso · referencia del prototipo `ui/prototipo-demo.html` |
+| Fuentes de verdad | `docs/ui/tokens.css` (tokens) · `docs/ui/diseno-ui-design-system.md` (este documento) · `ui/prototipo-demo.html` (referencia visual interactiva) |
+| Alcance | Admin (panel), Portales (inquilino / propietario), Autenticación, Módulo RH |
+| Idioma de UI | Español profesional (Panamá) |
 
 ---
 
-## Cómo usar este documento (contrato open design)
+## 1. Principios
 
-Cualquier IA o desarrollador puede construir la UI completa leyendo este documento + `tokens.dtcg.json` + `tokens.css`. El orden de aplicación es:
-
-1. Lea **tokens** (secciones 2 y 3) — son la fuente de verdad de color, tipo, espacio, radio, sombra y movimiento.
-2. Lea **arquitectura de información** (sección 4) y **patrones** (sección 5) para decidir layout y navegación.
-3. Implemente cada **componente** (sección 6) respetando variantes, estados y accesibilidad.
-4. Use los **esquemas ASCII** (sección 8) como blueprint de cada pantalla.
-5. Valide contra **responsive** (sección 9), **accesibilidad** (sección 10) y **gráficos** (sección 11).
-6. Siga el **handoff** (sección 12) para MudBlazor o genérico, y el **plan de migración de marca** (sección 12.3).
-
-> **Nota de cobertura:** este documento diseña TODOS los requisitos funcionales de los documentos base. La **Matriz de Cobertura** (sección 13) garantiza la trazabilidad módulo ↔ diseño. Ningún requisito prioritario (A) queda sin componente o patrón.
+1. **Una implementación por componente (P3).** El mismo componente se ve idéntico en todo el sistema; solo cambia la data. Está prohibido rediseñar una tabla, una tarjeta o un chip por módulo.
+2. **Fidelidad a tokens.** Todo color, tipo, espaciado, radio y sombra sale de `docs/ui/tokens.css`. No se improvisan valores.
+3. **Separación entre elementos.** Todo componente mantiene un `gap` de 16px o más con los elementos adyacentes dentro de una grilla, y 16px de margen respecto a la sección anterior cuando se apilan. Dos tarjetas nunca quedan pegadas ni tocándose.
+4. **Una acción primaria por pantalla.** Las secundarias son visibles pero subordinadas; las destructivas siempre confirman en diálogo.
+5. **Sobriedad corporativa.** Fondo claro, una marca oscura (no colores llamativos), acentos semánticos solo para estado (éxito, aviso, riesgo, información).
+6. **El backend es la autoridad real.** El frontend controla la experiencia; la seguridad se valida en servidor (BFF).
 
 ---
 
-## 1. Intención de diseño
+## 2. Tokens
 
-### 1.1 Personalidad
+Fuente de verdad: `docs/ui/tokens.css`. El prototipo incrusta una copia idéntica para seguir siendo autocontenido.
 
-El producto es una herramienta de trabajo diario para una empresa panameña de administración de inmuebles y para sus clientes (inquilinos y propietarios). **No es una página de marketing.** La personalidad es:
+### 2.1 Color
 
-> **Funcional con dignidad** — sobrio, formal, neutral y predecible. El sistema transmite confianza, orden y seguridad jurídica/financiera (dinero, contratos, impuestos). Sin adornos decorativos, sin ruido, sin sorpresas. Cada elemento existe porque resuelve una tarea.
+| Token | Valor | Uso |
+| --- | --- | --- |
+| `--n0` … `--n950` | `#FFFFFF` … `#10151D` | Escala neutra: superficies, texto y bordes |
+| `--brand` / `--brand-h` / `--brand-a` | `#1B212B` / `#2A313D` / `#10151D` | Acciones primarias, texto principal, navegación activa |
+| `--bg-canvas` / `--bg-content` / `--bg-subtle` | `#F6F7F9` / `#FFFFFF` / `#F1F3F6` | Fondo de página / superficie de tarjeta / fondo de zona pasiva |
+| `--bg-hover` / `--bg-disabled` | `#EDF0F4` / `#F1F3F6` | Hover de filas y controles / estado deshabilitado |
+| `--text-p` / `--text-s` / `--text-t` / `--text-d` | `#1B212B` / `#5B6470` / `#697486` / `#9AA3AD` | Primario / secundario / terciario / deshabilitado |
+| `--text-inv` | `#FFFFFF` | Texto sobre `--brand` y colores sólidos |
+| `--text-link` | `#1D4ED8` | Enlaces |
+| `--border-subtle` / `--border-default` / `--border-strong` | `#E3E6EB` / `#CFD4DC` / `#A6AEBB` | Bordes de superficie / controles / separadores fuertes |
+| `--scaffold-*` | oscuros | Sidebar, marca, navegación oscura |
+| `--succ` / `--warn` / `--danger` / `--info` / `--neutral` (+ `-bg`, `-bd`) | — | Estados: éxito, aviso, riesgo, información, neutro |
 
-Tono visual:
-- **Sin alegría gratuita**: no usar gradientes llamativos, ilustraciones ni animaciones decorativas.
-- **Enfocado**: una acción primaria visible por pantalla; densidad de datos cuidada; jerarquía clara.
-- **Preciso**: los montos, folios y fechas son protagonistas (typo tabular, alineación numérica correcta).
-- **Formal**: tipografía neutra, esquinas suaves mínimas, bordes finos, sombras sutiles.
-
-### 1.2 Principios de diseño
-
-| # | Principio | Cómo se aplica |
-|---|---|---|
-| P1 | **El dato manda** | Un buen layout expone primero los datos y la acción relevante; la decoración nunca compite con la información. |
-| P2 | **Una tarea, un camino** | Cada pantalla tiene **una** acción primaria. Las acciones secundarias son visibles pero subordinadas. |
-| P3 | **Predecible y consistente** | Mismos componentes para los mismos problemas en todo el sistema; mismo estado = misma apariencia. |
-| P4 | **Densidad profesional** | Densidad media-alta en tablas y listas (más datos visibles) sin sacrificar legibilidad ni objetivos táctiles mínimos. |
-| P5 | **El dinero es sagrado** | Montos siempre en formato consistente (`B/. 1,250.00`), cifras de ancho fijo, alineación a la derecha en columnas, estados de cobro visibles, confirmación para operaciones irreversibles. |
-| P6 | **Confianza por transparencia** | Estados claros (borrador, aprobado, cerrado, error), trazabilidad visible (autor, fecha, folio), mensajes de confirmación/reversión explícitos. |
-| P7 | **Accesibilidad desde el diseño** | WCAG 2.2 AA+ es requisito funcional, no una capa final. El color nunca es el único indicador. |
-| P8 | **Brand-ready** | Todo el color pasa por tokens. Al recibir logo/colores corporativos se reemplazan SOLO las primitivas `brand.*` y `scaffold.*`; la semántica no cambia. |
-
-### 1.3 Personas y contexto de uso
-
-| Persona | Área | Contexto | Necesidad crítica |
-|---|---|---|---|
-| **Ofi (Administradora)** | Admin | Escritorio, jornada completa | Flujo rápido en listas y formularios; cero ambigüedad en estados |
-| **Carla (Cobros/Finanzas)** | Admin | Fin de mes (picos) | Visibilidad de mora, montos y comprobantes sin clicks innecesarios |
-| **Ricardo (Contador CPA)** | Admin | Cierres, impuestos, estados financieros | Exactitud, trazabilidad, exportación | 
-| **Luis (Operaciones/Mant.)** | Admin | Rutas de mantenimiento, proveedores | Calendario y tablero de incidencias |
-| **María (Inquilina)** | Portal Inquilino | Móvil, esporádico | Pagar, recibir comprobante, reportar incidencia, ver su calendario |
-| **Sr. Vega (Propietario)** | Portal Propietario | Móvil/desktop, mensual | Ver que cobró, cuánto y cuándo (alcance en discusión, feature flag) |
-
-**Implicación de diseño:** el Admin es denso y rápido (primero escritorio) y los portales usan el **mismo marco de aplicación responsive**: tablero con barra lateral en ≥960px y barra de navegación inferior + menú hamburguesa (panel deslizante) en <960px; una sola tarea por pantalla y táctil ≥44px.
-
----
-
-## 2. Sistema visual
-
-### 2.1 Paleta de color — estrategia neutral (sin marca aún)
-
-Hasta recibir el branding del cliente, la identidad es **grafito** (negro-gris frío). No se usa azul corporativo ni colores de marca: los **colores semánticos** (verde, ámbar, rojo, azul informativo) solo existen para comunicar **estado**, nunca como identidad.
-
-**Regla de oro:** el color comunica **estado** (éxito/peligro/aviso/info), no **estilo**. La identidad es neutra.
-
-#### Escala neutra primitiva
-
-```
-Neutro-0   #FFFFFF  ─ fondo de contenido, superficies
-Neutro-50  #F8F9FB  ─ fondo de página (detrás de tarjetas)
-Neutro-100 #F1F3F6  ─ superficies sutiles, hover, inputs deshabilitados
-Neutro-200 #E3E6EB  ─ bordes sutiles (separadores, cards)
-Neutro-300 #CFD4DC  ─ bordes por defecto (inputs, tablas)
-Neutro-400 #A6AEBB  ─ bordes fuertes, iconos deshabilitados
-Neutro-500 #7C8694  ─ iconos neutros, marcadores de posición grandes
-Neutro-600 #5B6470  ─ texto secundario (≥5.5:1 sobre blanco)
-Neutro-700 #3E4653  ─ texto terciario/labels (uso limitado)
-Neutro-800 #2A313D  ─ hover del brand
-Neutro-900 #1B212B  ─ texto primario, botón primario, marca placeholder
-Neutro-950 #10151D  ─ active del brand
-```
-
-#### Colores semánticos (solo estado) — todos verificados en contraste WCAG AA sobre blanco
-
-| Token | HEX | Uso | Contraste sobre blanco |
-|---|---|---|---|
-| `status-success` | `#146C43` | Pagado, cobrado, aprobado, activo, saldo a favor | ≥ 6.2:1 |
-| `status-warning` | `#7A4F00` | Pendiente, por vencer, mora, en proceso, reabierto | ≥ 6.4:1 |
-| `status-danger` | `#B42318` | Anulado, rechazado, error, eliminado, vencido | ≥ 6.0:1 |
-| `status-info` | `#1D4ED8` | Informativo, notificación, nuevo evento | ≥ 7.6:1 |
-| `status-neutral` | `#5B6470` | Borrador, sin estado definido, neutro | ≥ 5.5:1 |
-
-Fondos suaves para chips/alertas: `*-bg` (#E7F2EC, #FCF3D9, #FCE8E6, #E8F0FE, #F1F3F6) con bordes `*-border` matizados. **El color de estado SIEMPRE se acompaña de icono o texto** (P7).
-
-#### Estructura de superficies
-
-- `bg-canvas` #F6F7F9 → color de fondo de la página (admin)
-- `bg-content` #FFFFFF → tarjetas, inputs, tablas, modales
-- Scaffold (barra lateral/superior) `#141A22` → marco de la aplicación en Admin; texto `#E6E9EE`
+Cada estado semántico usa el trío `color – fondo – borde`: `chip-success` = `--succ` + `--succ-bg` + `--succ-bd`, y así sucesivamente.
 
 ### 2.2 Tipografía
 
-**Familia UI:** *Inter* (400/500/600/700) — neutral, legible en español (incluye acentos y ñ), excelente en tablas densas. Fallback: Segoe UI / system-ui.
-**Familia Mono:** *IBM Plex Mono* (400/500) — para folios, hashes, códigos de cuenta, cédula/RUC, referencias técnicas.
+| Token | Fuente | Uso |
+| --- | --- | --- |
+| `--font-ui` | Inter (400/500/600/700) | Todo texto de interfaz |
+| `--font-mono` | IBM Plex Mono (400/500/600) | Folios (`REC-2026-0147`), cédulas, montos con cifras tabulares, fechas, hashes |
 
-Reglas tipográficas:
-- **Sin serifas decorativas**, sin variantes condensadas.
-- **Cifras de ancho fijo obligatorias** en: montos, folios, fechas, cédulas, códigos, celdas numéricas de tablas (`font-variant-numeric: tabular-nums`).
-- **Fechas — formato único en toda la UI:** la presentación siempre usa `DD/MM/YYYY` (día y mes de 2 dígitos, ej. `30/09/2026`); en columnas compactas `DD/MM` (ej. `30/09`). Los datos se almacenan en ISO 8601 (`YYYY-MM-DD`), pero **el display nunca muestra ISO**. Los períodos usan mes completo + año en español: `Septiembre 2026`. Todas las fechas usan la misma familia tipográfica (Inter) y `tabular-nums`; el único sitio con mono para fechas es el folio técnico (p.ej. `REC-2026-0147`).
-- Etiquetas internas de sección usan `label-caps` (12px, 600, uppercase, tracking +0.06em) — estilo sobrio de "ficha de expediente".
+Escala tipográfica: **11px** (labels de navegación, mono pequeño) · **12px** (labels de campo, captions de tabla, meta) · **13px** (cuerpo de tablas y subtítulos) · **14px** (cuerpo base) · **15–16px** (títulos de tarjeta y de modal) · **20–24px** (títulos de página y valores KPI; en mosaico `clamp(19px,1.9vw,28px)`) · **30px** (cantidad destacada del hero de portal).
 
-Escala (rem mínimo 12px):
+### 2.3 Espaciado (escala 2/4/8/12/16/20/24/32/40/48)
 
-| Token | Tamaño / línea | Peso | Uso |
-|---|---|---|---|
-| `title-lg` | 30px / 1.25 | 600 | Tablero `title` de área (raro) |
-| `title-md` | 24px / 1.3 | 600 | Título de página |
-| `title-sm` | 20px / 1.35 | 600 | Subtítulos, título de tarjeta |
-| `text-md` | 16px / 1.5 | 400 | Valores destacados, cuerpo de portal |
-| `text-base` | 14px / 1.5 | 400 | Texto por defecto (UI) |
-| `text-base-medium` | 14px | 500 | Filas seleccionadas, énfasis suave |
-| `text-sm` | 13px / 1.5 | 400 | Celdas de tabla, descripciones, meta |
-| `text-xs` | 12px / 1.5 | 400 | Metadatos, pie de tabla, fechas |
-| `label-caps` | 12px | 600 | Encabezados de sección, etiquetas de estado |
-| `mono-sm` / `mono-xs` | 13/12px | 400 | Folios, códigos, hash |
+`--sp-1:2px` · `--sp-2:4px` · `--sp-3:8px` · `--sp-4:12px` · `--sp-5:16px` · `--sp-6:20px` · `--sp-7:24px` · `--sp-8:32px` · `--sp-9:40px` · `--sp-10:48px`
 
-### 2.3 Espaciado, radio, sombra
+### 2.4 Radios, sombras, movimiento, layout
 
-- **Rejilla de 8px** con pasos intermedios de 4px: escala `2 / 4 / 8 / 12 / 16 / 20 / 24 / 32 / 40 / 48 / 64 / 80`.
-- **Página:** contenido `24px` de margen (32px en ≥1280px); tarjetas `16px` de padding interno; secciones separadas `24px`.
-- **Radios:** campos/botones 6px (`radius-md`), tarjetas/menús 8px (`radius-lg`), diálogos/paneles deslizantes 12px (`radius-xl`), etiquetas tipo píldora 999px. Esquinas **contenidas** — un sistema formal no usa radios grandes.
-- **Sombras sutiles:** `sm` para tarjetas quietas sobre el fondo, `md` para elevación al pasar el cursor sobre una tarjeta, `lg` menús/listas desplegables, `xl` diálogos/paneles deslizantes.
-- **Bordes:** hairlines `1px` con `border-subtle`; inputs con `border-default`; focus ring 2px `border-focus` + offset 2px.
-
-### 2.4 Iconografía
-
-- **Familia única:** Phosphor (esquema regular, stroke consistente) en la implementación web; equivalente vectorial en otros stacks. **Nunca emojis como iconos funcionales.**
-- **Regla de tamaños (obligatoria):** las medidas se toman de los tokens `icon-*`. **Prohibido escalar un icono con `width`/`height` arbitrarios** — si un contexto no está cubierto, se agrega un token antes de usarlo.
-
-| Token | Px | Contexto de uso |
-|---|---|---|
-| `icon-xs` | 16 | Iconos en texto, etiquetas de estado, botones `sm`, celdas de tabla |
-| `icon-sm` | 18 | Ítems de la navegación lateral (acompañados de etiqueta) |
-| `icon-md` | 20 | Botones de icono, acciones de barra de herramientas, barra superior (campana, ayuda), menú de fila (`⋮`) |
-| `icon-lg` | 24 | Encabezados de página, alertas/aviso destacados, estados vacíos, diálogos |
-| `icon-xl` | 32 | Héroes del tablero y estados de proceso grandes |
-
-Combinaciones fijas:
-- **Botón con icono:** `icon-xs` (16) en botón `sm`; `icon-md` (20) en botones `md` y `lg`. Área de clic mínima 36px, **≥44px en táctil**.
-- **Navegación lateral:** `icon-sm` (18) cuando hay etiqueta visible; `icon-md` (20) si el ítem está colapsado (solo icono).
-- **Etiquetas de estado:** `icon-xs` (16) a la izquierda del texto.
-- Iconos **solo marcadores de contexto**: estado, acción, alerta, navegación. El texto prevalece.
-- Iconos decorativos al lado de texto visible: `aria-hidden="true"`. Iconos solos: `aria-label` descriptivo.
-
-### 2.5 Movimiento (micro, funcional)
-
-| Momento | Token | Duración |
-|---|---|---|
-| Al pasar el cursor / pulsación | `duration-hover` / `duration-state` | 100 / 150 ms |
-| Panel deslizante / diálogo / menú | `duration-reveal` | 200 ms (desaceleración suave) |
-| Indicadores de carga (ruedas y esqueletos) | constante, sutil | — |
-
-Reglas: **respetar `prefers-reduced-motion`** (desactivar todo movimiento no esencial); no animar layouts (evitar CLS); feedback de botón en ≤150ms. El sistema **no usa** animaciones de entrada decorativas, parallax ni scroll narrativo.
+- Radios: `sm 4px` (paginación, commits) · `md 6px` (botones, inputs, ítems de nav) · `lg 8px` (tarjetas, tablas, alertas) · `xl 12px` (modales, héroes) · `pill 999px` (chips, selectores).
+- Sombras: `sm` (tarjetas) · `md` (hover de tarjetas y controles flotantes) · `lg` (menús, toasts) · `xl` (modales, drawers, sidebar móvil).
+- Movimiento: 100/150/200 ms; con `prefers-reduced-motion` la duración se anula.
+- Layout: `--sidebar-w:256px`, `--topbar-h:56px`, fila de tabla 44px (normal) / 36px (densa).
 
 ---
 
-## 3. Design tokens — fuente de verdad
+## 3. Reglas de composición y separación (canon)
 
-Máquina de implementación a partir de `docs/ui/tokens.dtcg.json` (formato **W3C DTCG**):
+Estas reglas son obligatorias y materializan la pauta de que cada componente mantiene su separación.
 
-- `grafito.color.primitive.*` — neutro, brand, semánticos primitivos.
-- `grafito.color.semantic.*` — background, text, border, scaffold, status, chart, overlay.
-- `grafito.typography.*` — fontFamily, fontWeight, escala tipográfica.
-- `grafito.spacing.*`, `grafito.size.*`, `grafito.radius.*`, `grafito.shadow.*`, `grafito.border.*`, `grafito.motion.*`, `grafito.breakpoint.*`, `grafito.zIndex.*`.
+### 3.1 Grillas responsivas
 
-Reglas:
-1. **Ningún valor hardcodeado en la UI.** Todo color/tamaño/espacio nace de un token.
-2. Si al implementar se detecta que falta un token, se **añade al archivo DTCG** y se regenera CSS; no se improvisa un valor.
-3. Para crear la **marca** cuando el cliente la presente: reemplazar `brand.*` y `scaffold.*`; los semánticos permanecen.
+| Breakpoint | Columnas por defecto |
+| --- | --- |
+| ≥ 1280px | 4 |
+| ≥ 960px | 3 |
+| ≥ 600px | 2 |
+| < 600px | 1 |
 
----
+- `gap` obligatorio: **16px** (`--sp-5`) entre ítems de grilla en escritorio; 12px solo en grillas compactas documentadas (`.mini-grid-sm`, canales de pago).
+- **Nunca** una tarjeta a ancho completo con una o dos piezas de información: se agrupa en grillas de 2+ columnas. Si la pantalla solo tiene 2 tarjetas, se renderizan en 2 columnas (~50%/50%) con su `gap`, no a ancho completo.
+- Usar `repeat(auto-fit, minmax(0,1fr))` para KPIs y mosaicos. Prohibido `min-width` fijo que desborde horizontal.
+- Los grids no acumulan márgenes entre tarjetas: `.grid > .card + .card { margin-top: 0 }` (el `gap` es la única separación entre ítems).
 
-## 4. Arquitectura de información y navegación
+### 3.2 Apilamiento vertical de secciones
 
-### 4.1 Áreas y sitemap
+- Secciones consecutivas dentro de `.content` (`.card`, `.g2`, `.g3` sin grilla envolvente) se separan con `margin-top: 16px`.
+- Detrás de `page-head` y de `toolbar` siempre hay `margin-bottom` de 16–24px según componente (ver fichas).
+- Las listas dentro de tarjetas (`mini-row`, `sol-row`) se separan entre sí con `border-bottom: 1px` + `padding: 8px 0`; la última fila no lleva borde.
 
-```
-┌─ Inicio de sesión (Áreas separadas)─────────────────────┐
-│  /login                  → todos los usuarios       │
-│  /portal/inquilino/login → inquilino (redirect)     │
-└─────────────────────────────────────────────────────┘
+### 3.3 Prohibiciones
 
-┌─ Admin /app/* (escritorio-first)──────────────────────────────────┐
-│  /app/resumen            → Tablero con KPIs y tareas            │
-│  /app/clientes           → Personas (inquilinos/propietarios)     │
-│  /app/inmuebles          → Portafolio + fotos                    │
-│  /app/contratos          → Adm. y arrendamiento                   │
-│  /app/cobros             → Recibos, pagos, mora, comprobantes     │
-│  /app/liquidaciones      → A propietarios                          │
-│  /app/incidencias        → Tablero + visitas                       │
-│  /app/linea-blanca       → Electrodomésticos + mantenimientos      │
-│  /app/contabilidad       → Plan de cuentas, asientos, cierres,     │
-│  │                         conciliación, impuestos, activos fijos, │
-│  │                         estados financieros                      │
-│  /app/notificaciones     → Plantillas, eventos, envíos             │
-│  /app/reportes           → Reportes y exportaciones                │
-│  /app/administracion     → Usuarios, roles, permisos, configuración│
-└────────────────────────────────────────────────────────────────────┘
-
-┌─ Portal Inquilino /portal/inquilino/* (tablero: barra lateral ≥960px / barra de navegación inferior <960px)───┐
-│  /resumen        → Tablero: saldo, próximo pago,     │
-│                    incidencias abiertas, notificaciones │
-│  /calendario     → Pagos, visitas, eventos              │
-│  /pagos          → Historial de pagos + comprobantes PDF│
-│  /incidencias    → Nueva / seguir mis incidencias       │
-│  /perfil         → Datos de contacto y preferencias     │
-└─────────────────────────────────────────────────────────┘
-
-┌─ Portal Propietario /portal/propietario/* (feature flag)─┐
-│  /resumen  → Pagos recibidos (fecha, monto, inmueble)    │
-│  /perfil                                                  │
-└──────────────────────────────────────────────────────────┘
-```
-
-### 4.2 Permisos → visibilidad (frontend controla UX; backend valida)
-
-Regla global: **el menú y las acciones muestran/ocultan según permiso del rol** — nunca sustituye la autorización del backend.
-
-| Módulo | Permisos que controlan la navegación |
-|---|---|
-| Clientes | `clientes.read` (lista/ficha), `clientes.create/update/delete`, `clientes.documentos.gestionar` |
-| Inmuebles | `inmuebles.read/create/update/delete`, `inmuebles.fotos.gestionar` |
-| Contratos | `contratos.read/create/firmar/renovar/terminar` |
-| Cobros | `cobros.recibos.generar`, `cobros.pagos.registrar`, `cobros.pagos.anular`, `cobros.mora.consultar` |
-| Liquidaciones | `liquidaciones.generar/confirmar/pagar` |
-| Incidencias | `incidencias.leer/asignar/cerrar`, `incidencias.visitas.programar` |
-| Línea blanca | `lineablanca.registrar`, `lineablanca.mantenimientos.registrar`, `lineablanca.reportes.ver` |
-| Contabilidad | `contabilidad.*` (ver sección 10 del doc contable) |
-| Admin | `usuarios.gestionar`, `roles.gestionar`, `configuracion.editar`, `feature-flags.gestionar` |
-| Reportes/Auditoría | `reportes.ver`, `auditoria.ver` |
-
-**Acciones sin permiso:** la acción está oculta **o** visible pero deshabilitada con nota emergente ("Se requiere permiso X"). Elegir "oculta" para acciones sensibles (borrar, aprobar, anular) y "deshabilitada con nota" para acciones de solo lectura.
-
-**Aplicación en el prototipo (v1.4):** la regla está implementada en tiempo de ejecución — menú lateral, menú móvil (hamburguesa/panel deslizante), tablero (§8.3), búsqueda global y vistas protegidas usan `can(modulo)` / `hasPerm(permiso)` con los permisos del rol activo; la ficha de usuario de la barra superior permite cambiar de usuario de prueba (Administrador, Gerente, Contador, Cobros/Finanzas, Operaciones/Mant., Solo lectura) para validar cada perfil. El permiso real lo valida siempre el backend (RN-S01); el frontend solo controla la experiencia de uso.
-
-### 4.3 App shell (patrón global)
-
-```
-┌──────────────────────────────────────────────────────────────┐
-│ ┌──────────┐  ┌────────────────────────────────────────────┐ │
-│ │  Logo    │  │ Barra superior: búsqueda global [campana][ayuda][usuario]│ │
-│ ├──────────┤  ├────────────────────────────────────────────┤ │
-│ │ Barra    │  │ Ruta + Título de página + acciones          │ │
-│ │ lateral  │  │                                            │ │
-│ │ (256px)  │  │            Contenido (fondo de página)     │ │
-│ │          │  │                                            │ │
-│ └──────────┘  └────────────────────────────────────────────┘ │
-└──────────────────────────────────────────────────────────────┘
-```
-
-- **Barra lateral:** 256px (colapsable a 72px iconos) con grupos: `Resumen`, módulos de negocio, `Contabilidad`, `Administración`. Ítem activo con fondo `scaffold-bg-active` + marca vertical de 3px (no solo color de fondo: viñeta + icono).
-- **Barra superior:** 56px; búsqueda global (clientes, inmuebles, folios, contratos); menú de usuario (cambiar rol si aplica, perfil, cerrar sesión).
-- **Contenido:** fondo `bg-canvas`; ruta de navegación en la cabecera de página (Inicio → Contabilidad → Asientos).
-- **Sin páginas internas con scroll infinito como patrón base** — paginación clara (sección 6, DataTable).
-
-### 4.4 Mapa de componentes (nivel 2)
-
-```
-Marco de aplicación
-├─ Barra lateral (grupos + ítem + colapsable)
-├─ Barra superior (búsqueda global, campana, perfil)
-├─ Encabezado de página (ruta de navegación + título + acciones)
-├─ Contenedor de página (fondo, márgenes)
-└─ Sección de contenido (tarjeta/panel con título de sección)
-```
+- Rediseñar la tabla por módulo (existe UNA tabla canónica).
+- Estilos inline para layout o para valores que ya son token.
+- Emojis como iconos funcionales (solo SVG de la familia Phosphor).
+- Valores de color, tipo, radio o sombra fuera de los tokens.
+- Componentes nuevos en paralelo sin pasar por este documento.
 
 ---
 
-## 5. Patrones de interacción
+## 4. Datos y formato
 
-### 5.1 Lista + búsqueda + filtros (pantalla de trabajo)
+| Dato | Formato |
+| --- | --- |
+| Moneda | `B/. 1,234.56` · cifras tabulares · alineación derecha en tablas · negativos con signo |
+| Fechas en pantalla | `DD/MM/YYYY` (p. ej. `15/09/2026`) |
+| Períodos | Mes completo en español: `Septiembre 2026` |
+| Folios / referencias | Mono: `REC-2026-0147`, `CRE-2026-0147`, `ARR-2026-041`, `LIQ-2026-003`, `A-001`, `INC-2026-101`, `LB-001` |
+| Identidades | Nombres y direcciones panameños plausibles; cédulas `8-123-456`, `PE-123456` |
+| Estados de negocio | Etiquetas reales con semántica de chip establecida: `PAGADO`, `EN MORA`, `VIGENTE`, `BORRADOR`, `CERRADO` |
 
-Es el patrón dominante en Admin (clientes, inmuebles, contratos, recibos, asientos, equipos):
+Mapa de estado a chip (único punto de verdad: `chipEstado()` del prototipo):
 
-```
-[ Título de página                     ]   [+ Nuevo]  (acción primaria)
-[ Búsqueda… ][Filtros…][columnas][exportar]          (barra de herramientas)
-┌─────────────────────────────────────────────────────────────┐
-│ Filtros activos: [Tipo: Apartamento ×] [Estado: Activo ×]     │
-│                                                              │
-│ ┌──┬──────────────┬────────┬─────────┬──────────┬──────────┐ │
-│ │☐ │ Ref/Persona  │ Estado │   Canon │ Próx.pago│    ⋮     │ │
-│ │☐ │ Apt 3B        │ 🟢 Activo│B/. 900.00│ 5 días   │    ⋮     │ │
-│ └──┴──────────────┴────────┴─────────┴──────────┴──────────┘ │
-│ Paginación: 1-50 de 387   [‹][1][2][3]…[8][›]                 │
-└─────────────────────────────────────────────────────────────┘
-```
-
-Reglas:
-- La **búsqueda** filtra por texto principal (nombre, cédula, referencia, folio).
-- Los **filtros** abren un panel/panel deslizante con campos tipados; los filtros activos se muestran como **etiquetas removibles** sobre la tabla.
-- Cada columna es **ordenable**; columnas numéricas se ordenan numéricamente y se alinean a la derecha.
-- **Menú de fila (⋮):** botón de icono *fantasma* (sin borde por defecto — evita el borde por defecto del navegador), objetivo táctil ≥44px, con `aria-haspopup="true"` y `aria-expanded`. Abre un menú desplegable (_menu_) con: acciones relevantes al permiso del rol (Ver ficha, Editar, Cambiar estado, Desactivar, etc.), grupo principal seguido de **separador** y acciones destructivas (si aplican). El menú no se corta dentro de la tabla (capas superpuestas, §6.22), cierra al hacer clic fuera o con `Esc`, y devuelve el foco al botón que lo abrió. Especificación completa en §5.9, §6.1 (botón de icono), §6.5 y §6.22.
-- **Persistencia:** guardar última página/filtros por usuario-sesión (vía API, nunca localStorage para datos sensibles).
-
-### 5.2 Master-detail (ficha de persona, inmueble, cliente)
-
-Ficha en dos paneles: **cabecera resumen** (identidad + estado + acciones) y **cuerpo con tabs**:
-
-```
-┌──────────────────────────────────────────────────────────────┐
-│ [Foto] Nombre Apellido        [Etiqueta de estado] [Editar][⋮] │
-│        Cédula · contacto · edad · estado civil                │
-│ ────────────────────────────────────────────────────────────  │
-│ [Datos][Contactos][Laboral][Documentos][Bancarios][Historial] │
-│ (tab content)                                                 │
-└──────────────────────────────────────────────────────────────┘
-```
-
-- En móvil, la cabecera colapsa a tarjeta compacta y las tabs se vuelven horizontales scrollables.
-- El **historial** usa un componente de Línea de tiempo (registro cronológico: incidencias, pagos, contratos, mantenimientos).
-
-### 5.3 Formularios de datos maestros
-
-- Layout de **1 columna en móvil, 2 columnas en ≥md** (label arriba, alineado).
-- Campos obligatorios marcados con `*` y mensajes de validación **en línea** + resumen de errores al enviar el formulario.
-- Entrada especializada: **máscara de entrada** para cédula (`4-123-456`), teléfono, RUC; **campo de dinero** con prefijo `B/.` (moneda Balboa/USD), separador de miles y 2 decimales (nunca centavos flotantes — se guarda entero en backend).
-- La **acción de guardado** primaria (morado del flujo) está a un clic; se usa guardado estándar con confirmación visual (aviso breve) y manejo de conflictos `409` (se sube la versión y se ofrece refrescar).
-
-### 5.4 Asistente / ejecución (cierre contable, registro de pago)
-
-Solo para procesos de **múltiples pasos con verificación**:
-
-```
-Paso 1: Configurar  → Paso 2: Verificar → Paso 3: Ejecutar → Paso 4: Resultado
-─────────────────────────────────────────────────────────────────────────────
-[ 1 Config   ]  [ 2 Verificar ]  [ 3 Ejecutar ]  [ 4 Resultado ]
-```
-
-- Barra de pasos numérica + verificación con ✓ (no solo color).
-- Paso "Verificar" muestra un resumen de lo que se ejecutará + validaciones; si hay errores, se detiene con panel de problemas.
-- Paso "Ejecutar" tiene botón de acción con confirmación explícita del efecto y advertencia de irreversibilidad (para cierre contable).
-- Paso "Resultado" muestra resumen: asientos generados, folio, TraceId, botón de descarga de reporte.
-- **Cierres:** reutilizar el flujo con `TipoCierre` parametrizable (diario…anual), lista de períodos con estado (`Abierto → EnCierre → Cerrado → Reabierto`) y reapertura con causa obligatoria.
-- **Nuevo contrato (asistente):** el paso de datos financieros del contrato se complementa con el paso de **adjunto obligatorio** — `[ 1 Inmueble ] → [ 2 Cliente ] → [ 3 Condiciones ] → [ 4 Contrato firmado ] → [ 5 Confirmar ]`. El paso 4 usa la zona de carga (§6.29): en Arrendamiento es `Requerido` (botón de confirmar deshabilitado hasta cargar) y en Administración `Opcional`. El backend revalida el adjunto al guardar (RN-S01).
-
-### 5.5 Datos financieros (reglas de oro)
-
-- Formato único: `B/. 1,234.56`. Los negativos en rojo con signo `-B/. 100.00` (verde=abono/saldo a favor, rojo=adeudo/pago). **El icono/texto acompaña cualquier color.**
-- En tablas, montos alineados a la derecha con cifras de ancho fijo; encabezados alineados igual.
-- Operaciones sobre dinero (registrar pago, anular, aprobar asiento, cerrar período) siempre usan **diálogo de confirmación** con resumen de lo que cambiará y, cuando procede, casilla "Entiendo que no podré editar esto después".
-- Comprobantes/recibos: siempre visibles como PDF descargable; el patrón de botón "Descargar comprobante" es consistente en Admin y portales.
-
-### 5.6 Calendario y agenda (portal inquilino + operaciones)
-
-- Vista **mensual** por defecto; **agenda de lista** alternativa; navegación anterior/hoy/siguiente.
-- Tipos de evento con color + **etiqueta de texto** (Pago pendiente, Visita mantenimiento, Evento contrato) — el color no es el único canal.
-- Tapping un día abre un panel de eventos; tapping un evento abre detalle (monto, técnico, fecha).
-- Recordatorios se comunican como etiquetas "en N días" con alerta visual suave.
-
-### 5.7 Notificaciones (bandeja)
-
-- Bandeja en la barra superior con icono y contador; sección "No leídas" primero; acciones: marcar leída, ir al recurso.
-- La bandeja muestra tipo de evento, fecha y recurso; cada notificación lleva a su detalle.
-- Las notificaciones de pago muestran monto y vencimiento con formato financiero.
-
-### 5.8 Exclusividad de ocupación — selección de inmuebles con estados restringidos
-
-Se usa al crear/editar un **contrato de arrendamiento** o al **asignar el inmueble principal de un cliente**: un inmueble `Alquilado`/ocupado (o con contrato `Vigente`/`Mora`) **no se ofrece** como candidato.
-
-```
-[Inmueble            ▾]  ← solo Disponible / Reservado
-  ┌─────────────────────────────┐
-  │ Apt 3B — Disponible         │
-  │ Apt 2A — Reservado          │
-  │ Local C-1 — Disponible      │
-  │ ──────────────────────────  │
-  │ (Apt 5C — Alquilado, no     │  ← NO aparece en la lista; ver nota
-  │  disponible)                │
-  └─────────────────────────────┘
-```
-
-Reglas:
-- **Frontend (UX):** la lista desplegable filtra a `Disponible`/`Reservado`; texto de ayuda debajo del campo: *"Solo se muestran inmuebles disponibles o reservados."* Si el usuario escribe/selecciona una opción que dejó de ser candidata, se muestra error en línea *"La unidad seleccionada no está disponible."*.
-- **Backend (seguridad, RN-S01):** el endpoint **re-valida** el estado del inmueble al guardar (defensa en profundidad). El filtro del frontend **nunca es la frontera de seguridad**: dos operadores pudieron ver el mismo `Disponible`, pero solo el primero crea el contrato; el segundo obtiene `409/422` *"La unidad fue ocupada mientras completabas el contrato."*.
-- Para **dejar visible** una unidad no candidata con su razón (casos de revisión), usar la variante de opción **deshabilitada con nota emergente** (§6.21): *"Alquilada — contrato ARR-2026-041 vigente"*.
-- Preferencia de implementación: opciones **removidas** en combos de alta para no invitar errores; opciones **deshabilitadas con motivo** en tablas de listado/ficha donde contextualiza el estado de la unidad.
-
-### 5.9 Cambio de estado gestionado (Activar / Desactivar cliente — y estados gestionados equivalentes)
-
-Cambiar un estado **gestionado** (ej. Cliente `Activo ↔ Inactivo`) es una acción con efecto y consecuencias legales/financieras (bloquea contratos nuevos, incidencias, portales), por lo que **siempre** usa un diálogo de confirmación explícito (nunca un interruptor inmediato):
-
-```
-Listado Clientes — fila ⋮ → "Cambiar estado"
-┌───────────────────────────────────────────────┐
-│ Cambiar estado del cliente                    │
-│ Cliente: Ana Rodríguez · Inquilino · 🟢 Activo │
-│                                               │
-│ ⚠ Al desactivar:                              │
-│   • No podrá firmar contratos nuevos.         │
-│   • No podrá reportar incidencias.            │
-│   • Los contratos vigentes continúan hasta    │
-│     su término (FL-CLI-03).                   │
-│                                               │
-│ El backend valida que no existan recibos      │
-│ pendientes (RD-CLI-07).                       │
-│ [Cancelar]            [Desactivar cliente]    │
-└───────────────────────────────────────────────┘
-```
-
-Reglas:
-- Solo visible si el rol tiene `clientes.estado.cambiar` (permiso dedicado **[P]**).
-- **Menú de fila (⋮) → "Cambiar estado"** (no icono `trash`): separa la semántica "cambio de estado" de "eliminar" (`clientes.delete`).
-- Diálogo con variante según transición: desactivación → `danger` con advertencia; reactivación → `info/success` con mensaje positivo y validación derivada.
-- El **backend** repite la validación de RD-CLI-07 (recibos pendientes/contratos activos) y devuelve `409/422` con mensaje claro si el cliente tiene candados: *"No se puede desactivar: el cliente tiene N contrato(s) activos y M recibo(s) por cobrar. Salda los recibos o finaliza los contratos antes de desactivar."* — RN-S01 (el frontend solo controla UX).
-- Después de la transición: aviso breve de éxito y **auditoría** (quién, cuándo, de qué a qué estado, motivo si aplica).
+| Chip | Estados ejemplares |
+| --- | --- |
+| `chip-success` | Activo, Vigente, Disponible, Pagado, Aprobado, Instalado, Conciliado, Listo, Entregado |
+| `chip-warning` | En mantenimiento, Pendiente, Reportada, En ejecución, Por aprobar, En cierre |
+| `chip-danger` | Anulado, En mora, Vencido, Error |
+| `chip-info` | Alquilado, Emitido, Asignada, Presupuesto, Abierto, Programada, Declarado, No leída |
+| `chip-neutral` | Inactivo, Terminado, Cerrada, Borrador, Revertido, De baja, Leída |
 
 ---
 
-## 6. Catálogo de componentes
-
-> Convenciones: estados estándar = `normal / al pasar el cursor / foco visible / activo / deshabilitado / carga / error`. Todos los componentes respetan tokens y accesibilidad de la sección 10. Donde aplica se indica el mapeo con MudBlazor.
-
-### 6.1 Botón
-
-- **Variantes:** `principal` (fondo marca, texto inverso), `secundario` (fondo blanco, borde fino), `fantasma` (sin fondo, texto), `peligro` (fondo danger, texto blanco), `enlace`.
-- **Tamaños:** `sm` 28px, `md` 36px (por defecto), `lg` 44px.
-- **Tipos:** etiqueta + icono opcional (icono a la izquierda); **botón de icono** cuadrado 36px con icono 20px.
-- **Botón de icono en filas de tabla (`⋮`):** variante *fantasma* explícita: `background:transparent`, `border:1px solid transparent` (o borde transparente), `color:text-secondary`, radio `radius-md`. **Nunca heredar el borde/fondo por defecto del `<button>` del navegador** (produce recuadro gris/borde negro en HTML sin framework). Hover: `bg-subtle` + `text-primary` (≤150ms). Objetivo táctil **≥44px** (área de clic), visual 36px con icono 20px centrado; el área extra se logra con `padding`/`min-width`/`min-height`, no con el borde.
-- **Estados:** al pasar el cursor = marca más fuerte; presionado = marca activa; deshabilitado = fondo `bg-disabled` + texto `text-disabled`; carga = rueda pequeña + etiqueta (sin cambio de ancho).
-- **Foco:** anillo 2px `border-focus` offset 2px; en el botón de fila el foco visible **incluye** el área táctil completa (no solo el icono).
-- Regla: **una acción principal por pantalla**; en diálogos, el botón principal está a la derecha, el secundario a la izquierda.
-- MudBlazor: `MudButton Variant=Field` + clases custom; override de `Palette.Light.AppbarBackground` en theme.
-
-### 6.2 Etiqueta de estado / Contador
-
-- Muestra **icono + texto** (nunca color solo).
-- Variantes semánticas: éxito, advertencia, peligro, información, neutro (mayúsculas de estado: `PAGADO`, `EN MORA`, `CERRADO`, `BORRADOR`).
-- Tamaño: altura 22px, texto 12px/600; fondo suave + borde.
-- Uso de estados típicos:
-
-| Dominio | Posibles etiquetas |
-|---|---|
-| Cliente | Activo, Inactivo, En mora (derivado) |
-| Inmueble | Disponible, En proceso, Alquilado/Ocupado, En mantenimiento, Suspendido, Pendiente de entrega |
-| Incidencia | Reportada, En evaluación, Asignada, Presupuesto, En ejecución, Cerrada, Cancelada |
-| Recibo | Emitido, Parcial, Pagado, Vencido, Anulado |
-| Electrodoméstico | Instalado, En reparación, De baja |
-| Asiento | Borrador, Por aprobar, Aprobado, Revertido |
-| Período contable | Abierto, En cierre, Cerrado, Reabierto |
-| Notificación | Leída / No leída |
-
-- MudBlazor: `MudChip` con colores custom por token.
-
-### 6.3 Campo de texto, Lista desplegable, Área de texto
-
-- Altura 36px, borde 1px `border-default`, radio 6px, fondo blanco; foco: borde `border-focus` + halo suave (`focus-ring`, 3px).
-- **Etiqueta siempre visible** (12–13px, 500) arriba del campo; texto de ayuda debajo; error con icono + mensaje rojo (4.5:1).
-- El texto de marcador usa `text-placeholder` (#697486) que cumple AA. Campos deshabilitados: fondo `bg-disabled`, texto `text-disabled`.
-- **Lista desplegable:** flecha nativa/vectorial; opciones con las que se confirma la selección; con búsqueda para listas ≥ 10.
-- **Cédula/RUC con máscara:** formato local (`#-###-####` cédula, `#-######-#-#-######` RUC).
-- **Campo de dinero:** prefijo `B/.`, separador de miles, 2 decimales, acepta coma/punto decimal, cifras de ancho fijo.
-- **Selector de fecha:** calendario simple, no es campo libre; rango en filtros con selector de periodo. Siempre muestra y valida con el formato único `DD/MM/YYYY` (regla §2.2).
-- **Autocompletar** para persona/inmueble/proveedor (búsqueda asíncrona, mínimo 3 caracteres).
-
-### 6.4 Casilla de verificación / Opción / Interruptor
-
-- Casilla: 16px, fondo marca cuando está marcada; grupos con etiqueta agrupada (`fieldset/legend` para roles).
-- Interruptor para preferencias/banderas de funcionalidad; estado activado = fondo marca.
-- En tablas, casilla de selección en la primera columna + casilla "todos" en el encabezado con estado indeterminado.
-
-### 6.5 Tabla de datos (columna vertebral del Admin)
-
-- **Densidad:** normal filas 44px; `compacta` 36px para tablas extensas (contabilidad).
-- Fila: al pasar el cursor `bg-hover`; fila seleccionada `bg-subtle` + borde izquierdo marca de 2px; **sin** cebra por defecto (formal), opcional sutil en tablas grandes.
-- Encabezado: texto 12px/600 (etiqueta en mayúsculas), fondo `bg-subtle`, borde inferior fino. Celdas numéricas/monetarias alineadas a la derecha con cifras de ancho fijo.
-- Orden: clic en el encabezado cambia `ascendente/descendente/sin orden` con `aria-sort`; icono flecha.
-- Paginación: controles de página (‹ ›), selector de tamaño `25/50/100`, total `1–50 de 387`. Pie de página fijo opcional.
-- **Acciones en lote:** con filas seleccionadas aparece una barra de acciones (exportar, registrar pago, enviar recordatorio, eliminar — siempre con confirmación). Evita editar fila por fila en picos de fin de mes (recomendación del motor).
-- Menú de fila `⋮`: botón de icono **fantasma** sin borde del navegador (ver §6.1), objetivo táctil ≥44px, `aria-haspopup="true"`/`aria-expanded`, alineado a la derecha de la fila; abre lista desplegable que **no se corta** dentro de la tabla (z-index/render en capa superpuesta, §6.22). Las acciones mostradas dependen del permiso del rol (RN-S01 siempre valida en backend); el item **"Cambiar estado"** de Cliente usa `clientes.estado.cambiar` (§5.9).
-- **Densidad de datos en contabilidad:** filas de 36px, columnas: Fecha | Folio (mono) | Descripción | Cuenta (mono) | Débito | Crédito | Estado — montos alineados a la derecha. En <Md esta tabla se convierte en lista de asiento + detalle expandible (§9).
-- MudBlazor: `MudTable` con `MudTableColumn` custom y tema de densidad.
-
-### 6.6 Filtros (barra de filtros / panel de filtros)
-
-- Barra de filtros sobre la tabla; al activar >2 filtros, colapsar a etiquetas.
-- Panel de filtros (panel deslizante derecho 360px) con campos tipados: estado, tipo, rango de canon, fechas, ubicación, habitaciones.
-- Botón "Limpiar" restablece; los filtros activos son etiquetas removibles.
-
-### 6.7 Tarjeta / Panel
-
-- Fondo `bg-content`, borde fino `border-subtle`, radio 8px, sombra suave; padding 16px. En pantallas pequeñas la tarjeta nunca se encoge ni desborda: los textos fluyen (`word-wrap`) y la altura es libre.
-- **Tarjeta de sección:** encabezado con `title-sm` + acciones de esquina.
-- **Tarjeta de indicador (KPI):** etiqueta superior (ej: "Ingresos del mes"), valor `title-lg` en cifras de ancho fijo, variación opcional (flecha ↑↓ + color semántico + nota textual), área de mini-gráfico opcional, con clic opcional a detalle.
-- **Cuadrícula de indicadores (responsiva, sin desplazamiento horizontal):** `display:grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap:16px`. Las columnas dependen del ancho disponible: **≥1280px → 4 · ≥960px → 3 · ≥600px → 2 · <600px → 1**. **Nunca se fija a 4 columnas a ciegas** ni se fuerza un `min-width` que desborde: si la tarjeta no cabe, baja de fila.
-- **Otras grillas de tarjetas** (tuplas pequeñas como parámetros de contrato): `repeat(auto-fit, minmax(180px, 1fr))`, misma regla de ajuste automático.
-- **Regla absoluta:** ningún diseño de tarjetas genera desplazamiento horizontal; si el ancho no alcanza, se reduce el número de columnas, no se desborda el contenido.
-
-### 6.8 Pestañas
-
-- Variante **con borde**: pestaña activa con subrayado marca (3px) + texto 600; inactivas texto `text-secondary`.
-- En móvil, desplazamiento horizontal con ajuste.
-- **Pestañas con contador** (ej: "Incidencias (3)") solo cuando el número aporta.
-
-### 6.9 Diálogo / Ventana de diálogo
-
-- Z `z-modal`; fondo oscurecido `scrim` (neutro-950 al 45%); radio 12px; sombra fuerte; ancho 480 / 640 / 860 según contenido.
-- Encabezado: título 16px/600 + botón cerrar (icono X, aria-label); **foco inicial** dentro del diálogo; **foco atrapado**; Esc cierra (si no bloquea).
-- Cuerpo con desplazamiento interno si excede 75% de la pantalla.
-- Pie: acciones alineadas a la derecha; botón principal = acción confirmada; peligro usa variante de peligro con doble confirmación cuando es irreversible.
-- Al abrir: fondo inerte (`aria-hidden` + sin tabulación). **Móvil: panel inferior** (abajo, radio arriba 12px).
-- **Diálogo de confirmación de cambio de estado (clientes y estados gestionados):**
-  - Contenido: nombre del cliente, estado actual (etiqueta), y lista de **consecuencias** (p.ej. "No podrá firmar contratos nuevos", "Los contratos vigentes continúan hasta su término", "El portal inquilino queda sin ingreso" si aplica). Variante `danger` si desactiva, `info/success` si reactiva.
-  - Botón primario con la **acción concreta** ("Desactivar cliente" / "Reactivar cliente"), no "Aceptar".
-  - Si el backend rechaza por candados (RD-CLI-07), se muestra el error **dentro del diálogo** (no aviso breve fugaz): advertencia con el detalle y permanece el botón primario deshabilitado o navegación a "Ver recibos pendientes".
-  - Para operaciones irreversibles se usa **doble confirmación** (§6.9 base) con casilla de verificación explícita ("Entiendo que…").
-
-### 6.10 Panel deslizante (lateral)
-
-- Anchos: 360 (acciones/filtros), 480 (detalle), 720 (edición compleja). Z `z-drawer`.
-- Fondo oscurecido; cierre con Esc/backdrop; foco regresa al elemento que lo abrió.
-- Usado para: edición rápida, detalle maestro-detalle, filtros, historial lateral.
-
-### 6.11 Aviso breve / Notificación
-
-- Apila arriba a la derecha, ancho 360; z `z-toast`; cierre automático 4–6s (éxito/información), 8s error (sin auto en errores críticos).
-- Variantes semánticas (icono + color + texto): éxito / error / advertencia / información. `role=status` para éxito, `role=alert` para error.
-- Debe haber modo de cerrar manual e historial (bandeja de notificaciones).
-
-### 6.12 Alerta / Aviso destacado
-
-- Contextual en página: variantes semánticas, icono + título + descripción + acción opcional.
-- Usos: aviso de bloqueo de período, advertencia de bandera de funcionalidad deshabilitada, aviso "modo solo lectura", avisos de validación de cierre.
-- No desaparece automáticamente (a diferencia de los avisos breves).
-
-### 6.13 Estado vacío
-
-- Icono en círculo `bg-subtle` 48px, título 16px/600, descripción `text-secondary`, botón principal opcional.
-- Mensajes por recurso (ej: "Aún no hay clientes registrados — crea el primero").
-- **Nunca** una tabla vacía sin contexto: siempre explicar (búsqueda sin resultados vs. sin datos).
-
-### 6.14 Estado de carga (esqueleto)
-
-- Esqueleto que mide 1:1 como el diseño final (bloques con brillo sutil neutro-100 → neutro-200).
-- Botones en estado de carga muestran rueda pequeña sin cambiar el ancho.
-- **Sin ruedas de carga a pantalla completa** para operaciones de página: esqueleto por sección (sección 7).
-- Límite UX: cualquier espera >800ms muestra esqueleto; >2s muestra indicador de progreso con acción (cancelar) para operaciones largas (cierres).
-- Semántica de carga: `aria-busy="true"` en el contenedor mientras se carga; para operaciones <300ms no mostrar ningún indicador (evita parpadeo).
-
-### 6.15 Estado de error
-
-- Icono alerta, título (ej: "No se pudo cargar los asientos"), descripción técnica legible + `trace_id` (mono-xs, no expone internos), botones: Reintentar / Volver.
-- El error nunca deja la pantalla a medias: se ofrece estado por sección con respaldo.
-
-### 6.16 Paginación
-
-- En tablas y listas largas; muestra `1–50 de 387`; botones ‹ › + página activa; selector tamaño por página; atajos de teclado donde aplique.
-- **Evitar** "cargar más" infinito en tablas de datos maestros (contabilidad necesita paginación predecible).
-
-### 6.17 Protección de pantalla / Guardia de permiso
-
-- Vista "Sin permiso": icono candado, texto "Tu rol actual no incluye el permiso X", botón "Volver al inicio". No mostrar contenido de fondo (evita fuga de información visual).
-- Región solo lectura (vista permisos `*.read`): barra de acciones se desactiva con nota.
-
-### 6.18 Línea de tiempo (historial)
-
-- Línea vertical con puntos semánticos + fecha `text-xs` + evento + autor + recurso vinculado.
-- Usos: historial de persona, historial de inmueble, historial de incidencia, auditoría.
-
-### 6.19 Calendario / Agenda
-
-- Componente de calendario mensual (táctil primero), vista agenda; eventos con color semántico **+ etiqueta**; estilo formal (celdas con borde fino, hoy con anillo marca).
-
-### 6.20 Pasos (asistente)
-
-- Pasos numerados con estado `completado (✓) / activo / pendiente / error`; usado en el asistente de cierre y en los pasos de registro de pago/liquidación.
-- Mostrar siempre el texto "Paso N de M" y, si el paso puede durar >2s, una barra de progreso con la fase actual (el motor marca como severidad media no indicar progreso en procesos multi-paso).
-
-### 6.21 Nota emergente (al pasar el cursor)
-
-- Texto corto al pasar el cursor o al recibir foco; aparición 0–200ms; sin datos sensibles; en móvil usar pista en línea (no nota emergente al pasar el cursor).
-
-### 6.22 Menú / Lista desplegable / Menú contextual
-
-- Para acciones de fila o cortes; z `z-modal`-ish (>= panel deslizante, dentro de tabla se renderiza en capa superpuesta para no recortarse); ancho según contenido; separador para acciones destructivas; elemento deshabilitado con nota emergente del motivo.
-- Especificación del **menú de fila de tabla**:
-  - Disparador: botón de icono `⋮` fantasma (sin borde heredado del navegador, §6.1), `aria-haspopup="true"`, `aria-expanded` sincronizado.
-  - Contenido: lista de `<button>`/`<li>` con icono + etiqueta (nunca solo icono); acciones sensibles (p.ej. "Desactivar", "Anular") en bloque **separado** con estilo `text-danger`.
-  - El item **"Cambiar estado"** de Clientes solo se muestra con `clientes.estado.cambiar` (ver §5.9); la acción destructiva "Desactivar/eliminar" solo con `clientes.delete`.
-  - Navegación por teclado: flechas ↑/↓, `Home/End`, `Enter` ejecuta, `Esc` cierra y devuelve foco al botón `⋮`; clic fuera cierra.
-  - Posicionamiento: esquina del botón hacia abajo-derecha; si no cabe en viewport, se abre hacia arriba o se invierte.
-  - Fondos/tokens: `bg-content`, borde `border-subtle`, radio `radius-lg`, sombra `shadow-lg`, padding `sp-1`.
-- MudBlazor: `MudMenu` con `Dense`, `ActivatorClass="btn-icon-row"` y `Class="row-menu"`.
-
-### 6.23 Búsqueda global
-
-- En la barra superior: panel de resultados con agrupación por tipo (Clientes, Inmuebles, Contratos, Folios/Recibos); buscador asíncrono con mínimo 3 caracteres; navegación con teclado (flechas + Enter); atajo `/`.
-
-### 6.24 Comprobante de pago (PDF / vista)
-
-- Diseño formal de documento (ver esquema 8.11): encabezado con nombre de la empresa + RUC, folio mono, datos del inquilino, detalle periódico, montos en grilla derecha, QR/hash de integridad, nota legal "Comprobante generado electrónicamente".
-- En pantalla: vista previa + botón Descargar (URL firmada).
-
-### 6.25 Grupo de formulario
-
-- Agrupa etiqueta + campo + texto de ayuda + error + indicador de obligatorio; usa `aria-describedby`; error con `role=alert` y `aria-invalid`.
-- Resumen de errores al enviar el formulario: se coloca arriba del formulario, recibe foco (`tabindex="-1"`), enlaza cada ítem al campo inválido y NO reemplaza los errores en línea. Patrón validado (severidad alta): `role="alert"` + enlaces `href="#campo"`, foco movido al resumen tras un envío fallido (no en cada salida de campo).
-
-### 6.26 Avatar
-
-- Iniciales 32/40px, fondo `scaffold-bg` texto blanco (formal); foto opcional; en ficha 64px.
-
-### 6.27 Indicador de progreso / Etiqueta de estado de proceso
-
-- Para procesos largos (cierre, conciliación, generación de recibos): barra de progreso + porcentaje + fase actual + "cancelar" si aplica; al terminar, resultado.
-
-### 6.28 Encabezado de informe / barra de exportación
-
-- Acción "Exportar": menú con PDF / Excel / CSV; acorde con permiso (`contabilidad.estados-financieros.ver`, `reportes.ver`).
-- Encabezado de informe: fuente de datos (período), fecha de emisión, filtros aplicados, usuario/firma del CPA si aplica.
-
-### 6.29 Zona de carga / Adjuntar documento (upload)
-
-Usado para: contrato firmado obligatorio en el asistente (§5.4, RF-CON-07), documentos de la ficha del cliente e inmueble (§8.5/§8.6, CU-CLI-07).
-
-- **Estados:** reposo → arrastre/inserción → validando → cargado; error (descripción) → sección interrumpible.
-- **Reposo:** área punteada `border: 1.5px dashed var(--border)` con `background: var(--bg-subtle)`; icono adjuntar (24px) + texto primario "Subir contrato firmado" + texto secundario "PDF, JPG o PNG · máx. 10 MB".
-- **Única vs. múltiple:** contrato firmado = archivo único → chip de archivo seleccionado (nombre + tamaño + botón remover). Documentos de ficha = múltiple → lista de chips con "Cargado" ✓.
-- **Feedback:** mientras valida → spinner en chip; al cargar → chip `success` con icono de verificación; al errar → chip `error` con descripción en texto secundario dentro del área ("El archivo supera 10 MB").
-- **Accesibilidad:** `role="button"`/`tabindex="0"` + teclado (Enter/Espacio abre selector); `aria-label` = "Subir documento — formatos PDF, JPG o PNG, tamaño máximo 10 MB"; anuncio de estado con `aria-live="polite"` ("contrato-firmado.pdf cargado").
-- **Accesible por teclado:** además del área, siempre un botón visible "Seleccionar archivo" para apertura sin drag.
-- **Obligatorio vs. opcional:** el asistente marca el paso `Requerido` (asterisco rojo + nota "Sin este archivo no se puede guardar el contrato"); el botón de guardado queda deshabilitado hasta completarlo (el backend revalida, RN-S01).
-- **Tokens:** `bg-subtle`, `border`, `radius-lg`, `text-secondary`, `text-success`, `text-error`, `sp-2/3`, typo 14px.
-
-### 6.30 Pestaña "Documentos" en fichas (listado + descarga)
-
-Usado en: ficha de contrato (foco en RF-CON-07), ficha de persona/cliente (§8.5), ficha de inmueble (§8.6).
-
-- **Estructura:** listado de documentos (icono tipo + nombre + tamaño + fecha de subida + origen cuando aplica + badge de versión si existe) con acciones: descargar (icono ↓) y, según permiso, subir/remover.
-- **Origen de datos:** cada ítem indica procedencia — `Cliente · subido por M. García (12/09/2026)` o `Contrato ARR-2026-041 · contrato firmado`.
-- **Descarga:** pide **URL firmada** al BFF (nunca expone ruta interna); si caduca, se regenera en el momento. Mantiene `aria-label` "Descargar <nombre del archivo>".
-- **Subida adicional:** botón primario o ghost "+ Subir documento" abre la zona de carga (§6.29); permiso gobernado por `clientes.documentos.gestionar` (cliente) o `contratos.create` (contrato firmado).
-- **Vacío (sin documentos):** estado vacío con icono + "Sin documentos" + acción de subir si hay permiso.
-- **Móvil:** listado se convierte en filas apiladas (icono + nombre + tamaño + acciones); el área táctil de descargar ≥44px.
+## 5. Iconografía
+
+- Familia Phosphor (trazo consistente): `viewBox 24`, `stroke-width 1.8`, `fill none`, `stroke currentColor`, terminaciones redondas.
+- Tamaños canónicos: **16** (en botones e iconos de tabla) · **18** (nav) · **20** (topbar, acciones) · **24** (estados vacíos, métodos de pago).
+- Helpers: `ic(name, size)` (decorativo, `aria-hidden`) y `icLabel(name, label)` (con `aria-label` para iconos con significado).
+- Catálogo actual: `home, users, user, building, contract, wallet, scale, wrench, toolbox, calculator, bell, chart, chartline, settings, shield, search, plus, check, circlecheck, x, chevdown, chevleft, chevright, dots, download, upload, calendar, logout, key, eye, eyeoff, filter, arrowup, arrowdown, menu, alert, info, lock, clock, mail, phone, image, pencil, trash, refresh, megaphone, send, receipt, bank, globe, clipboard, list, cable, gift, gauge, whatsapp, file, flag, userplus, briefcase, edit, smartphone, play, grid, undo, arrowright`.
+- Para añadir iconos: agregar al mapa `IC` con el mismo trazo. Nunca emojis ni iconos de otra familia.
 
 ---
 
-## 7. Estados de interfaz (sistema completo)
+## 6. Navegación y shell
 
-| Estado | Componentes | Comportamiento |
-|---|---|---|
-| **Carga** | Esqueleto por sección | Tabla: esqueleto de 5 filas; KPIs: tarjetas en esqueleto; formularios: campos en esqueleto. Opcional franja fina global en la barra superior. |
-| **Vacío** | Estado vacío | Mensaje por contexto + acción de llamado. Nunca "0 registros" pelado. |
-| **Error** | Estado de error / Aviso breve / Alerta | Pantalla completa (error fatal) vs. en línea por sección (error parcial) vs. aviso breve (error de acción). Siempre incluye `trace_id`. |
-| **Éxito** | Aviso breve de éxito | Confirmación de acciones mutables (guardado, pago, aprobación). |
-| **Sin permiso** | Guardia de permiso | Ruta protegida sin permiso → vista "Sin permiso" (no 403 en blanco). |
-| **Sin conexión / tiempo agotado** | Estado de error + Reintentar | Para llamadas API: mensaje + reintento con espera progresiva. |
-| **Confirmación** | Diálogo de confirmación | Para acciones destructivas/irreversibles: pago anulado, aprobación, cierre, reapertura, eliminación. |
+### 6.1 App shell (Admin)
 
-**Mapeo HTTP → interfaz:**
+```text
++-------------+-------------------------------------------------+
+|  Sidebar    |  Topbar (search global / iconos / user-chip)    |
+|  (256px)    +-------------------------------------------------+
+|  brand      |  content (max-width 1500px · padding 24px)      |
+|  nav groups |  · page-head (título + descripción + acciones)   |
+|  · item     |  · toolbar / filtros                             |
+|  · item     |  · grillas / tabla canónica / paginación         |
++-------------+-------------------------------------------------+
+```
 
-| HTTP | Interfaz |
-|---|---|
-| 400 | Aviso breve de error + resaltar campos en formulario (mensaje del RFC7807) |
-| 401 | Redirigir a inicio de sesión (portal correspondiente) con mensaje "Tu sesión expiró" |
-| 403 | Guardia de permiso en página / acción deshabilitada |
-| 404 | Estado de error por sección ("El recurso ya no existe") |
-| 409 | Diálogo de conflicto con opciones (refrescar con cambios; recargar y perder lo local) |
-| 429 | Aviso breve + estimación de espera (`Retry-After`) |
-| 500 / 503 | Estado de error con trace_id + opciones |
+- `.sidebar` fija a la izquierda con fondo `--scaffold-bg`; `.main` con `margin-left: 256px`.
+- **< 960px**: la sidebar sale de pantalla (transform), aparece el botón hamburguesa en la topbar y un scrim `--scrim`; `.main` sin margen.
+- Topbar sticky: búsqueda global (foco con tecla `/`), campana con punto de no leídas y `user-chip` con avatar + rol.
+- `page-head`: título 24px/600, descripción 13px `--text-s`, acciones a la derecha (una primaria).
+
+### 6.2 Navegación lateral
+
+- Grupos colapsables (`nav-group-btn` con chevron y `aria-expanded`); ítems `nav-a` de 38px con icono 18px; activo con barra blanca izquierda y fondo `--scaffold-bg-act`.
+- Ítem con `badge` de conteo cuando corresponde.
+
+### 6.3 Portales (inquilino / propietario)
+
+- **≥ 960px**: barra lateral clara propia del portal + `.content`.
+- **< 960px**: barra de navegación inferior fija (`bottom-nav`, 64px, ítems ≥ 44px) y `.content` con `padding-bottom: 92px` para no tapar contenido.
+- Hero de portal (`portal-hero`): fondo `--brand`, label 12px caps, monto 30px tabular, CTA blanco.
+
+### 6.4 Breadcrumb y tabs
+
+- `.breadcrumb`: 13px, texto secundario; enlaces al `--text-link`.
+- `.tabs`: borde inferior 1px `--border-subtle`; tab activo con **borde inferior 3px `--brand`** y texto 600; scroll horizontal si desborda.
 
 ---
 
-## 8. Esquemas ASCII (planos por pantalla)
+## 7. Catálogo de componentes
 
-> Dimensiones de referencia: Admin y portales del tablero lg≥1280 (barra lateral 256px); portal móvil 390px. La numeración permite trazabilidad.
+Formato por componente: especificación (tokens) → anatomía → separación interna/externa → estados y accesibilidad → responsive.
 
-### 8.1 Inicio de sesión (Admin y portales)
+### 7.1 Botón `.btn`
 
-```
-┌──────────────────────────────────────────────────────────────────┐
-│ ▓ LOGO 64px                            Plataforma · Panamá       │
-├──────────────────────────────────────────────────────────────────┤
-│                          ╔══════════════════════╗                │
-│                          ║  Iniciar sesión      ║                │
-│                          ║                      ║                │
-│                          ║  Correo electrónico  ║                │
-│                          ║  ┌────────────────┐  ║                │
-│                          ║  │                │  ║                │
-│                          ║  └────────────────┘  ║                │
-│                          ║                      ║                │
-│                          ║  Contraseña          ║                │
-│                          ║  ┌────────────────┐  ║                │
-│                          ║  │          ╺┿╸    │  ║                │
-│                          ║  └────────────────┘  ║                │
-│                          ║  ☐ Mantener sesión    ║                │
-│                          ║                      ║                │
-│                          ║  ┌────────────────┐  ║                │
-│                          ║  │   Ingresar     │  ║   ← btn primary │
-│                          ║  └────────────────┘  ║                │
-│                          ║  ¿Olvidaste tu       ║                │
-│                          ║   contraseña?        ║                │
-│                          ╚══════════════════════╝                │
-│   © 2026 Empresa · Términos · Privacidad                         │
-└──────────────────────────────────────────────────────────────────┘
-```
+| Variante | Uso |
+| --- | --- |
+| `btn-primary` | La acción principal de cada pantalla (fondo `--brand`, texto blanco) |
+| `btn-secondary` | Acciones subordinadas (fondo blanco, borde `--border-default`) |
+| `btn-ghost` | Acciones terciarias (transparente, texto `--text-s`) |
+| `btn-danger` | Destructivas dentro de diálogos de confirmación |
+| `btn-link` | Enlace disfrazado de texto |
+| `btn-icon` | Acceso a acción sin etiqueta (44px de target táctil si es standalone) |
 
-Notas: formulario centrado 400px, sin fondo decorativo; mensajes de error en línea bajo cada campo + resumen arriba ("X campos requieren atención"); foco visible; `autocomplete` correcto (email/current-password); en móvil el formulario ocupa 100% con padding 24.
+- Dimensiones: alto **36px** (SM 28px · LG 44px), padding `0 16px`, radio `--radius-md`, icono 16px con `gap: 8px`.
+- `btn-block` para ancho completo (login, portales).
+- **Separación**: entre botones de una toolbar o grupo de acciones `gap: 8px`; en el pie de modal/drawer `gap: 12px` con alineación derecha.
+- Deshabilitado: `--bg-disabled` + `--text-d` + `cursor: not-allowed`.
+- Foco: `:focus-visible` con `outline 2px var(--brand)`, offset 2px.
 
-### 8.2 Marco de aplicación Admin
+### 7.2 Zona de subida `.upload-zone`
 
-```
-┌────────────┬─────────────────────────────────────────────────────┐
-│ ▓ LOGO     │ 🔍 Buscar cliente, inmueble, folio…  [🔔 3][?][▣ A] │
-│            ├─────────────────────────────────────────────────────┤
-│            │ Inicio › Contabilidad › Asientos                    │
-│ ┌────────┐ │                                                     │
-│ │Resumen  ││  Asientos                          [+ Nuevo asiento]│
-│ │Clientes ││                                                     │
-│ │▸Inmuebles││  ┌━ Panel de filtros (colapsable) ──────────────┐  │
-│ │Contratos││  │ [Período][Estado][Tipo][Buscar]  [Limpiar]    │  │
-│ │Cobros   ││  └──────────────────────────────────────────────┘  │
-│ │▸Incidencias││                                                  │
-│ │L.blanca ││  ┌─────────────────────────────────────────────┐  │
-│ │▸Contab. ││  │ Fecha│Folio│Descripción│Cuenta│Débito│Crédito│  │
-│ │▸Reportes││  │ 01/09│A-001│Alquiler    │1110  │50.00 │       │  │
-│ │Admin    ││  └─────────────────────────────────────────────┘  │
-│ └────────┘│  1–25 de 143  [‹][1][2][3][›]                       │
-└───────────┴─────────────────────────────────────────────────────┘
-```
+Borde discontinuo 1.5px `--border-default`, radio `--radius-lg`, padding `12px 16px`, icono 20px; hover con borde `--brand`. Variante `-sm` (icono 16px). Separación respecto a `.field` adyacente: 16px.
 
-### 8.3 Tablero Resumen (Admin)
+### 7.3 Campos y formularios
 
-```
-[ Resumen                        Período: Septiembre 2026 ▾  ]
-┌────────────┬────────────┬────────────┬────────────┐
-│ INGRESOS   │ PAGO ESP.  │ EN MORA    │ OCUPACIÓN  │
-│ B/. 84,230 │ B/. 2,410  │ 8          │ 96%        │
-│ +6.2% ▲    │ 3 recibos  │ B/. 5,780  │ 387/403    │
-└────────────┴────────────┴────────────┴────────────┘
-┌───────────────────────────────┬──────────────────────────────┐
-│ Cobros 12 meses          (▲)  │ Tareas de hoy                │
-│ [gráfica de líneas/barras    ] │ [x] Cierre mensual pendiente│
-│                               │ [o] 3 visitas programadas    │
-│                               │ [o] 2 incidencias sin asignar│
-└───────────────────────────────┴──────────────────────────────┘
+| Clase | Detalle |
+| --- | --- |
+| `.field` | Contenedor; `margin-bottom: 16px` respecto al siguiente campo |
+| `label` | 12px/500 `--text-p`, con `span.req` en `--danger` para obligatorios |
+| `.input` | Alto 36px, borde `--border-default`, radio `--radius-md`, foco con ring `--focus-ring` |
+| `.input.ro` | Solo lectura (fondo `--bg-subtle`, texto `--text-t`) |
+| `.input-like` | Div que muestra un valor como campo de solo lectura (fichas RH) — misma apariencia que `.input.ro` |
+| `.money-input` | Prefijo `B/.` con padding `0 12px 0 40px` |
+| `.check` | Checkbox 16px con `accent-color: var(--brand)`, texto 14px, `gap: 12px` |
+| `.form-grid` | 2 columnas ≥960px, 1 columna <960px, `gap: 20px` |
+| `.form-actions` | Pie alineado a la derecha, `margin-top: 24px`, `gap: 12px` |
+| `.err-summary` | Resumen de errores: `--danger-bg`, borde `--danger-bd`, lista de enlaces |
+
+- Errores en línea: `.field .err` (12px, `--danger`, icono `alert` 16px) bajo el campo; el input lleva `aria-invalid="true"`.
+- **Separación externa**: los formularios dentro de un modal usan el padding del `.modal-body` (24px); entre campos 16px; entre secciones de un formulario largo 24px.
+
+### 7.4 Tarjetas
+
+#### 7.4.1 `.card` (superficie)
+
+- Fondo `--bg-content`, borde 1px `--border-subtle`, radio `--radius-lg`, sombra `sm`, padding 16px.
+- `card-head`: título 16px/600 + subtítulo 13px `--text-s` a la izquierda; acción a la derecha (enlace `Ver todas` o botón). `margin-bottom: 16px`.
+- `card-body`: continúa el contenido; `padding-top: 4px` junto a la separación del head.
+- **Separación**: en grilla `gap: 16px`; en apilado vertical `margin-top: 16px`; entre filas de detalle internas `gap: 8–12px`.
+- Variante interactiva `.card-hover` (sombra `md` en hover, cursor pointer) para tarjetas clickeables (módulos RH, incidencias del portal).
+- `.st-sect`: modificador de bloque para `stat-label`/`card-title` que abre sección (equivale al padding vertical de tarjetas), `display: block; margin-bottom: 12px`.
+- `.tbl-card`: card que contiene una tabla canónica; su `card-head` se pliega con `.tbl-card .card-head{padding:16px 16px 0;margin-bottom:0}` para que la tabla ocupe el ancho completo de la card.
+
+#### 7.4.2 `.stat-card` (tarjeta KPI)
+
+```html
+<div class="card stat-card">
+  <div class="stat-label">INGRESOS · SEPT</div>
+  <div class="stat-value">B/. 3,425.00</div>
+  <div class="stat-meta">Contexto o comparativo</div>
+</div>
 ```
 
-**Tablero adaptativo por permisos (§4.2):** cada grupo del tablero exige su permiso. Si el rol no lo tiene, el grupo **no se renderiza** (evita fuga visual de datos) y los botones de acción se ocultan:
+- `stat-label`: 12px caps/600 · `stat-value`: 30px/600 tabular (`clamp(19px,1.9vw,28px)` en mosaicos) · `stat-meta`: 13px `--text-s`.
+- Variante `.stat-card-h` con `stat-ico` de 42px, radio 12px y tinte semántico `.succ/.danger/.warn/.brand` (color-mix 13–14%).
+- **Separación**: solo dentro de `.kpis`/`.kpis-4` (`auto-fit` + `gap 16px`); nunca a ancho completo con 1–2 piezas: agrupar con tarjetas afines.
+- `stat-value` usa `nowrap + ellipsis` para no romper cifras; en <600px puede fluir.
+- Tamaños reducidos de `stat-value` cuando el valor viaja con texto contextual (tarjetas de detalle, listas):
+  - `.stat-value.sm` = 18px · `.stat-value.md` = 22px · `.stat-value.lg` = 24px · `.total-val` = 16px tabular (totales dentro de listas).
+- Color semántico del valor sin tocar el tinte del ícono: `.v-danger | .v-warn | .v-succ | .v-info | .v-brand` (usa los tokens semánticos de §2.1; el valor hereda el color por defecto si no se aplica variante).
 
-| Grupo del tablero | Permiso requerido |
-|---|---|
-| KPIs Ingresos / Pagos esperados / En mora | `cobros.*`, `liquidaciones.*`, `contabilidad.*` o `estados-financieros.ver` |
-| Gráfica "Cobros 12 meses" | Igual que el grupo financiero |
-| KPI Ocupación + "Ocupación por tipo" | `inmuebles.read` |
-| Tarjetas Incidencias abiertas / Próximas visitas | `incidencias.*` |
-| Tarea "Cierre mensual" | `contabilidad.cierres.*` o `conciliacion` |
-| Tarea MORA | `cobros.mora.consultar`, `cobros.*` o `liquidaciones.*` |
-| Botón "Generar recibos" | `cobros.recibos.generar` |
+#### 7.4.3 Fila de lista `.mini-row` / `.sol-row`
 
-Si el rol no tiene ningún grupo permitido se muestra un **dashboard mínimo de bienvenida** (sin datos) + CTA a sus módulos (§6.17 evita el "403 blanco"). Un rol con `clientes.read`/`inmuebles.read`/`reportes.ver` (ej. "Solo lectura") **no** debe ver el resumen contable ni los KPIs de cobros.
+- `.mini-row` (dashboards): icono 32px radio 8px (`mini-ico`), contenido flexible, `padding: 8px 0`, divisor 1px `--border-subtle` excepto la última.
+- `.sol-row` (RRHH y portales): avatar/icono, contenido, chip de estado a la derecha; mismo ritmo de separación.
+- **Separación**: entre filas 8px de padding + borde; la última fila sin borde.
 
-**Responsive de la fila de KPIs (regla clara):** la cuadrícula usa `repeat(auto-fit, minmax(220px, 1fr))` — 4 tarjetas en ≥1280px, 3 en ≥960px, 2 en ≥600px, 1 en <600px. **El tablero nunca genera desplazamiento horizontal:** si el ancho disponible no admite otra columna, las tarjetas saltan de fila en lugar de desbordar (§6.7 y §9).
+#### 7.4.4 Tarjeta de módulo `.rh-mod-card` (panel RH)
 
-### 8.4 Listado Clientes (patrón lista base)
+- Grilla fija de **3 columnas** `minmax(0,1fr)` con `gap: 24px`; en <600px gap 12px e iconos 32px; nunca desborda horizontal.
+- Iconos `stat-ico` 38px con tinte (`brand`/`succ`/`warn`), título + descripción.
+- **Separación**: `margin-top: 20px` respecto al contenido previo; `gap: 24px` entre tarjetas.
 
-```
-[ Clientes                              [+ Nuevo cliente] ]
-[ Buscar nombre o cédula… ][Filtros][Cols][Exportar]
-Chips: [Tipo: Propietario ×][Ciudad: Panamá ×]
-┌───────────────────────────────────────────────────────────────┐
-│ ☐ │ Nombre              │ Tipo      │ Cédula      │ Teléfono│ ⋮│
-│ ☐ │ Ana Rodríguez       │ Ambos     │ 8-123-456   │ +507…  │ ⋮│
-│ ☐ │ Pedro Martínez      │ Inquilino │ 4-987-654   │ +507…  │ ⋮│
-│ ☐ │ María Vega          │ Propiet.  │ PE-123456   │ +507…  │ ⋮│
-└───────────────────────────────────────────────────────────────┘
-1–25 de 684   [‹][1][2][3][4][5]…[28][›]
-```
+#### 7.4.5 Imágenes y placeholders `.photo-ph` / `.inm-ph`
 
-El botón `⋮` es un **botón de icono fantasma** (sin borde heredado del navegador, objetivo táctil 44px; §6.1/§6.5). Al abrir, el menú muestra (según permisos):
+- `.photo-ph`: placeholder de fotografía (ficha de cliente, plano) — `aspect-ratio: 1`, radio `--radius-lg`, fondo `--bg-subtle`, icono SVG centrado; todas las referencias a fotos reales van por este patrón (la demo no usa fotos de stock).
+- `.inm-ph`: placeholder de inmueble en cabecera de ficha — 88px cuadrado, radio `--radius-lg`, fondo `--bg-subtle`, icono `building` 36px, `aria-hidden="true"` (decorativo junto al nombre del inmueble).
+- **Separación**: junto al título en `flex` con `gap: 14px`; nunca ocupa ancho completo.
 
-```
-Ver ficha                    👤  (clientes.read)
-Editar                       ✏️  (clientes.update)
-Exportar ficha               ⬇  (clientes.read)
-──────────────────────────────  separador
-Cambiar estado               🔄  (clientes.estado.cambiar [P])
-Desactivar cliente           🗑  (clientes.delete) → bloque destructivo
-```
+### 7.5 Tabla canónica (la única tabla)
 
-Nota: "Cambiar estado" conduce al diálogo de §5.9; el backend valida candados (RD-CLI-07). En móvil (<Md) la columna `⋮` se mantiene en cada tarjeta de cliente con el mismo menú (§9).
+> **Regla P3**: existe una sola implementación de tabla en todo el sistema (`tbl-wrap` + `table.tbl`). Todos los listados la usan: clientes, inmuebles, contratos, cobros, liquidaciones, incidencias, línea blanca, asientos, notificaciones, reportes, usuarios, RH y portales. Solo cambia la data.
 
-### 8.5 Ficha Persona (master-detail)
-
-```
-[ Foto ] Ana Rodríguez         [ 🟢 Inquilino activo ]  [Editar][⋮]
-         Cédula 8-123-456 · ana@correo.com · +507 0000-0000
-         Ocupación: Ingeniera · Empresa XYZ
-
-[ Datos ][ Contactos ][ Laboral ][ Documentos ][ Bancarios ][ Historial ]
-─────────────────────────────────────────────────────────────────────
-  DATOS PERSONALES                     INMUEBLES / CONTRATOS
-  Fecha nacimiento  12/04/1990         Apartamento 3B — Alquilado
-  Estado civil      Soltera            Canon B/. 900.00 · vence 30/09
-  Nacionalidad      Panameña           Contrato ARR-2026-041 (desde
-  Notas             (observaciones)      01/03/2026)
-
-  DOCUMENTOS
-  Origen: Cliente        Origen: Contrato
-  [📄 Cédula]            [📄 Contrato firmado
-  [📄 Contrato laboral]    ARR-2026-041]
-  [+ Subir documento]      (PDF · 2.1 MB · 12/09/2026)
+```html
+<div class="card">                       <!-- o .tbl-wrap standalone -->
+  <div class="tbl-wrap">
+    <table class="tbl dense">
+      <caption>Contexto de la lista</caption>
+      <thead><tr><th>Columna</th><th class="num">Monto</th>…</tr></thead>
+      <tbody>
+        <tr>
+          <td>…</td>
+          <td class="num mono">B/. 900.00</td>
+          <td><span class="chip chip-success">PAGADO</span></td>
+          <td><button class="btn-icon-row" aria-label="Opciones">⋮</button></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="pagination">1–25 de 387 · ‹ › · 25/50/100</div>
+</div>
 ```
 
-### 8.6 Ficha Inmueble
+| Regla | Valor |
+| --- | --- |
+| Encabezado | 12px caps/600, `--text-s`, fondo `--bg-subtle`, borde inferior 1px, padding `10px 14px` |
+| Filas | Normal `padding: 12px 14px` (fila 44px); `.dense` = `7px 12px` (fila 36px) |
+| Celdas numéricas / montos | `class="num"` y `mono` para montos: derecha + cifras tabulares |
+| Folios / fechas / cédulas | `class="mono"` |
+| Hover | `.tbl-hover` / `.rowlink` → `--bg-hover` |
+| Divisor entre filas | `border-bottom: 1px solid var(--border-subtle)` (sin borde en la última) |
+| Estado | Chip semántico en celda dedicada |
+| Filas sin datos | Celda `colspan` con texto terciario |
+| Caption | Arriba, 13px, `--text-s` |
 
-```
-[ Imagen principal ] Apt. 3B — Torres del Mar    [ 🟢 Alquilado ]
-  Torre 2 · Piso 3 · Panamá, Vía Argentina       [Editar][⋮]
-  ───────────────────────────────────────────────
-  RESUMEN:  94 m² · 2 hab · 2 baños · 1 parqueo · Amueblado
-  Servicios: A/C, agua, internet · Antigüedad: 5 años
+- **Paginación** (`.pagination`): `1–25 de 387` a la izquierda; botones ‹ › y selector 25/50/100 a la derecha; `page-btn` 28px, activo con `--brand`.
+- **Única implementación**: toda tabla paginada usa la función reutilizable `pagBar(id, total, per, page, refreshFn)` que genera ese markup `.pagination` (rango `from–to de total`, flechas `page-btn` con `chevleft/chevright`, ventana de páginas numéricas con elipsis, selector `Mostrar` con clase `.page-size`). Está prohibido escribir la paginación a mano dentro de cada módulo. El listado itera `slicePage(s, rows)` (corte real por `s.per`) y el callback de refresco actualiza el área del módulo.
+- **Checkbox de selección**: variante documentada de la tabla canónica, se usa **solo** en módulos con acciones masivas (Clientes, para exportar/acciones por lote). Columna `th` con "Seleccionar todos" + `td` por fila; la fila mantiene `rowlink` y el checkbox frena el evento con `stopPropagation`. No se replica en listados sin acciones masivas.
+- Menú de fila `⋮`: botón `btn-icon` 36–44px + `.menu` (ver 7.10).
+- **Anchos de columna**: como clases reutilizables (experiencia de la v1.6, aplicada a todas las tablas): `.col-act` = columna de acciones (44px, centrada); `.w110`/`.w120`/`.w150`/`.w220` para fechas, folios, montos y descripciones con ancho fijo; **prohibido** el `style="width:…px"` inline como columna.
+- **Separación**: tabla dentro de card sin borde exterior (la card es el contenedor); `.tbl-wrap` standalone con borde `--border-subtle` y radio `--radius-lg`; la paginación con `padding: 16px 20px`.
+- **Responsive**: `overflow-x: auto` dentro del contenedor; en móvil el listado puede pasar a tarjetas solo si el módulo lo documenta.
 
-[ Datos ][ Atributos ][ Fotos ][ Documentos ][ Línea blanca ][ Historial ]
-  ┌──────────────────────────────────────────────────────────┐
-  │ Electrodomésticos instalados                             │
-  │ A/C marca X (2024) · Últ. manto: 12/07/2026 · en plan    │
-  │ Nevera marca Y (2021) · Últ. manto: 03/03/2026           │
-  └──────────────────────────────────────────────────────────┘
-```
+#### 7.5.1 Fila de detalle `.detail-row` (master-detail)
 
-### 8.7 Editor de Asiento (partida doble)
+Las fichas maestras (cliente, inmueble, contrato, recibo, asiento) muestran pares *etiqueta → valor* como filas de detalle, no como tablas:
 
-```
-[ Nuevo asiento                              [Guardar borrador][Aprobar]]
- Período: Septiembre 2026 ▾   Fecha: 10/09/2026   Tipo: [Manual]   Folio: (auto)
- Descripción: Pago de alquiler — Apt 3B
-
- ┌─────────────────────────────────────────────────────┐
- │ Cuenta (buscar)         │  Centro costo│ Débito │Crédito│
- │ 1110 Banco              │    3B        │ 900.00 │       │
- │ 4101 Ingresos arrend.   │    3B        │        │ 900.00│
- │ (+ agregar línea)                        SUMAS   900.00 900.00 ✓
- └─────────────────────────────────────────────────────┘
- Validación: débitos = créditos ✓ (verde, check)
- Errores      : ✗ (paneles de error por línea)
-```
-
-### 8.8 Cierre contable — configuración y ejecución
-
-```
-[ Cierres contables                     [+ Nuevo tipo de cierre] ]
-┌──────────────────────────────────────────────────────────────┐
-│ Tipos de cierre                                              │
-│ ▸ Mensual (día 28)  · bloqueo auto  · EF: Sí                 │
-│ ▸ Anual  (31 dic)   · asiento cierre · EF: Sí                │
-│ ▸ Diario (fin día)  · caja           · EF: No                │
-├──────────────────────────────────────────────────────────────┤
-│ Períodos — Mensual 2026                                      │
-│ Ene ✓  Feb ✓  Mar ✓  Abr ✓  May ✓  Jun ✓  Jul ✓  Ago ✓     │
-│ Sep ● (En cierre)   Oct ○  Nov ○  Dic ○                      │
-└──────────────────────────────────────────────────────────────┘
+```html
+<div class="detail-row">            <— 1 línea, etiqueta izquierda, valor derecha
+  <span class="muted2 small">Cédula</span>
+  <span class="mono strong">8-123-456</span>
+</div>
+<!-- Modificadores -->
+<div class="detail-row detail-md">…</div>    <!-- 6px de padding vertical -->
+<div class="detail-row detail-lg">…</div>    <!-- 8–10px de padding vertical -->
+<div class="detail-row detail-bd">…</div>    <!-- borde inferior 1px -->
+<div class="detail-row detail-dash">…</div>  <!-- borde inferior discontinuo -->
+<div class="detail-row detail-top">…</div>   <!-- borde superior 1px -->
+<div class="detail-row detail-xl">…</div>    <!-- 12px + borde inferior, filas con contexto extendido -->
+<div class="detail-tool">…</div>             <!-- herramienta/total del bloque (padding 14px 4px 2px, gap 12px, wrap) -->
+<div class="detail-tot">…</div>              <!-- total del bloque (padding 10px 2px 0) -->
 ```
 
-Asistente al ejecutar: Configurar (período+cortes) → Verificar (balancea, asientos sin aprobar → advertencias) → Ejecutar (confirmación irreversible) → Resultado (asientos: 14, estados financieros generados, TraceId `…`, [Descargar]).
+El modificador se compone: `detail-row detail-bd detail-xl` (frecuente en fichas). Las cabeceras de tarjeta con chip (`flex between align-items:flex-start`) NO son detail rows: conservan su patrón de cabecera.
 
-### 8.9 Portal Inquilino — Tablero (desktop ≥960px / móvil <960px)
+### 7.6 Chips y badges
 
-```
-┌──────────────────────────────┐
-│ ☰    Hola, María        [🔔2]│
-│ ┌──────────────────────────┐ │
-│ │ PRÓXIMO PAGO             │ │
-│ │ B/. 900.00               │ │
-│ │ vence en 5 días (30/09)  │ │
-│ │      [ Pagar ahora  ]    │ │
-│ └──────────────────────────┘ │
-│ Incidencias abiertas: 1      │
-│ Visitas programadas: 1 (jue) │
-│ ┌──────────────────────────┐ │
-│ │ Calendario:  ▾ Septiembre 2026  │ │
-│ │  25 ● Pago 900 (3 días)  │ │
-│ │  26 ● Mantenimiento A/C  │ │
-│ └──────────────────────────┘ │
-│ [Inicio][Calendario][Pagos][Perfil]  ← barra de navegación inferior
-└──────────────────────────────────────┘
-```
+- `.chip`: alto 22px, radio pill, padding `0 8px`, 12px/600, borde 1px del trío semántico; icono interno 12px con `gap: 4px`.
+- Variantes: `chip-success | chip-warning | chip-danger | chip-info | chip-neutral`.
+- `chip-remove`: botón × dentro del chip (filtros activos) con `aria-label`.
+- `.badge`: conteo en nav (18px, pill, fondo `--brand`, texto blanco).
+- `.chip-select`: selector pill (periodo de dashboard) con sombra `sm`; hover borde `--brand`.
+- **Separación**: entre chips adyacentes `gap: 8px`; dentro de una celda de tabla, múltiples chips con `gap: 4px`.
 
-> **Escritorio (≥960px):** el portal adopta el marco de aplicación del Admin — barra lateral oscura (Resumen, Calendario, Pagos, Incidencias, Perfil + Sistema: Notificaciones, Cerrar sesión), barra superior con "Portal del Inquilino", campana de notificaciones y ficha de usuario con avatar, nombre, rol y salida; contenido `.content` (máx. 1500px) con ruta de navegación y título. **Móvil (<960px):** barra lateral oculta; menú hamburguesa abre panel deslizante con la misma navegación; barra de navegación inferior Inicio/Calendario/Pagos/Perfil. El portal Propietario usa el mismo marco (Resumen, Pagos, Perfil + Sistema).
+### 7.7 Toolbar y filtros
 
-### 8.10 Portal Inquilino — Registrar pago y comprobante
+- `.toolbar`: `flex wrap` con `gap: 12px` y `margin-bottom: 16px`; campo `.search` flex 1 (mínimo 200px) con icono 16px a la izquierda y padding `0 12px 0 36px`.
+- `.chips-row`: chips de filtros activos con `gap: 12px` y `margin-bottom: 20px`; estado vacío: `Sin filtros activos` en texto terciario.
+- Los filtros complejos viajan en **drawer derecho** (`w360`) con pie `Limpiar` (ghost) + `Aplicar` (primary). Un solo punto de render por módulo (`drawerFiltros*`).
 
-```
-┌──────────────────────────────┐
-│ Pagar alquiler               │
-│ Período: Septiembre 2026     │
-│ Monto: B/. 900.00            │
-│ Método: [Transferencia ▾]    │
-│ Referencia: ABC-123456       │
-│ Comprobante: [📎 Adjuntar]   │
-│        [ Registrar pago ]    │
-│ ┌──────────────────────────┐ │
-│ │ ✅ Pago registrado       │ │
-│ │ Comprobante CRE-2026-0147│ │
-│ │        [ Descargar PDF ] │ │
-│ └──────────────────────────┘ │
-└──────────────────────────────┘
-```
+### 7.8 Diálogo `.modal`, panel `.drawer`, aviso `.toast`
 
-### 8.11 Comprobante de pago (PDF layout)
+| Componente | Ancho | Uso |
+| --- | --- | --- |
+| `.modal` | 480px · `w520` 520px · `w560` 560px · `lg` 640px · `xl` 860px | Confirmaciones, formularios enfocados, asistentes |
+| `.drawer` | 360px (`w360`, filtros) · 480px (resumen) · 720px (`w720`, fichas y edición) | Detalle maestro, filtros, edición larga |
+| `.toast` | 360px | Avisos breves (5 s; error 8 s) |
 
-```
-┌────────────────────────────────────────────────┐
-│ NOMBRE DE LA EMPRESA          Comprobante      │
-│ RUC 000000000000    Tel +507 0000-0000         │
-│ ────────────────────────────────────────────── │
-│ FOLIO: REC-2026-0147   (mono, tabular)         │
-│ Fecha emisión: 10/09/2026                      │
-│ ────────────────────────────────────────────── │
-│ Inquilino: Ana Rodríguez                       │
-│ Cédula: 8-123-456                              │
-│ Inmueble: Apt 3B — Torres del Mar              │
-│ ───────────────────────────┬────────────────── │
-│ Alquiler Septiembre 2026   │ B/.   900.00      │
-│ ITBMS 0% (exento)          │ B/.     0.00      │
-│                            ├────────────────── │
-│ TOTAL                      │ B/.   900.00      │
-│ ───────────────────────────┴────────────────── │
-│ Método: Transferencia · Ref ABC-123456         │
-│ Hash de integridad: 7F93…                      │
-│ Generado electrónicamente — no requiere firma  │
-└────────────────────────────────────────────────┘
-```
+- Todos usan `.overlay` con `--scrim`; `role="dialog"`, `aria-modal`, foco al abrir; `Esc` y click fuera cierran.
+- Variante `.overlay.side` para drawers: `justify-content: flex-end; padding: 0` (el panel se apoya en el borde derecho y ocupa todo el alto).
+- `modal-head` (título 16px/600 + botón ×) / `modal-body` (padding 24px, scroll) / `modal-foot` (acciones a la derecha, `gap 12px`, borde superior).
+- Toasts: borde izquierdo 4px semántico (`toast-success/error/warning/info`), icono 18px, título + mensaje 13px; pila superior derecha con `aria-live`.
+- **Separación**: entre acciones del pie `gap: 12px`; entre bloques del body 16px; entre toasts `gap: 8px`.
 
-### 8.12 Filtro/mora (Cobros)
+### 7.9 Alertas `.alert`
 
-```
-[ Cobros — Recibos                          [+ Generar recibos] ]
-[ Período Septiembre 2026 ▾][ Estado: Todos ▾][Buscar folio…]
-┌─────────────────────────────────────────────────────────────┐
-│ Folio       │ Inquilino │ Inmueble│ Vence  │Monto   │Estado │
-│ REC-2026-001│ P. Martín │ Apt 2A  │ 30/09  │ 950.00 │ ● Pagado│
-│ REC-2026-002│ A. Vega   │ Apt 3B  │ 30/09  │ 900.00 │ ● En mora│
-│ …           │           │         │        │        │ ● Emitido│
-└─────────────────────────────────────────────────────────────┘
-Acciones fila: [Ver][Registrar pago][Enviar recordatorio][⋮(anular)]
-```
+Fondo/borde/color semántico (`alert-info/warning/success/danger`), icono 20px, título 14px/600 + párrafo 13px `--text-s`, `gap: 12px`, `margin-bottom: 16px`. Se usa para explicar plazos, esquemas de pago, seguridad y resultados.
+
+### 7.10 Menú contextual `.menu`
+
+.menu (dropdown de fila)
+
+- Contenedor posicionado sobre tarjeta/sombra `lg`, radio `--radius-md`, padding 6px, fondo `--bg-content`, ancho ≥ 200px, z-index por encima de la tabla.
+- Ítems `.menu-item`: alto 36px, radio `--radius-sm`, icono 16px, texto 13px; hover `--bg-subtle`; variantes `.edit` (título 600) y `.danger` (texto y hover `--danger`, `--danger-bg`).
+- Apertura: clic en `⋮` (aria-haspopup + aria-expanded); cierre con Esc o click fuera.
+- **Separación**: ítems con `gap: 6px` interno (padding); separadores opcionales `.menu-divider` de 1px `--border-subtle`.
+
+### 7.11 Timeline `.timeline`
+
+- Columna de eventos: línea vertical 2px `--border-default`; nodos de 10px con anillo; últimos eventos colapsados al final.
+- Ítem: fecha 12px caps `--text-s` + título 13px/600 + meta 13px `--text-s`; `gap: 10px` entre título/meta; espacio entre eventos `margin: 0 0 16px`.
+- Los 3 primeros eventos se muestran; el resto se colapsa con botón `Mostrar más`.
+
+### 7.12 Calendario `.cal-grid` (Portal inquilino)
+
+- Grilla `6 cols` (≥600px) / 2 cols (<600px) con `gap: 12px`; días > 31 días del mes se ocultan.
+- Día: marca superior + número 24px/600 tabular; `cal-meta` 12px `--text-s`; punto de evento 6px; hoy con círculo `--brand` (texto blanco, variante `-sel` segmentado).
+- Mosaico bajo `calendar-legend`: grilla 6 columns `minmax(120px,1fr)` con `margin-top: 24px`.
+
+### 7.13 Comprobante `.receipt`
+
+- Mono 13px tabular para todo; `font-mono`; papel con borde 1px `--border-default`, radio `--radius-lg`, padding 20px; sombra `sm`.
+- `receipt-hd`: nombre del sistema 13px caps; `receipt-info` (líneas de detalle separadas por `border-bottom` 1px); `receipt-total` (monto grande 20px 700 tabular); desconexión de línea punteada antes del total.
+- **Separación**: filas con `padding: 8px 0` + divisor; `gap: 4px` entre etiqueta/valor de una línea.
+
+### 7.14 Tablero Kanban `.kanban` (Línea blanca)
+
+- `.kanban-col`: `min-width: 240px` y fondo `--bg-canvas`, borde `--border-subtle`, radio `--radius-lg`; con `overflow-x: auto` en el contenedor padre.
+- `.kanban-item`: tarjeta con sombra `sm`, padding 12px, estado con chip; arrastre simulado con `cursor: grab`; `gap: 12px` entre ítems; columnas `gap: 16px`.
+- Responsive: las 5 columnas en scroll horizontal dentro de `.kanban` (no provoca scroll de página).
+
+### 7.15 Método de pago `.metodo`
+
+- Fila tipo tarjeta: icono `stat-ico` 38px, alias 13px/600, estado `chip-success` si conectado, `chip-neutral` si no; sombra `sm`; padding 14px.
+
+### 7.16 Estados de pantalla
+
+| Estado | Implementación |
+| --- | --- |
+| Loading | `.skeleton` (bloque con `--bg-subtle` animado 1.2s) por sección; reemplaza tablas/tarjetas/filtros |
+| Vacío | `.empty` con icono 24px, título 16px/600, párrafo 13px `--text-s` y CTA opcional |
+| Error | `.alert-danger` con mensaje + `trace_id` en mono + botón `Reintentar` |
+| Éxito | Toast breve `toast-success` con acción deshacer cuando aplique |
+| Sin permiso | Guardia `.no-perm`: icono `shield`, título, párrafo indicando que el backend es la autoridad real |
+| Confirmación | `.modal` con `btn-danger` solo para destructivas/irreversibles |
 
 ---
 
-## 9. Responsive y comportamiento por breakpoint
+## 8. Patrones de pantalla
 
-Breakpoints (equivalentes MudBlazor): **Xs <600 · Sm ≥600 · Md ≥960 · Lg ≥1280 · Xl ≥1920**
-
-| Área | Estrategia |
-|---|---|
-| Admin | **Primero escritorio.** A <960px: barra lateral colapsada a iconos; <600px: barra lateral → panel deslizante superpuesto + barra superior compacta; tablas → tarjetas apiladas en móvil (con alternar "Tabla/Tarjetas"); filtros en panel deslizante. |
-| Portales | **Tablero adaptativo.** ≥960px: barra lateral de portal (mismo marco de aplicación del Admin, scaffold oscuro, ancho 256px) + contenido máx. 1500px. <960px: barra lateral colapsa a panel deslizante (menú hamburguesa) + barra de navegación inferior (Inicio/Calendario/Pagos/Perfil); táctil ≥44px. |
-| Tablero / grillas de tarjetas | `repeat(auto-fit, minmax(220px, 1fr))` para KPIs; `minmax(180px, 1fr)` para tuplas pequeñas. Columnas: 4 → 3 → 2 → 1 según breakpoint (≥1280 / ≥960 / ≥600 / <600). **Regla absoluta: ningún diseño produce desplazamiento horizontal.** Las tarjetas bajan de fila en lugar de desbordar; los textos internos fluyen. |
-| Tablas | ≥Md: tabla completa (el **único** desplazamiento horizontal permitido es dentro del contenedor de la tabla, con su propia barra, nunca la página entera; sin encabezado fijo con el contenido visible y acciones en menú); <Md: convertir a tarjetas (cada fila = tarjeta con datos clave y acciones) **salvo** tablas estructurales de contabilidad (asientos) que en móvil se presentan como lista de asiento + detalle expandible. |
-| Formularios | 2 columnas ≥Md; 1 columna <Md; el panel deslizante de edición a <Md se vuelve pantalla completa. |
-| Diálogos | ≥Md: diálogo centrado; <Md: panel inferior. |
-
-Regla: **no duplicar lógica de negocio en el responsive** — solo transformación de presentación.
+1. **Dashboard (Admin)**: `page-head` → `toolbar` con selector de período + alerta contextual (mora) → `.kpis` (8 KPIs en `auto-fit` de 2/4) → `g2` (Ingresos con debit-CR / Cobros-Anticipos) → `g3` (Mora, Próximos vencimientos, Novedades) → `g2.lista` (Contratos próximos a vencer + Actividad reciente).
+2. **Listado maestro**: `page-head` → `toolbar` (búsqueda + filtros) → `chips-row` de filtros activos → tabla canónica → paginación. Ficha lateral en drawer `w720`.
+3. **Ficha de detalle**: drawer `w720` con estados ancla, resumen en `stat-row`/grilla 2-3 columnas, historial en `.timeline`, acciones en pie.
+4. **Formulario**: modal (foco) o drawer w720 (largo); `form-grid` 2 columnas; `form-actions` al pie.
+5. **Asistente (crear cobro)**: modal `lg` con pasos (Información → Recibos → Confirmar), stepper lineal con estado activo/completado; pie con `Anterior` ghost + `Siguiente` primary; último paso `Registrar cobro`.
+6. **Autenticación**: pantalla centrada sobre `--bg-canvas` con logo; tarjeta 420px; pie con marca © año + empresa.
+7. **Portales**: `portal-hero` + `.kpis-lite` (2-4 columnas ≥960px; 2 <960px; 1 <480px) + grillas de contenido (grilla 2 en inquilino; tarjetas de propiedad 3 en propietario ≥960px).
+8. **Admin-General (usuarios/roles)**: tabla canónica + drawer w720 de edición; rótulos legibles (Vinculado, No vinculado).
+9. **Módulo RH**: grilla `.g4` de `.rh-mod-card` (Dashboard, Empleados, Asistencias, Nóminas, Ausencias, Capacitaciones, Evaluaciones, Expedientes) → vista de empleado con `.stat-card` + `.sol-row` → formularios `.form-grid`.
 
 ---
 
-## 10. Accesibilidad — WCAG 2.2 AA+ (requisito)
+## 9. Mapa de rutas a componentes
 
-### 10.1 Contraste (verificado en tokens)
-
-- Texto normal ≥ 4.5:1: `text-primary`, `text-secondary`, `text-tertiary`, `text-placeholder`, semánticos de texto.
-- Texto grande / UI ≥ 3:1 (botones, iconos significativos, bordes de control).
-- Estados semánticos: el texto de las etiquetas/contadores cumple AA sobre su fondo (verificación en 2.1.3).
-- Dark/gráficos: series en gráficos usan `chart-*` y siempre van con label/patrón.
-
-### 10.2 Foco y teclado
-
-- `:focus-visible` global 2px brand + offset 2px (CSS en tokens.css).
-- Todo componente interactivo navegable y operativo por teclado (Enter/Espacio/Arrows/Esc).
-- Diálogos: foco atrapado (focus trap) + retorno al elemento que lo abrió; `aria-modal="true"`, `role="dialog"`.
-- Tablas: header ordenable con `aria-sort`; menús de fila con `aria-haspopup`/`aria-expanded`.
-- Bandeja de notificaciones y menús: `aria-expanded`, esc cierra, foco sincronizado.
-
-### 10.3 Semántica / ARIA
-
-- Marco de aplicación con `role=banner` (barra superior), `role=navigation` (barra lateral), `role=main` (contenido), `role=contentinfo` (pie de página).
-- Landmarks por módulo (clientes, cobros, etc.) en páginas largas.
-- Formularios: `label` siempre visible (borde fino en el borde del campo de entrada); `aria-label` en iconos sin texto; errores `aria-describedby` + `aria-invalid`; resumen de errores con foco al primer error.
-- Componentes: aviso breve con `role=status/alert`; etiquetas de estado con texto real (no solo color); tablas con `<caption>` descriptivo y `aria-rowcount` para listas largas.
-- En cabeceras fijas, añadir compensación para que el foco no quede oculto (`scroll-padding-top`).
-- **Foco no oculto (WCAG 2.2 AA):** al abrir diálogo/panel deslizante, cerrar o pausar las capas superpuestas persistentes antes de mover el foco; ninguna cabecera/pie fijo debe tapar el control enfocado.
-
-### 10.4 Motion & color
-
-- `prefers-reduced-motion: reduce` → sin transiciones ni shimmer (implementado en tokens.css).
-- **No usar color como único canal**: todo estado crítico lleva icono + texto (P5/P7).
-- Flashing: respeta límites WCAG (sin parpadeo >3/s).
-
-### 10.5 Objetivos táctiles
-
-- Mínimo 24px en escritorio (WCAG 2.2), **≥44px recomendado y obligatorio en táctil** para botones de portal, barra de navegación inferior y **botones de acción de fila de tablas (⋮)**.
-- En táctil, el área tocable del `⋮` es ≥44px aunque el icono visual sea 20px (padding compacto dentro de la celda, sin desbordar la fila); en móvil el menú de fila se preserva en cada tarjeta (§9).
-
-### 10.6 Pruebas
-
-Checklist antes de entregar módulo: teclado completo, contraste AA+ en todos los textos, foco visible en 100% de interacciones, `prefers-reduced-motion`, lector de pantalla (NVDA/VoiceOver) en flujos críticos (inicio de sesión, pago, cierre contable), resolución 390px y landscape.
+| Ruta | Componentes principales |
+| --- | --- |
+| `#/app/dashboard` | kpis, alert, g2, g3, g2.lista, timeline, chips, alert-info |
+| `#/app/clientes` + `#/app/inmuebles` | toolbar, tabla canónica, pagination, drawer w720, modal |
+| `#/app/contratos` | tabla, chip, drawer w720, modal (renovación), alert-info |
+| `#/app/cobros` | steps (asistente), tabla, modal, options-menu, drawer |
+| `#/app/liquidaciones` | tabla, direcciones, drawer w720, toast |
+| `#/app/incidencias` | toolbar con select-estado, tabla, drawer w720, alert-info |
+| `#/app/lineablanca` | kanban 5 columnas, drawer w720 |
+| `#/app/contabilidad` / `-comprobantes` / `-asientos` / `-cierres` | tabla, tabs, drawer w720, modal, timeline, alertas |
+| `#/app/reportes` | tabla de reportes, modal notificaciones, panel-chart |
+| `#/app/notificaciones` | tabla, drawer w720 |
+| `#/app/usuarios` / `-roles` | tabla, drawer w720, modal |
+| Portal inquilino | portal-hero, kpis-lite, g2, cal-grid, mini-row, tabs, empty |
+| Portal propietario | portal-hero, kpis-lite, panel-chart, tarjetas propiedad, mini-row |
+| `#/app/rh/*` | grilla módulos, stat-cards, sol-row, form-grid, drawer |
+| Login / OTP / Reset | entrada centrada, card 420px, OTP celdas 6×48px |
 
 ---
 
-## 11. Gráficos y reportes
+## 10. RBAC demo
 
-### 11.1 Paleta de gráficos
-
-Restringida y formal (colorblind-safe, con patrones opcionales):
-
-| Serie | Token |
-|---|---|
-| Serie principal | `chart-ink` #1F2A37 |
-| Serie secundaria | `chart-slate-500` #7C8694 |
-| Complemento bajo | `chart-slate-300` #C0C7D1 |
-| Énfasis positivo | `chart-green` #166B48 |
-| Énfasis negativo/alerta | `chart-red` #B42318 |
-| Informativo | `chart-blue` #2456CC |
-| Advertencia | `chart-amber` #9A6B00 |
-
-Reglas: series ≤ 7; usar **línea continua/discontinua/patrón** junto con color; ejes con `text-secondary`; leyenda con `label-caps`; **notas con datos** (mostrar los valores exactos, B/. con formato) al pasar el cursor; **sin efecto 3D**, sin gradientes, sin cuadrícula decorativa. No usar `candlestick`/OHLC (es dominio de trading): este sistema usa línea/barras (el motor los marca con accesibilidad condicional).
-
-### 11.2 Tipos recomendados por caso
-
-| Reporte | Tipo |
-|---|---|
-| Ingresos del mes (cobros ya cobrados) | Barra (día) / línea acumulada |
-| Tendencia 12 meses | Línea |
-| Ocupación/estados de inmuebles | Anillo (donut, con % y totales en el centro) o barras apiladas |
-| Morosidad | Barra apilada por antigüedad (30/60/90+) |
-| Estados financieros | Tabla de reporte (Balance en árbol) — los EF **no se grafican**, se exportan |
-| Comparativo presupuesto vs real | Barras agrupadas |
-| KPI vs objetivo (meta mensual de cobros, ocupación, mora objetivo) | **Gráfico de bala** por KPI (3–10 en grilla): barra de rendimiento + línea de meta; el valor y la meta se muestran como texto visible (el color es suplementario). Alternativa simple: barra + línea punteada de meta |
-| Costos de mantenimiento por equipo | Barra horizontal |
-
-Implementación genérica: Chart.js / MudBlazor `MudChart` / SVG; el dataset se colorea con los tokens de la sección 11.1.
+- Selector de usuario de prueba en la topbar (Admin, Contador, Gestor de Incidencias, Consultor, Inquilino, Propietario).
+- Los íconos del menú, widgets y acciones se ocultan/deshabilitan según el permiso del rol activo (`modulo.accion`).
+- Rutas protegidas sin permiso: guardia `.no-perm` sin fuga de contenido.
+- Nota visible: "El backend es siempre la autoridad real de permisos; esta demo solo controla la experiencia visual".
+- Usuario no vinculado: secciones de RH y Contabilidad ocultas y acceso a su ruta muestra guardia.
 
 ---
 
-## 12. Handoff e implementación (open design)
+## 11. Responsive
 
-### 12.1 Prompt de recuperación jerárquica (para cualquier IA)
-
-```
-Voy a implementar la UI de la Plataforma de Administración de Inmuebles,
-Portales y Contabilidad.
-Lee, en este orden:
-  1. docs/ui/tokens.dtcg.json   → tokens W3C DTCG (fuente de verdad).
-  2. docs/ui/tokens.css         → variables CSS derivadas.
-  3. docs/ui/diseno-ui-design-system.md → documentos maestro: patrones,
-     componentes, esquemas, accesibilidad.
-No inventes colores, tipografías ni espaciados que no existan en los tokens.
-Respeta: densidad de datos, estados (carga/vacío/error/éxito), una acción
-primaria por pantalla, formato monetario B/. con cifras de ancho fijo, y WCAG 2.2 AA+.
-```
-
-### 12.2 Implementación MudBlazor (stack objetivo)
-
-1. Cargar la fuente Inter/IBM Plex Mono (Google Fonts, local para prod).
-2. Configurar `MudTheme` con `PaletteLight`:
-   - `Primary = brand-primary (#1B212B)` (grafito hasta recibir branding)
-   - `AppbarBackground = #FFFFFF` y `DrawerBackground = #141A22` (scaffold)
-   - `Surface = #FFFFFF`, `Background = #F6F7F9`
-   - `TableHeader...` alineado a tokens; radios `radius-md/lg`.
-3. Escribir componentes custom en `Components/` (Button, DataTableColumn, StatusChip, MoneyInput, EmptyState, SkeletonTable, PermissionGuard) mapeados a los specs de la sección 6.
-4. Aplicar CSS variables globales (tokens.css) como respaldo y para estilos no cubiertos por MudBlazor (focus-visible, tabular, labels caps).
-5. Área por rol (`/app`, `/portal/inquilino`, `/portal/propietario`) usando el mismo `AppShell` con layout distinto (Admin dark scaffold; portales scaffold claro u overlay móvil).
-
-### 12.3 Migración de marca (cuando el cliente entregue logo y colores)
-
-| Pasos |
-|---|
-| 1. Solicitar: logo (SVG + variantes claro/oscuro), colores primarios/secundarios, tipografía de marca si aplica (opcional). |
-| 2. Reemplazar SOLO en `tokens.dtcg.json`: `brand.*` (primary/hover/active/on) y si el cliente lo pide `scaffold.*`. |
-| 3. Regenerar `tokens.css` (o usar certificador de tokens). |
-| 4. **Validar contraste AA+** de los nuevos colores primarios sobre blanco (textos) y del texto sobre primarios (botones). Si no pasan, definir variantes "on-brand" o fondos con suficiencia — documentado antes de aplicar. |
-| 5. No se cambian los semánticos de estado (`status-*`) salvo que el cliente solicite y pasen contraste. |
-
-> **Candidato corporativo pre-validado (motor de diseño):** si el cliente aprueba una identidad en tonos corporativos, aplicar Slate `#0F172A` como primario, `#334155` como secundario y acento Sky `#0369A1` (texto blanco sobre el acento; acento sobre blanco ≥5.5:1). Son compatibles con el resto de tokens semánticos de GRAFITO. |
-
-### 12.4 Plan de fases (alineado al documento de arquitectura)
-
-| Fase | Diseño a implementar |
-|---|---|
-| Fase 0–1 (Fundación + Núcleo) | Inicio de sesión, marco de aplicación, tabla de datos, formularios, fichas (clientes/inmuebles/contratos), cobros con recibos y comprobante PDF, tablero básico inquilino |
-| Fase 2 (Operación) | Calendario, incidencias, línea blanca, notificaciones/bandeja, reportes operativos |
-| Fase 3 (Contabilidad) | Plan de cuentas (árbol), editor de asientos, cierres (asistente), conciliación, impuestos, activos fijos, estados financieros exportables |
-| Fase 4 (Extensión) | Portal propietario (bandera de funcionalidad), proveedores reales, adaptación branding |
+- **Admin**: sidebar → drawer < 960px; tabelas con scroll interno; KPIs 4→3→2→1.
+- **Portales**: sidebar clara ≥ 960px → bottom-nav < 960px; contenido con `padding-bottom: 92px`.
+- **Tablas**: `.tbl-wrap` con `overflow-x: auto`; listados compactos en móvil pasan a tarjetas solo si el módulo lo define.
+- Prohibido scroll horizontal de página en cualquier breakpoint.
+- Objetivos táctiles ≥ 44px en controles standalone (bottom-nav, iconos de acción, celdas OTP).
 
 ---
 
-## 13. Matriz de cobertura (requisito → diseño)
+## 12. Accesibilidad (WCAG 2.2 AA)
 
-| Requisito (fuente) | Diseño que lo cubre |
-|---|---|
-| RF-C1..C9 (Clientes) | 8.4 listado, 8.5 ficha persona, 5.2 maestro-detalle, 6.7 tarjetas, 6.14/6.15 estados, formularios 6.3+5.3, 6.24 documentos. **v1.6:** cambio de estado `clientes.estado.cambiar` (5.9), menú de fila sin borde del navegador (6.1/6.5/8.4). **v1.7:** gestión de documentos en ficha (`clientes.documentos.gestionar`) — 6.29 zona de carga, 6.30 pestaña Documentos |
-| RF-I1..I9 (Inmuebles) | 8.6 ficha inmueble, 6.5 tabla de datos atributos, 6.2 etiquetas de estado, 6.18 historial, galería de fotos (patrón 5.2). **v1.6:** exclusividad de ocupación en selector (5.8) |
-| RF-CT1..CT6 (Contratos) | 6.7 tarjetas con resumen de parámetros, 5.3 formularios, 6.24 documentos PDF, 6.16 paginación. **v1.7:** carga de contrato firmado obligatorio (RF-CON-07) — asistente 5.4 paso de adjunto, zona de carga 6.29, pestaña Documentos 6.30 |
-| RF-F1..F5 (Cobros/recibos) | 8.12 mora, 5.5 dinero, 6.2 etiquetas de recibo, 6.9 confirmación, 6.22 menú fila, 8.11 comprobante |
-| RF-O1..O6 (Operaciones) | 6.5 tablero, 6.18 línea de tiempo, 6.19 calendario, 5.6 agenda, 6.20 asistente de visita/cierre |
-| RF-N1..N5 (Notificaciones) | 5.7 bandeja, 6.11 avisos breves, 6.15 alertas, 6.19 calendario |
-| RF-B1..B7 (Línea blanca) | 8.6 pestaña línea blanca, 6.2 estado, 6.18 historial mantenimiento, 5.4 informe |
-| RF-CN01..17 + RN-CN* (Contabilidad) | 8.7 editor asientos, 8.8 cierres, 6.5 tabla densa, 5.4 asistente, 6.28 barra de exportación, 11.2, 6.27 indicador de progreso |
-| Roles y permisos | 4.2 visibilidad, 6.17 guardia de permiso, 6.3 formularios roles, 6.22 menús |
-| Responsive | Sección 9 (tablas→tarjetas, barra de navegación inferior en portales, diálogo→panel inferior) |
-| Accesibilidad | Sección 10 (contraste, foco, teclado, ARIA, motion reducido, táctil) |
-| Seguridad (BFF/cookies) | UX de sesión: inicio de sesión 8.1, expiración 401, "Sin permiso" 6.17 — nunca tokens en el cliente |
-| Estados y errores | Sección 7 (carga/vacío/error/409/429) |
+- `label` visible en todos los campos; `aria-invalid` + mensaje de error asociado a `aria-describedby`.
+- `:focus-visible` con `outline 2px var(--brand)` en todos los controles.
+- Contraste: texto plano ≥ 4.5:1; texto grande y bold ≥ 3:1; estados semánticos con doble canal (icono + color + etiqueta).
+- Navegación por teclado completa: diálogos con focus trap, tabla con filas linkeables, menús con Esc.
+- `prefers-reduced-motion`: duración de transiciones se anula.
+- Tooltips/avisos con `aria-live`; iconos decorativos `aria-hidden`; iconos con significado `aria-label`.
+- Orden de foco lógico: encabezado → toolbar → contenido → paginación.
 
 ---
 
-## 14. Riesgos de diseño y supuestos abiertos
+## 13. Pautas de implementación (Blazor + MudBlazor)
 
-| Riesgo / supuesto | Impacto en UI | Decisión |
-|---|---|---|
-| Marca no entregada | Neutralidad visual completa | Paleta grafito + semánticos de estado; migración tokenizada (§12.3) |
-| Portal propietario en discusión | Menú/features invisibles | Diseñado y feature flag `features.portal-propietario`; sin costos de UI |
-| Marco legal/fiscal a validar (CPA) | Textos de avisos legales, exenciones ITBMS | Approve placeholders neutrales; textos parametrizables, no hardcode |
-| Tasa de cambio B/. vs USD | Formato de moneda | `B/.` como sufijo local; token de símbolo editable en configuración |
-| Volumen bajo (400 inmuebles) | Sin video directo en listas | Paginación 25/50/100 y filtros suficientes |
-| Users externos con móvil básico | Costo de TI | Portales responsive (dashboard ≥960px / bottom nav <960px), distancias táctiles ≥44px, sin features que exijan navegador moderno |
+> Guía para cuando se implemente el stack objetivo (ASP.NET Core 10 + Blazor). No se escribe código hoy.
+
+- Mapear cada componente del catálogo a un componente MudBlazor con override de tema: `MudDataGrid` → tabla canónica (estilos densos, montos tabulares), `MudChip` → chips semánticos, `MudDialog` → `.modal`, `MudDrawer` → `.drawer`, `MudSnackbar` → `.toast`, `MudTabs` → `.tabs`.
+- Aplicar el tema GRAFITO vía `MudThemeProvider` con la paleta de tokens (`docs/ui/tokens.css` como fuente de verdad).
+- RBAC: autorización por `modulo.accion`; la UI oculta acciones según permiso y el backend valida siempre (BFF).
+- Formatear moneda `B/.` y fechas `DD/MM/YYYY` desde un único helper de localización.
 
 ---
 
-## 15. Glosario breve
+## 14. Registro de esta revisión (2026-09-19)
 
-**Lenguaje del negocio (evitar tecnicismos):**
-- **Cobros**: la recaudación de alquileres (módulo **Cobros**); en algunos contextos se dice "cobranza", pero la UI usa **cobros**. Permisos: `cobros.*`.
-- **Inquilino**: el arrendatario que alquila/vive el inmueble.
-- **Propietario**: dueño del inmueble administrado.
-- **En mora**: recibo/contrato/cliente con pago vencido (estado derivado, nunca manual).
-- **Comprobante**: recibo de pago descargable en PDF (folio + hash de integridad).
-- **Línea blanca**: electrodomésticos del inmueble (A/C, neveras, lavadoras, calentadores).
+Correcciones aplicadas al prototipo `ui/prototipo-demo.html` durante la revisión v1.6 para cumplir este documento:
 
-**Términos técnicos usados (con su equivalente coloquial):**
-- **Scaffold** → "marco de la aplicación" (barra lateral/barra superior/encabezado).
-- **Canvas** → "fondo de página" detrás de las tarjetas.
-- **Tabular figures** → "cifras de ancho fijo" para números y fechas alineados.
-- **Drawer** → panel lateral deslizante.
-- **Bottom nav** → barra de navegación inferior (móvil).
-- **Bottom sheet** → panel que sube desde abajo (móvil), en lugar de diálogo centrado.
-- **Breakpoint** → punto de corte (medida donde cambia el diseño).
-- **Partida doble**: débito = crédito; el editor de asientos lo verifica en vivo (§8.7).
-- **Folio**: numeración contable/recibo, siempre en mono, alineada.
-- **Etiqueta de estado**: píldora con icono+texto que comunica estado (nunca solo color).
+| # | Corrección | Ficha |
+| --- | --- | --- |
+| 1 | `stat-value` con color inline → clases semánticas `.v-danger / .v-warn / .v-succ / .v-info / .v-brand` (incl. ternarios dinámicos) | 7.4.2 |
+| 2 | `stat-value` con `font-size` inline (18/22/24px) → `.stat-value.sm/.md/.lg`; totales 16px → `.total-val` | 7.4.2 |
+| 3 | Filas de detalle con `padding/border` inline → `.detail-row` + modificadores `.detail-md/.detail-lg/.detail-bd/.detail-dash/.detail-top/.detail-xl/.detail-tool/.detail-tot` | 7.5.1 |
+| 4 | Columnas de tabla con `style="width:…px"` → clases `.col-act` (acciones), `.w110/.w120/.w150/.w220` | 7.5 |
+| 5 | Tabla unificada: todas las listas usan `tbl dense tbl-hover`; nada de variantes por módulo | 7.5 |
+| 6 | Card con tabla: `.tbl-card` + `.tbl-card .card-head` (head plegado) | 7.4.1 · 7.5 |
+| 7 | `kpis` con `margin-bottom` inline → clase base (token `--sp-6`) | 7.4.2 |
+| 8 | Emojis de inmuebles eliminados → `.inm-ph` con icono `building` (SVG) `aria-hidden` | 7.4.5 |
+| 9 | Fotos por url inexistente → `.photo-ph` con icono SVG | 7.4.5 |
+| 10 | Tamaños de drawer/modal normalizados a los del catálogo (`w720`/`lg`/`xl`; eliminados `w680`/`w640`) | 7.8 |
+| 11 | `--success`/`--surface-muted` inexistentes en switch → `--succ`/`--bg-subtle` | 2.1 · 7.3 |
+| 12 | `btn-success` → `btn-primary` (acción destructiva con confirmación) | 7.1 |
+| 13 | Verificación: sin tokens rotos residuales, `node --check` sin errores, copy hash-idéntica a `site/` (§ Validación) | — |
+| 14 | Paginación unificada: `pagBar` pasa a generar el markup canónico `.pagination` (antes usaba `detail-tool` + `btn-secondary`); Clientes, Inmuebles y Contratos migrados de paginación manual a `pagBar` + `slicePage` real (25/50/100 funcionales); todas las tablas paginadas con la paginación dentro de la card | 7.5 |
+| 15 | Variante de selección documentada: checkbox en tabla solo para módulos con acciones masivas (Clientes); el resto de listados no la replica | 7.5 |
 
----
-
-## Anexo A — Validación con el motor de diseño (`ui-ux-pro-max`)
-
-GRAFITO se validó contra el motor de diseño local de la skill (que agrega 79 estilos, 192 paletas, 119 directrices UX, 74 pares tipográficos y 25 tipos de gráfico). Resultado y refinamientos incorporados:
-
-| Consulta al motor | Resultado | Impacto en GRAFITO |
-|---|---|---|
-| Design system global (enterprise property/accounting, formal/minimal) | **Minimalism & Swiss Style** — el patrón recomendado para enterprise apps, tableros, SaaS y herramientas profesionales; Inter en headings y body; primario near-black `#0F172A` sobre superficies claras; motion sutil | Confirma la dirección exacta: tipografía Inter, primario grafito, fondo claro, micro-movimiento (§2 y §3) |
-| Paleta corporativa | "Professional navy + blue CTA": primario `#0F172A`, secundario `#334155`, acento `#0369A1` | Documentado como **candidato** de marca en §12.3; se mantiene 100% neutro hasta recibir branding del cliente |
-| Forms / accesibilidad | Resumen de errores con foco y enlaces a campos (severidad alta); foco visible en diálogos; foco no ocultado (AA) | Aplicado en 6.25 y 10.3 |
-| KPIs de tablero | Gráfico de bala para "KPI vs objetivo" (texto + marcador de meta; color suplementario) | Aplicado en 6.7 y 11.2 |
-| Feedback de carga | Progreso en procesos multi-paso ("Paso 2 de 4"); `aria-busy`; esqueleto estable sin parpadeo | Aplicado en 6.14, 6.20 y 7 |
-| Tablas | Desplazamiento horizontal o tarjetas en móvil; acciones en lote con selección | Aplicado en 6.5 y sección 9 |
-| Gráficos financieros | No usar candlestick/OHLC (dominio de trading); línea/barras con etiquetas textuales | Aplicado en 11.1 |
-| Tipografía | Cuerpo/head que más cuadra: Inter (ya elegido). Alternativas documentadas: "Fira" (datos de tablero) y "Corporate Trust" (Lexend + Source Sans 3, alta accesibilidad) | Inter se mantiene; alternativas mencionadas en §2.2 si el cliente prefiere |
-
-El motor también validó el pre-delivery checklist (sin emojis como iconos, `cursor-pointer` en todo lo clickeable, al pasar el cursor 150–300ms, contraste 4.5:1, foco visible, `prefers-reduced-motion`, adaptativo 375/768/1024/1440) — todos ya son requisito en este documento.
+**Validación ejecutada**: auditoría de tokens por expresiones regulares (sin restos de `--surface`, `--muted`, `--surface-muted`, `--success`, `btn-success`, `w680/w640`, `width:` de columnas de tabla 32–220px); sintaxis del script embebido validada con `node --check`; copia `ui/prototipo-demo.html` → `site/prototipo-demo.html` verificada por hash SHA-256. **Nota**: queda un `width:32px` inline como marcador de cláusula (`C1…C5`) en la ficha de contrato — layout de contenido, no columna de tabla; se acepta y queda fuera de la tabla canónica.
 
 ---
 
-## Anexo B — Prototipo de validación (`prototipo-validacion.html`)
+## 15. Control de versiones
 
-**Cómo usar:** abrir `docs/ui/prototipo-validacion.html` en cualquier navegador moderno (no requiere build, ni servidor, ni dependencias). Seleccionar rol en el inicio de sesión. Todo el contenido (vistas, tablas, formularios, diálogos, avances paso a paso y datos de muestra) está embebido con el fin de validar **fidelidad al documento maestro** y servir de referencia viva al developer.
-
-### B.1 Cobertura validada
-
-| Área | Rutas | Estado |
-|---|---|---|
-| Admin — operación | `/app/resumen`, `/app/clientes`, `/app/inmuebles`, `/app/contratos`, `/app/cobros`, `/app/liquidaciones` | Implementadas con datos simulados (§8.1–8.4, 8.12) |
-| Admin — mantenimiento | `/app/incidencias`, `/app/lineablanca` | Implementadas (kanban + línea de tiempo) |
-| Admin — contabilidad (Fase 3) | `/app/contabilidad/{plan, asientos, cierres, conciliacion, impuestos, activos, ef}` | Implementadas; **editor de asiento con validación en vivo débito = crédito (§8.7)**; cierre con asistente de 4 pasos y confirmación irreversible sustentada (§8.8); gráficos de bala para KPIs (§11.2) |
-| Admin — sistema | `/app/reportes`, `/app/notificaciones`, `/app/administracion`, `/app/administracion/roles`, `/app/guia` | Implementadas; roles clonables + matriz de permisos precargada |
-| Admin — permisos (demo) | `/app/*` con control por rol | **Implementado en v1.4:** `can()`/`hasPerm()` con los 6 roles semilla; barra lateral, menú móvil, tablero (§8.3), búsqueda global y rutas protegidas respetan el permiso; vista "Sin permiso" (§6.17); interruptor de usuario de prueba en la ficha de usuario de la barra superior |
-| Portal inquilino | `/portal/inquilino/{resumen, calendario, pagos, incidencias, perfil, notificaciones}` | Implementadas como tablero con barra lateral (≥960px) y barra de navegación inferior + panel deslizante (<960px) (§8.9–8.10); pago con método/referencia/adjunto y comprobante (§8.11) |
-| Portal propietario | `/portal/propietario/{resumen, pagos, perfil, notificaciones}` | Implementadas **detrás de la bandera de funcionalidad `features.portal-propietario` (Fase 4)** — en la demo se permite entrar para validar el diseño; el aviso destacado explica el estado (§11) |
-| Estados | carga (esqueleto), vacío, error, éxito, advertencia, foco y teclado | Cubiertos en `/app/guia` y en los flujos (§7) |
-| Accesibilidad | Contraste AA, foco visible, `aria-modal`/`aria-label`, `prefers-reduced-motion`, `Escape` cierra diálogos, `/` abre búsqueda en admin | Verificables en el prototipo |
-
-### B.2 Correcciones detectadas durante la validación (aplicadas aquí y en el documento cuando aplica)
-
-Durante el desarrollo del prototipo se detectaron y corrigieron estos puntos del HTML:
-
-1. **Icono `sliders` faltante** en la barra de Filtros de Clientes (renderizaba vacío) → añadido al set de iconos.
-2. **Expresión de canon malformada** en la ficha de Inmuebles (`D.recibos.find(...)` con ternario inválido, riesgo de `ReferenceError`) → reemplazada por helper `canonOf(ref)` que lee el canon del contrato vigente.
-3. **`comprobante()`** pasaba un tercer argumento ignorado a `modalHead` y abría el modal sin tamaño → ahora abre modal ancho (`openModal(html,'lg')`).
-4. **Router:** `setPortalHeader()` se invocaba en el área admin donde `PORTAL_USER['admin']` no existe → corregido: el encabezado de portal solo se aplica en área `/portal/*`.
-5. **Permisos no respetados en el tablero y la navegación (feedback del usuario):** antes, cualquier rol veía el resumen contable completo (Ingresos, mora, cierre contable) y todos los módulos del menú. Implementado modelo de permisos en tiempo de ejecución: barra lateral/menú móvil filtrados por `can(modulo)`, vistas protegidas con `sinPermiso()` (§6.17), tablero adaptativo por permiso (§8.3) y búsqueda global filtrada; añadido interruptor de usuario de prueba en la ficha de usuario para validar los 6 perfiles.
-
-**Sintaxis y tiempo de ejecución:** el script embebido se validó con `node --check` y un smoke test que ejecuta todas las rutas de renderizado sin errores. No se usan librerías externas.
-
-### B.3 Simplificaciones deliberadas del prototipo (para desarrollo)
-
-- **Tablas admin en pantallas pequeñas:** el documento §9 pide convertir tablas a tarjetas apiladas `< 600px`. El prototipo conserva la tabla con desplazamiento horizontal (más barato de validar); la transformación a tarjetas es trabajo de implementación.
-- **Portales:** diseño de tablero con barra lateral permanente en ≥960px (marco de aplicación compartido con Admin, ancho 256px, contenido máx. 1500px); en <960px la barra lateral colapsa a panel deslizante con menú hamburguesa y aparece la barra de navegación inferior. Corrección aplicada en el prototipo por feedback del usuario ("los portales no deben verse como dispositivo móvil en escritorio"). El portal propietario se encuentra en discusión (bandera OFF por defecto en Fase 0–3).
-- **Integraciones:** adjunto de comprobante, envíos de notificación (email/SMS/WhatsApp Fase 2), generación real de PDF/DGI y programación de reportes se muestran como acciones con confirmación (aviso breve), no con lógica real.
-- **Emojis en datos simulados:** los "iconos" de inmueble (`🏙`, `🏢`, …) son marcadores de posición decorativos de la ficha, no iconos funcionales del sistema; deben reemplazarse por fotografía o SVG de marca en producción.
-- **Acciones de página no filtradas por permiso en cada grilla:** el prototipo oculta/adapta las acciones sensibles de la cabecera del tablero y filtra navegación y rutas; los botones internos de cada lista (`Nuevo`, `Exportar`, editar fila…) permanecen visibles en la demo. En producción, cada endpoint valida el permiso y la UI se deriva de los permisos reales del usuario (la regla completa de "oculta vs deshabilitada con nota emergente" del §4.2 se implementa con los permisos reales del backend).
-
----
-
-*Documento maestro de diseño. La fuente de verdad son los tokens (`tokens.dtcg.json`). Al recibir el branding del cliente, ejecutar la migración de la sección 12.3 y actualizar la tabla de meta-información (Estado → "Brand aplicado").*
+| Versión | Fecha | Cambio |
+| --- | --- | --- |
+| 1.6.1 | 2026-09-19 | Paginación canónica única: `pagBar` con markup `.pagination` + `page-btn`; migración de Clientes/Inmuebles/Contratos a `pagBar` + `slicePage` (corte real, selector 25/50/100 funcional); paginación dentro de la card en todas las tablas paginadas; variante checkbox documentada (módulos con acciones masivas) (§7.5) | 
+| 1.6 | 2026-09-19 | Revisión de clases inline del prototipo: `.detail-row` + modificadores (§7.5.1), `.v-*` y tamaños de `.stat-value` (§7.4.2), `.col-act`/`.w*` (anchos de tabla), `.tbl-card`, `.st-sect`, `.photo-ph`/`.inm-ph` (§7.4.5), `.overlay.side` (§7.8); normalización de tamaños de drawer/modal; eliminación de emojis y tokens inexistentes; registro §14 | 
+| 1.5 | 2026-09-19 | Documento componentizado completo; canon de separación entre elementos (§3); unificación de estilos del prototipo (tabla canónica, chips, tarjetas, modales, iconos) y registro de correcciones (§14); tokens en `docs/ui/tokens.css` |
+| 1.0 | (histórico) | Documento base previo a la revisión componentizada |

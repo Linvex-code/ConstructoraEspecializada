@@ -1,205 +1,78 @@
 /* ============================================================
-   Design System Grafito v1.0 — CSS Custom Properties
-   Plataforma de Administración de Inmuebles, Portales y Contabilidad
-   Fuente de verdad: tokens.dtcg.json (W3C DTCG). Este archivo es la
-   transformación a CSS para cualquier implementación (genérica).
+   GRAFITO Design System v1.5 — Design tokens (fuente de verdad)
+   ============================================================
+   Este archivo es la ÚNICA fuente de verdad de tokens de GRAFITO.
+
+   - El prototipo `ui/prototipo-demo.html` (y su copia publicada
+     `site/prototipo-demo.html`) incrusta una copia idéntica de
+     esta sección `:root` para seguir siendo autocontenido.
+   - Cualquier cambio de token se hace AQUÍ primero y se replica
+     en el prototipo; nunca al revés.
+   - Los documentos de módulos referencian estos tokens por nombre
+     (p. ej. `--succ` para estados positivos), no por valor.
+
+   Convenciones:
+   - Escala de neutros `--n0` (blanco) … `--n950` (casi negro).
+   - Semánticos: `--succ`, `--warn`, `--danger`, `--info`, `--neutral`
+     con su trío color / fondo (`-bg`) / borde (`-bd`).
+   - Scaffold = navegación oscura (sidebar). Content = superficies claras.
+   - Espaciado `--sp-*` en múltiplos de 2px (escala 2/4/8/12/16/20/24/32/40/48).
+   - Dinero, fechas y folios usan `--font-mono` y cifras tabulares.
    ============================================================ */
 
-:root,
-[data-theme="light"] {
-  /* ---- Paleta primitiva neutra ---- */
-  --grafito-neutro-0: #FFFFFF;
-  --grafito-neutro-50: #F8F9FB;
-  --grafito-neutro-100: #F1F3F6;
-  --grafito-neutro-200: #E3E6EB;
-  --grafito-neutro-300: #CFD4DC;
-  --grafito-neutro-400: #A6AEBB;
-  --grafito-neutro-500: #7C8694;
-  --grafito-neutro-600: #5B6470;
-  --grafito-neutro-700: #3E4653;
-  --grafito-neutro-800: #2A313D;
-  --grafito-neutro-900: #1B212B;
-  --grafito-neutro-950: #10151D;
+:root{
+  /* ---------- Paleta neutra ---------- */
+  --n0:#FFFFFF; --n50:#F8F9FB; --n100:#F1F3F6; --n200:#E3E6EB; --n300:#CFD4DC;
+  --n400:#A6AEBB; --n500:#7C8694; --n600:#5B6470; --n700:#3E4653; --n800:#2A313D;
+  --n900:#1B212B; --n950:#10151D;
 
-  /* ---- Marca (placeholder hasta recibir branding del cliente) ---- */
-  --grafito-brand-primary: #1B212B;
-  --grafito-brand-primary-hover: #2A313D;
-  --grafito-brand-primary-active: #10151D;
-  --grafito-brand-on-primary: #FFFFFF;
+  /* ---------- Marca (Constructora Especializada) ---------- */
+  --brand:#1B212B; --brand-h:#2A313D; --brand-a:#10151D;
 
-  /* ---- Superficies ---- */
-  --grafito-bg-canvas: #F6F7F9;
-  --grafito-bg-content: #FFFFFF;
-  --grafito-bg-subtle: #F1F3F6;
-  --grafito-bg-muted: #E9EDF1;
-  --grafito-bg-hover: #EDF0F4;
-  --grafito-bg-disabled: #F1F3F6;
+  /* ---------- Superficies ---------- */
+  --bg-canvas:#F6F7F9; --bg-content:#FFFFFF; --bg-subtle:#F1F3F6; --bg-muted:#E9EDF1;
+  --bg-hover:#EDF0F4; --bg-disabled:#F1F3F6;
 
-  /* ---- Texto ---- */
-  --grafito-text-primary: #1B212B;
-  --grafito-text-secondary: #5B6470;
-  --grafito-text-tertiary: #697486;
-  --grafito-text-disabled: #9AA3AD;
-  --grafito-text-inverse: #FFFFFF;
-  --grafito-text-placeholder: #697486;
-  --grafito-text-link: #1D4ED8;
+  /* ---------- Texto ---------- */
+  --text-p:#1B212B; --text-s:#5B6470; --text-t:#697486; --text-d:#9AA3AD;
+  --text-inv:#FFFFFF; --text-link:#1D4ED8;
 
-  /* ---- Bordes / foco ---- */
-  --grafito-border-subtle: #E3E6EB;
-  --grafito-border-default: #CFD4DC;
-  --grafito-border-strong: #A6AEBB;
-  --grafito-border-focus: #1B212B;
-  --grafito-border-width-hairline: 1px;
-  --grafito-border-width-focus: 2px;
+  /* ---------- Bordes ---------- */
+  --border-subtle:#E3E6EB; --border-default:#CFD4DC; --border-strong:#A6AEBB;
 
-  /* ---- Scaffold (shell de aplicación) ---- */
-  --grafito-scaffold-bg: #141A22;
-  --grafito-scaffold-bg-hover: #1F2733;
-  --grafito-scaffold-bg-active: #2A3441;
-  --grafito-scaffold-border: #2B3442;
-  --grafito-scaffold-text: #E6E9EE;
-  --grafito-scaffold-text-muted: #9AA3B0;
+  /* ---------- Scaffold (navegación oscura) ---------- */
+  --scaffold-bg:#141A22; --scaffold-bg-h:#1F2733; --scaffold-bg-act:#2A3441;
+  --scaffold-border:#2B3442; --scaffold-text:#E6E9EE; --scaffold-text-m:#9AA3B0;
 
-  /* ---- Semánticos: éxito / advertencia / peligro / info / neutro ---- */
-  --grafito-status-success: #146C43;
-  --grafito-status-success-bg: #E7F2EC;
-  --grafito-status-success-border: #9ECFB3;
-  --grafito-status-warning: #7A4F00;
-  --grafito-status-warning-bg: #FCF3D9;
-  --grafito-status-warning-border: #E3C768;
-  --grafito-status-danger: #B42318;
-  --grafito-status-danger-bg: #FCE8E6;
-  --grafito-status-danger-border: #F0A8A0;
-  --grafito-status-info: #1D4ED8;
-  --grafito-status-info-bg: #E8F0FE;
-  --grafito-status-info-border: #A9C8F5;
-  --grafito-status-neutral: #5B6470;
-  --grafito-status-neutral-bg: #F1F3F6;
-  --grafito-status-neutral-border: #CFD4DC;
+  /* ---------- Semánticos (estado / acento) ---------- */
+  --succ:#146C43; --succ-bg:#E7F2EC; --succ-bd:#9ECFB3;
+  --warn:#7A4F00; --warn-bg:#FCF3D9; --warn-bd:#E3C768;
+  --danger:#B42318; --danger-bg:#FCE8E6; --danger-bd:#F0A8A0;
+  --info:#1D4ED8; --info-bg:#E8F0FE; --info-bd:#A9C8F5;
+  --neutral:#5B6470; --neutral-bg:#F1F3F6; --neutral-bd:#CFD4DC;
 
-  /* ---- Gráficos ---- */
-  --grafito-chart-ink: #1F2A37;
-  --grafito-chart-slate-500: #7C8694;
-  --grafito-chart-slate-300: #C0C7D1;
-  --grafito-chart-blue: #2456CC;
-  --grafito-chart-green: #166B48;
-  --grafito-chart-amber: #9A6B00;
-  --grafito-chart-red: #B42318;
+  /* ---------- Capas / foco / sombras ---------- */
+  --scrim:rgba(16,21,29,.45);
+  --focus-ring:rgba(27,33,43,.16);
+  --shadow-sm:0 1px 2px rgba(16,21,29,.06);
+  --shadow-md:0 2px 4px rgba(16,21,29,.08),0 1px 0 rgba(16,21,29,.02);
+  --shadow-lg:0 8px 24px rgba(16,21,29,.12),0 2px 8px rgba(16,21,29,.08);
+  --shadow-xl:0 16px 48px rgba(16,21,29,.24),0 4px 16px rgba(16,21,29,.08);
 
-  /* ---- Overlays ---- */
-  --grafito-scrim: rgba(16, 21, 29, 0.45);
-  --grafito-focus-ring: rgba(27, 33, 43, 0.16);
+  /* ---------- Radios ---------- */
+  --radius-sm:4px; --radius-md:6px; --radius-lg:8px; --radius-xl:12px; --radius-pill:999px;
 
-  /* ---- Tipografía ---- */
-  --grafito-font-family-ui: "Inter", "Segoe UI", system-ui, -apple-system, sans-serif;
-  --grafito-font-family-mono: "IBM Plex Mono", "JetBrains Mono", Consolas, monospace;
-  --grafito-font-weight-regular: 400;
-  --grafito-font-weight-medium: 500;
-  --grafito-font-weight-semibold: 600;
-  --grafito-font-weight-bold: 700;
+  /* ---------- Tipografía ---------- */
+  --font-ui:'Inter','Segoe UI',system-ui,-apple-system,sans-serif;
+  --font-mono:'IBM Plex Mono','JetBrains Mono',Consolas,monospace;
 
-  /* Escala tipográfica */
-  --grafito-font-size-xs: 12px;
-  --grafito-font-size-sm: 13px;
-  --grafito-font-size-base: 14px;
-  --grafito-font-size-md: 16px;
-  --grafito-font-size-title-sm: 20px;
-  --grafito-font-size-title-md: 24px;
-  --grafito-font-size-title-lg: 30px;
-  --grafito-line-height-tight: 1.25;
-  --grafito-line-height-normal: 1.5;
+  /* ---------- Espaciado (escala 2/4/8/12/16/20/24/32/40/48) ---------- */
+  --sp-1:2px; --sp-2:4px; --sp-3:8px; --sp-4:12px; --sp-5:16px; --sp-6:20px;
+  --sp-7:24px; --sp-8:32px; --sp-9:40px; --sp-10:48px;
 
-  /* ---- Espaciado (escala base 4px) ---- */
-  --grafito-space-0: 0px;
-  --grafito-space-1: 2px;
-  --grafito-space-2: 4px;
-  --grafito-space-3: 8px;
-  --grafito-space-4: 12px;
-  --grafito-space-5: 16px;
-  --grafito-space-6: 20px;
-  --grafito-space-7: 24px;
-  --grafito-space-8: 32px;
-  --grafito-space-9: 40px;
-  --grafito-space-10: 48px;
-  --grafito-space-11: 64px;
-  --grafito-space-12: 80px;
-  --grafito-space-page: 24px;
-  --grafito-space-page-lg: 32px;
-  --grafito-space-section: 24px;
-  --grafito-space-stack: 16px;
+  /* ---------- Layout ---------- */
+  --sidebar-w:256px; --topbar-h:56px; --row-h:44px; --row-h-dense:36px;
 
-  /* ---- Tamaños de control ---- */
-  --grafito-control-height-sm: 28px;
-  --grafito-control-height-md: 36px;
-  --grafito-control-height-lg: 44px;
-  --grafito-icon-size-sm: 16px;
-  --grafito-icon-size-md: 20px;
-  --grafito-icon-size-lg: 24px;
-  --grafito-sidebar-width: 256px;
-  --grafito-sidebar-width-collapsed: 72px;
-  --grafito-topbar-height: 56px;
-  --grafito-table-row-height: 44px;
-  --grafito-table-row-height-dense: 36px;
-  --grafito-input-min-target: 44px;
-
-  /* ---- Radios ---- */
-  --grafito-radius-sm: 4px;
-  --grafito-radius-md: 6px;
-  --grafito-radius-lg: 8px;
-  --grafito-radius-xl: 12px;
-  --grafito-radius-pill: 999px;
-
-  /* ---- Sombras ---- */
-  --grafito-shadow-sm: 0 1px 2px rgba(16, 21, 29, 0.06);
-  --grafito-shadow-md: 0 2px 4px rgba(16, 21, 29, 0.08), 0 1px 0 rgba(16, 21, 29, 0.02);
-  --grafito-shadow-lg: 0 8px 24px rgba(16, 21, 29, 0.12), 0 2px 8px rgba(16, 21, 29, 0.08);
-  --grafito-shadow-xl: 0 16px 48px rgba(16, 21, 29, 0.24), 0 4px 16px rgba(16, 21, 29, 0.08);
-
-  /* ---- Movimiento ---- */
-  --grafito-duration-hover: 100ms;
-  --grafito-duration-state: 150ms;
-  --grafito-duration-reveal: 200ms;
-  --grafito-ease-standard: cubic-bezier(0.2, 0, 0, 1);
-
-  /* ---- Breakpoints (ref. MudBlazor) ---- */
-  --grafito-breakpoint-xs: 0px;
-  --grafito-breakpoint-sm: 600px;
-  --grafito-breakpoint-md: 960px;
-  --grafito-breakpoint-lg: 1280px;
-  --grafito-breakpoint-xl: 1920px;
-
-  /* ---- Z-index ---- */
-  --grafito-z-sticky: 100;
-  --grafito-z-header: 200;
-  --grafito-z-drawer: 300;
-  --grafito-z-modal: 400;
-  --grafito-z-toast: 500;
-  --grafito-z-tooltip: 600;
-}
-
-/* ---- Foco visible por defecto (WCAG 2.2 AA) ---- */
-:focus-visible {
-  outline: var(--grafito-border-width-focus) solid var(--grafito-border-focus);
-  outline-offset: var(--grafito-focus-ring-offset, 2px);
-}
-
-/* ---- Texto numérico/monetario: tabular figures ---- */
-.money,
-.stat-value,
-table td.numeric,
-.mono {
-  font-feature-settings: "tnum";
-  font-variant-numeric: tabular-nums;
-}
-
-/* ---- Movimiento reducido ---- */
-@media (prefers-reduced-motion: reduce) {
-  *,
-  *::before,
-  *::after {
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
-    scroll-behavior: auto !important;
-  }
+  /* ---------- Movimiento ---------- */
+  --dur-1:100ms; --dur-2:150ms; --dur-3:200ms;
 }
