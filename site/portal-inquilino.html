@@ -1,0 +1,1454 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Constructora Especializada · Portal Inquilino (demo de diseño)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+/* ============================================================
+   GRAFITO Design System v1.5 — Prototipo demo
+   Tokens equivalentes a docs/ui/tokens.css (fuente de verdad)
+   ============================================================ */
+:root{
+  --n0:#FFFFFF; --n50:#F8F9FB; --n100:#F1F3F6; --n200:#E3E6EB; --n300:#CFD4DC;
+  --n400:#A6AEBB; --n500:#7C8694; --n600:#5B6470; --n700:#3E4653; --n800:#2A313D;
+  --n900:#1B212B; --n950:#10151D;
+  --brand:#1B212B; --brand-h:#2A313D; --brand-a:#10151D;
+  --bg-canvas:#F6F7F9; --bg-content:#FFFFFF; --bg-subtle:#F1F3F6; --bg-muted:#E9EDF1; --bg-hover:#EDF0F4; --bg-disabled:#F1F3F6;
+  --text-p:#1B212B; --text-s:#5B6470; --text-t:#697486; --text-d:#9AA3AD; --text-inv:#FFFFFF; --text-link:#1D4ED8;
+  --border-subtle:#E3E6EB; --border-default:#CFD4DC; --border-strong:#A6AEBB;
+  --scaffold-bg:#141A22; --scaffold-bg-h:#1F2733; --scaffold-bg-act:#2A3441; --scaffold-border:#2B3442;
+  --scaffold-text:#E6E9EE; --scaffold-text-m:#9AA3B0;
+  --succ:#146C43; --succ-bg:#E7F2EC; --succ-bd:#9ECFB3;
+  --warn:#7A4F00; --warn-bg:#FCF3D9; --warn-bd:#E3C768;
+  --danger:#B42318; --danger-bg:#FCE8E6; --danger-bd:#F0A8A0;
+  --info:#1D4ED8; --info-bg:#E8F0FE; --info-bd:#A9C8F5;
+  --neutral:#5B6470; --neutral-bg:#F1F3F6; --neutral-bd:#CFD4DC;
+  --scrim:rgba(16,21,29,.45);
+  --focus-ring:rgba(27,33,43,.16);
+  --shadow-sm:0 1px 2px rgba(16,21,29,.06);
+  --shadow-md:0 2px 4px rgba(16,21,29,.08),0 1px 0 rgba(16,21,29,.02);
+  --shadow-lg:0 8px 24px rgba(16,21,29,.12),0 2px 8px rgba(16,21,29,.08);
+  --shadow-xl:0 16px 48px rgba(16,21,29,.24),0 4px 16px rgba(16,21,29,.08);
+  --radius-sm:4px; --radius-md:6px; --radius-lg:8px; --radius-xl:12px; --radius-pill:999px;
+  --font-ui:'Inter','Segoe UI',system-ui,-apple-system,sans-serif;
+  --font-mono:'IBM Plex Mono','JetBrains Mono',Consolas,monospace;
+  --sp-1:2px; --sp-2:4px; --sp-3:8px; --sp-4:12px; --sp-5:16px; --sp-6:20px; --sp-7:24px; --sp-8:32px; --sp-9:40px; --sp-10:48px;
+  --sidebar-w:256px; --topbar-h:56px; --row-h:44px; --row-h-dense:36px;
+  --dur-1:100ms; --dur-2:150ms; --dur-3:200ms;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{-webkit-text-size-adjust:100%;scroll-padding-top:80px}
+body{font-family:var(--font-ui);font-size:14px;line-height:1.5;color:var(--text-p);background:var(--n50);font-feature-settings:'ss01','cv11';overflow-x:hidden}
+button{font-family:inherit;cursor:pointer}
+a{color:var(--text-link);text-decoration:none}
+input,select,textarea{font-family:inherit;font-size:14px;color:var(--text-p)}
+:focus-visible{outline:2px solid var(--brand);outline-offset:2px}
+::placeholder{color:var(--text-t)}
+.mono{font-family:var(--font-mono);font-feature-settings:"tnum"}
+.money,td.num,.num{font-variant-numeric:tabular-nums;font-feature-settings:"tnum"}
+.muted{color:var(--text-s)} .muted2{color:var(--text-t)} .small{font-size:12px}
+.strong{font-weight:600} .right{text-align:right} .center{text-align:center}
+.nowrap{white-space:nowrap}
+.flex{display:flex;align-items:center;gap:var(--sp-3)} .between{justify-content:space-between}
+.wrap{flex-wrap:wrap}
+.grid{display:grid;gap:var(--sp-5)} .g2{grid-template-columns:repeat(2,1fr)} .g3{grid-template-columns:repeat(3,1fr)} .g4{grid-template-columns:repeat(4,1fr)}
+.mt-1{margin-top:var(--sp-3)} .mt-2{margin-top:var(--sp-5)} .mt-3{margin-top:var(--sp-7)} .mt-4{margin-top:var(--sp-8)}
+.mb-1{margin-bottom:var(--sp-3)} .mb-2{margin-bottom:var(--sp-5)}
+[hidden]{display:none !important}
+svg{flex:none}
+@media (prefers-reduced-motion:reduce){ *,*::after,*::before{animation-duration:.01ms !important;transition-duration:.01ms !important;scroll-behavior:auto !important} }
+
+/* ---------- Botones ---------- */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:var(--sp-3);height:36px;padding:0 16px;border-radius:var(--radius-md);
+  border:1px solid transparent;font-size:14px;font-weight:500;transition:background var(--dur-1),border-color var(--dur-1),color var(--dur-1);white-space:nowrap;line-height:1}
+.btn svg{width:16px;height:16px}
+.btn:disabled{background:var(--bg-disabled);color:var(--text-d);cursor:not-allowed;border-color:transparent}
+.btn-sm{height:28px;padding:0 12px;font-size:13px}
+.btn-lg{height:44px;padding:0 20px;font-size:15px}
+.btn-primary{background:var(--brand);color:#fff}
+.btn-primary:hover:not(:disabled){background:var(--brand-h)}
+.btn-primary:active:not(:disabled){background:var(--brand-a)}
+.btn-secondary{background:var(--bg-content);border-color:var(--border-default);color:var(--text-p)}
+.btn-secondary:hover:not(:disabled){background:var(--bg-hover)}
+.btn-ghost{background:transparent;color:var(--text-s)}
+.btn-ghost:hover:not(:disabled){background:var(--bg-subtle);color:var(--text-p)}
+.btn-danger{background:var(--danger);color:#fff}
+.btn-danger:hover:not(:disabled){background:#99231A}
+.btn-link{background:none;border:none;color:var(--text-link);font-size:14px;padding:4px 6px;font-weight:500}
+.btn-icon{width:36px;padding:0;flex:none;border:1px solid transparent;background:transparent;color:var(--text-s);border-radius:var(--radius-md);display:inline-flex;align-items:center;justify-content:center;transition:background var(--dur-1),color var(--dur-1)}
+.btn-icon svg{width:20px;height:20px}
+.btn-icon:hover:not(:disabled){background:var(--bg-subtle);color:var(--text-p)}
+.btn-icon:focus-visible{outline:2px solid var(--brand);outline-offset:2px}
+.btn-icon-row{width:44px;height:44px}
+.btn-block{width:100%}
+.upload-zone{display:flex;align-items:center;gap:var(--sp-3);border:1.5px dashed var(--border-default);border-radius:var(--radius-lg);padding:var(--sp-4) var(--sp-5);cursor:pointer;color:var(--text-s);background:var(--bg-subtle);transition:border-color var(--dur-1),background var(--dur-1)}
+.upload-zone:hover{border-color:var(--brand);background:var(--bg-hover)}
+.upload-zone svg{width:20px;height:20px;flex:none}
+.upload-zone-sm{padding:var(--sp-3) var(--sp-4);font-size:13px;border-radius:var(--radius-md)}
+.upload-zone-sm svg{width:16px;height:16px}
+
+/* ---------- Chips / badges ---------- */
+.chip{display:inline-flex;align-items:center;gap:var(--sp-2);height:22px;padding:0 var(--sp-3);border-radius:var(--radius-pill);font-size:12px;font-weight:600;border:1px solid transparent;white-space:nowrap}
+.chip svg{width:12px;height:12px}
+.chip-success{color:var(--succ);background:var(--succ-bg);border-color:var(--succ-bd)}
+.chip-warning{color:var(--warn);background:var(--warn-bg);border-color:var(--warn-bd)}
+.chip-danger{color:var(--danger);background:var(--danger-bg);border-color:var(--danger-bd)}
+.chip-info{color:var(--info);background:var(--info-bg);border-color:var(--info-bd)}
+.chip-neutral{color:var(--neutral);background:var(--neutral-bg);border-color:var(--neutral-bd)}
+.badge{display:inline-flex;align-items:center;justify-content:center;height:18px;min-width:18px;padding:0 6px;border-radius:var(--radius-pill);background:var(--brand);color:#fff;font-size:11px;font-weight:600}
+.chip-remove{background:none;border:none;color:inherit;cursor:pointer;display:inline-flex;padding:0;margin-left:2px}
+.chip-remove svg{width:12px;height:12px}
+
+/* ---------- Tarjetas ---------- */
+.card{background:var(--bg-content);border:1px solid var(--border-subtle);border-radius:var(--radius-lg);box-shadow:var(--shadow-sm);padding:var(--sp-5);transition:box-shadow var(--dur-2)}
+.card-hover:hover{box-shadow:var(--shadow-md)}
+.rh-mod-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:var(--sp-7);margin-top:var(--sp-6)}
+.rh-mod-grid .stat-ico{width:38px;height:38px;flex:none}
+.rh-mod-card{display:flex;align-items:center;gap:var(--sp-4);padding:var(--sp-5);text-align:left;cursor:pointer}
+.rh-mod-card .rh-mod-info{flex:1;min-width:0}
+.rh-mod-card .rh-mod-info .strong{display:block;font-size:14px;line-height:1.3}
+.rh-mod-card .rh-mod-info .small{display:block;line-height:1.45;margin-top:var(--sp-1)}
+.card-head{display:flex;align-items:center;justify-content:space-between;gap:var(--sp-3);margin-bottom:var(--sp-4)}
+/* Separación vertical uniforme entre secciones apiladas (§6.7). Los grids no la usan (gap propio). */
+.content > .card + .card,
+.content > .card + .g2,
+.content > .card + .g3,
+.content > .g2 + .card,
+.content > .g2 + .g2,
+.content > .g2 + .g3,
+.content > .g3 + .card,
+.content > .g3 + .g2,
+.content > .g3 + .g3{margin-top:var(--sp-5)}
+.grid > .card + .card,
+.g2 > .card + .card,
+.g3 > .card + .card,
+.kpis > .card + .card,
+.kpis-4 > .card + .card,
+.mini-grid > .card + .card,
+.mini-grid-sm > .card + .card,
+.grid-dash > .card + .card,
+.form-grid > .card + .card,
+.rh-mod-grid > .card + .card{margin-top:0}
+/* Tabla dentro de card: se integra sin borde propio (la card provee el contenedor, §6.5). Las tbl-wrap standalone conservan borde. */
+.card .tbl-wrap:not([style]){border:none;box-shadow:none;border-radius:0}
+.card-title{font-size:16px;font-weight:600}
+.card-sub{font-size:13px;color:var(--text-s)}
+.stat-label{font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:.06em;color:var(--text-s)}
+.stat-value{font-size:30px;font-weight:600;line-height:1.2;margin-top:var(--sp-3);font-variant-numeric:tabular-nums}
+.stat-delta{font-size:13px;font-weight:500;margin-top:var(--sp-3);display:flex;align-items:center;gap:4px}
+.stat-meta{font-size:13px;color:var(--text-s);margin-top:var(--sp-2)}
+.up{color:var(--succ)} .down{color:var(--danger)} .flat{color:var(--text-s)}
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(0,1fr));gap:var(--sp-5);align-items:stretch;margin-bottom:var(--sp-6)}
+.kpis .card{min-width:0}
+.kpis .stat-value{font-size:clamp(19px,1.9vw,28px);line-height:1.25;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.kpis .stat-meta{font-size:12px;line-height:1.45}
+/* ---------- Dashboard ejecutivo ---------- */
+.stat-card-h{display:flex;gap:var(--sp-4);align-items:flex-start}
+.stat-body{flex:1;min-width:0}
+.stat-ico{width:42px;height:42px;border-radius:12px;display:flex;align-items:center;justify-content:center;flex:none;background:var(--bg-subtle);color:var(--text-s)}
+.stat-ico.succ{background:color-mix(in srgb,var(--succ) 14%,transparent);color:var(--succ)}
+.stat-ico.danger{background:color-mix(in srgb,var(--danger) 13%,transparent);color:var(--danger)}
+.stat-ico.brand{background:color-mix(in srgb,var(--brand) 13%,transparent);color:var(--brand)}
+.stat-card-h .stat-value{margin-top:var(--sp-1)}
+.stat-card-h .stat-delta{margin-top:var(--sp-2)}
+.stat-card-h .stat-meta{margin-top:var(--sp-1)}
+select.chip-select{appearance:auto;height:42px;padding:0 12px;cursor:pointer;font-family:inherit}
+/* ---------- Mosaico de KPIs alineado (columnas iguales, sin salto) ---------- */
+.kpis-4{display:grid;grid-template-columns:repeat(auto-fit,minmax(0,1fr));gap:var(--sp-5);margin-bottom:var(--sp-6);align-items:stretch}
+.kpis-4 .card{min-width:0;display:flex}
+.kpis-4 .stat-card-h{flex:1;align-items:stretch;gap:var(--sp-4)}
+.kpis-4 .stat-body{flex:1;min-width:0;display:flex;flex-direction:column}
+.kpis-4 .stat-body .stat-meta{margin-top:auto}
+.kpis-4 .stat-value{font-size:clamp(19px,1.9vw,28px);line-height:1.25;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.kpis-4 .stat-ico{width:38px;height:38px;border-radius:10px}
+.kpis-4 .stat-meta{font-size:12px;line-height:1.45}
+@media (max-width:1499px){.kpis-4 .stat-ico{display:none}.kpis-4 .stat-card-h{gap:0}}
+@media (max-width:599px){.kpis-4{grid-template-columns:repeat(auto-fit,minmax(160px,1fr));margin-bottom:var(--sp-5)}.kpis-4 .stat-value{font-size:20px;white-space:normal;overflow:visible}}
+.dash-toolbar{display:flex;align-items:center;gap:var(--sp-3);flex-wrap:wrap;margin-bottom:var(--sp-6)}
+.dash-toolbar .spacer{flex:1}
+.chip-select{display:inline-flex;align-items:center;gap:8px;background:var(--bg-content);border:1px solid var(--border-subtle);border-radius:999px;padding:8px 14px;font-size:13px;font-weight:600;color:var(--text-p);box-shadow:var(--shadow-sm);cursor:pointer;transition:border-color var(--dur-2),color var(--dur-2)}
+.chip-select:hover{border-color:var(--brand);color:var(--brand)}
+.grid-dash{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:var(--sp-5);margin-bottom:var(--sp-6);align-items:start}
+.mini-list{display:flex;flex-direction:column}
+.mini-row{display:flex;align-items:flex-start;gap:var(--sp-3);padding:var(--sp-3) 0;border-bottom:1px solid var(--border-subtle)}
+.mini-row:last-child{border-bottom:none}
+.mini-ico{width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;background:var(--bg-subtle);color:var(--text-s);flex:none;margin-top:var(--sp-1)}
+.mini-main{flex:1;min-width:0}
+.mini-title{font-size:14px;font-weight:600;line-height:1.4}
+.mini-sub{font-size:12px;color:var(--text-s);margin-top:var(--sp-1);display:flex;align-items:center;gap:var(--sp-2);flex-wrap:wrap}
+.mini-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(0,1fr));gap:var(--sp-5);align-items:stretch}
+.mini-grid-sm{display:grid;grid-template-columns:repeat(auto-fit,minmax(0,1fr));gap:var(--sp-4);align-items:stretch}
+/* ---------- Componentes auxiliares (compuestos de tarjeta / tabla / lista) ---------- */
+.stat-card{display:flex;flex-direction:column;min-width:0}
+.card-body{padding-top:var(--sp-2)}
+.input-like{display:flex;align-items:center;min-height:36px;padding:0 12px;background:var(--bg-subtle);border:1px solid var(--border-subtle);border-radius:var(--radius-md);font-size:14px;color:var(--text-p)}
+.sol-row{display:flex;align-items:center;gap:var(--sp-3);padding:var(--sp-3) 0;border-bottom:1px solid var(--border-subtle)}
+.emp-id{display:flex;align-items:center;gap:var(--sp-3)}
+.s-ico{width:36px;height:36px;border-radius:8px;display:inline-flex;align-items:center;justify-content:center;background:var(--bg-subtle);color:var(--text-s);flex:none}
+.stat-ico.warn{background:color-mix(in srgb,var(--warn) 13%,transparent);color:var(--warn)}
+
+/* ---------- Tablas ---------- */
+.tbl-wrap{overflow-x:auto;border:1px solid var(--border-subtle);border-radius:var(--radius-lg);background:#fff}
+table.tbl{width:100%;border-collapse:collapse;font-size:13px}
+.tbl thead th{background:var(--bg-subtle);font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:.05em;color:var(--text-s);
+  border-bottom:1px solid var(--border-subtle);padding:10px 14px;text-align:left;white-space:nowrap}
+.tbl thead th.num{text-align:right}
+.tbl tbody td{padding:12px 14px;border-bottom:1px solid var(--border-subtle);vertical-align:middle}
+.tbl tbody tr:last-child td{border-bottom:none}
+.tbl-hover tbody tr:hover{background:var(--bg-hover)}
+.tbl tbody td.num{text-align:right;font-variant-numeric:tabular-nums}
+.tbl.dense tbody td{padding:7px 12px}
+.tbl.dense thead th{padding:8px 12px}
+.tbl caption{caption-side:top;text-align:left;font-size:13px;color:var(--text-s);padding:10px 14px}
+.rowlink{cursor:pointer}
+.rowlink:hover{background:var(--bg-hover)}
+.detail-row{display:flex;justify-content:space-between;align-items:center;gap:var(--sp-5);padding:4px 0}
+.detail-md{padding:6px 0}
+.detail-lg{padding:10px 0}
+.detail-bd{border-bottom:1px solid var(--border-subtle);padding:6px 0}
+.detail-dash{border-bottom:1px dashed var(--border-subtle);padding:6px 0}
+.detail-top{border-top:1px solid var(--border-subtle);padding:6px 0}
+.detail-xl{padding:12px 0}
+.detail-tool{display:flex;justify-content:space-between;align-items:center;gap:var(--sp-4);flex-wrap:wrap;padding:14px 4px 2px}
+.detail-tot{display:flex;justify-content:space-between;gap:var(--sp-4);padding:10px 2px 0}
+.card.tbl-card{padding:0;overflow:hidden}
+.tbl-card .card-head{padding:16px 16px 0;margin-bottom:0}
+.tbl-card .tbl-wrap{border:none;box-shadow:none;border-radius:0}
+.col-act{width:44px}
+.w110{width:110px}.w120{width:120px}.w150{width:150px}.w220{width:220px}
+.v-danger{color:var(--danger)}.v-warn{color:var(--warn)}.v-succ{color:var(--succ)}.v-info{color:var(--info)}.v-brand{color:var(--brand)}
+.photo-ph{aspect-ratio:1;border-radius:var(--radius-lg);background:var(--bg-subtle);display:flex;align-items:center;justify-content:center;color:var(--text-t)}
+.inm-ph{width:88px;height:88px;border-radius:var(--radius-lg);background:var(--bg-subtle);display:flex;align-items:center;justify-content:center;font-size:36px;flex:none;color:var(--text-t)}
+.overlay.side{justify-content:flex-end;padding:0}
+.st-sect{display:block;margin-bottom:var(--sp-4)}
+.total-val{font-size:16px}
+.stat-value.sm{font-size:18px}.stat-value.md{font-size:22px}.stat-value.lg{font-size:24px}
+
+/* ---------- Formularios ---------- */
+.field{margin-bottom:var(--sp-4)}
+.field label{display:block;font-size:12px;font-weight:500;color:var(--text-p);margin-bottom:var(--sp-3)}
+.field .req{color:var(--danger)}
+.field .help{font-size:12px;color:var(--text-s);margin-top:var(--sp-2)}
+.field .err{font-size:12px;color:var(--danger);margin-top:var(--sp-2);display:flex;align-items:center;gap:var(--sp-2);font-weight:500}
+.input,select.input,textarea.input{width:100%;height:36px;border:1px solid var(--border-default);border-radius:var(--radius-md);padding:0 12px;background:#fff;font-size:14px}
+textarea.input{height:auto;padding:10px 12px;resize:vertical}
+select.input{appearance:auto}
+.input:focus{border-color:var(--brand);box-shadow:0 0 0 3px var(--focus-ring);outline:none}
+.input[aria-invalid="true"]{border-color:var(--danger);box-shadow:0 0 0 3px rgba(180,35,24,.12)}
+.input:disabled{background:var(--bg-disabled);color:var(--text-d)}
+.input.ro{background:var(--bg-subtle);color:var(--text-t);cursor:default;border-color:var(--border-subtle)}
+.money-input{position:relative}
+.money-input .pref{position:absolute;left:12px;top:50%;transform:translateY(-50%);color:var(--text-s);font-size:14px;pointer-events:none}
+.money-input .input{padding-left:40px}
+.check{display:inline-flex;align-items:center;gap:var(--sp-3);font-size:14px;cursor:pointer}
+.check input{width:16px;height:16px;accent-color:var(--brand)}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:var(--sp-5)}
+.form-actions{display:flex;justify-content:flex-end;gap:var(--sp-3);margin-top:var(--sp-6)}
+.err-summary{background:var(--danger-bg);border:1px solid var(--danger-bd);color:var(--danger);border-radius:var(--radius-lg);padding:var(--sp-4) var(--sp-5);font-size:13px;margin-bottom:var(--sp-5)}
+.err-summary a{color:var(--danger);font-weight:600}
+
+/* ---------- Selección de permisos (roles) ---------- */
+.perm-toolbar{display:flex;align-items:center;gap:var(--sp-3);flex-wrap:wrap;margin-bottom:var(--sp-4)}
+.perm-toolbar .search{position:relative;flex:1 1 240px;min-width:180px}
+.perm-toolbar .search svg{position:absolute;left:12px;top:50%;transform:translateY(-50%);width:16px;height:16px;color:var(--text-s);pointer-events:none}
+.perm-toolbar .search input{width:100%;height:36px;padding:0 12px 0 36px;border:1px solid var(--border-default);border-radius:var(--radius-md);font-size:13px}
+.perm-toolbar .search input:focus{border-color:var(--brand);box-shadow:0 0 0 3px var(--focus-ring);outline:none}
+.perm-count{font-size:13px;font-weight:600;color:var(--text-s);white-space:nowrap}
+.perm-mod{border:1px solid var(--border-subtle);border-radius:var(--radius-lg);background:var(--bg-content);overflow:hidden;margin-bottom:var(--sp-3)}
+.perm-mod-head{display:flex;align-items:center;justify-content:space-between;gap:var(--sp-3);padding:8px 14px;cursor:pointer;user-select:none}
+.perm-mod-head:hover{background:var(--bg-hover)}
+.perm-mod-title{display:flex;align-items:center;gap:var(--sp-3);min-width:0;flex-wrap:wrap}
+.perm-mod-body{border-top:1px solid var(--border-subtle)}
+.perm-row{display:flex;align-items:center;gap:var(--sp-3);padding:7px 14px;border-bottom:1px solid var(--border-subtle);cursor:pointer;min-width:0}
+.perm-row:last-child{border-bottom:none}
+.perm-row:hover{background:var(--bg-hover)}
+.perm-row input{width:16px;height:16px;accent-color:var(--brand);flex:none}
+.perm-label{font-size:13px;color:var(--text-p);min-width:0;word-wrap:break-word}
+.perm-code{margin-left:auto;font-size:11px;color:var(--text-t);font-family:var(--font-mono);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:230px;flex:none}
+.perm-chev{color:var(--text-t);display:inline-flex;transition:transform .15s ease;flex:none}
+.perm-mod.expanded .perm-chev{transform:rotate(180deg)}
+.perm-empty{padding:14px;font-size:13px;color:var(--text-s)}
+.perm-foot-note{font-size:12px;font-weight:600;color:var(--text-t)}
+
+/* ---------- Toolbar / filtros ---------- */
+.toolbar{display:flex;align-items:center;gap:var(--sp-3);flex-wrap:wrap;margin-bottom:var(--sp-5)}
+.toolbar .search{position:relative;flex:1 1 260px;min-width:200px}
+.toolbar .search svg{position:absolute;left:12px;top:50%;transform:translateY(-50%);width:16px;height:16px;color:var(--text-s);pointer-events:none}
+.toolbar .search input{width:100%;height:36px;padding:0 12px 0 36px;border:1px solid var(--border-default);border-radius:var(--radius-md);font-size:14px}
+.toolbar .search input:focus{border-color:var(--brand);box-shadow:0 0 0 3px var(--focus-ring);outline:none}
+.chips-row{display:flex;align-items:center;gap:var(--sp-3);flex-wrap:wrap;margin-bottom:var(--sp-5)}
+.pagination{display:flex;align-items:center;justify-content:space-between;gap:var(--sp-3);padding:var(--sp-4) var(--sp-5);font-size:13px;color:var(--text-s)}
+.pagination .pages{display:flex;align-items:center;gap:var(--sp-2)}
+.page-btn{min-width:28px;height:28px;padding:0 var(--sp-2);border:1px solid var(--border-default);background:#fff;border-radius:var(--radius-sm);font-size:13px;display:inline-flex;align-items:center;justify-content:center;color:var(--text-p)}
+.page-btn.active{background:var(--brand);color:#fff;border-color:var(--brand)}
+.page-btn:disabled{color:var(--text-d);cursor:not-allowed}
+.page-dots{min-width:24px;text-align:center;color:var(--text-d);font-size:13px}
+.page-size{width:70px;height:28px;font-size:13px;padding:0 6px}
+
+/* ---------- App shell ---------- */
+.shell{display:flex;min-height:100vh}
+.sidebar{width:var(--sidebar-w);background:var(--scaffold-bg);color:var(--scaffold-text);flex:none;display:flex;flex-direction:column;position:fixed;inset:0 auto 0 0;z-index:var(--z-drawer,300);transition:transform var(--dur-3)}
+.brand{display:flex;align-items:center;gap:12px;height:var(--topbar-h);padding:0 20px;border-bottom:1px solid var(--scaffold-border);flex:none}
+.brand-logo{width:32px;height:32px;border-radius:var(--radius-md);background:var(--scaffold-text);color:var(--scaffold-bg);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:16px}
+.brand-name{font-weight:600;font-size:13px;line-height:1.2;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:172px}
+.brand-sub{font-size:11px;color:var(--scaffold-text-m)}
+.side-nav{flex:1;overflow-y:auto;overflow-x:hidden;padding:12px 10px 24px;scrollbar-width:thin;scrollbar-color:transparent transparent;transition:scrollbar-color var(--dur-2)}
+  .side-nav:hover,.side-nav:focus-within{scrollbar-color:rgba(154,163,176,.45) transparent}
+  .side-nav::-webkit-scrollbar{width:6px;height:6px}
+  .side-nav::-webkit-scrollbar-track{background:transparent}
+  .side-nav::-webkit-scrollbar-thumb{background:transparent;border-radius:999px}
+  .side-nav:hover::-webkit-scrollbar-thumb,.side-nav:focus-within::-webkit-scrollbar-thumb{background:rgba(154,163,176,.45);border:1px solid rgba(230,233,238,.12)}
+  .side-nav::-webkit-scrollbar-thumb:hover{background:rgba(230,233,238,.7)}
+.nav-group{font-size:11px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--scaffold-text-m);padding:var(--sp-5) var(--sp-3) var(--sp-3)}
+.nav-group-btn{display:flex;align-items:center;justify-content:space-between;gap:var(--sp-3);width:100%;background:none;border:0;padding:var(--sp-5) var(--sp-3) var(--sp-3);color:var(--scaffold-text-m);font-family:inherit;font-size:11px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;text-align:left;cursor:pointer;border-radius:var(--radius-md);min-height:34px}
+.nav-group-btn:hover{color:var(--scaffold-text);background:var(--scaffold-bg-h)}
+.nav-group-btn:focus-visible{outline:2px solid var(--focus-ring);outline-offset:-1px}
+.nav-group-btn .chev{display:inline-flex;flex:none;color:var(--scaffold-text-m);transition:transform var(--dur-2)}
+.nav-group-btn[aria-expanded="true"] .chev{transform:rotate(180deg)}
+.nav-group-btn:hover .chev{color:var(--scaffold-text)}
+.nav-collapse{display:none}
+.nav-collapse.open{display:block}
+.nav-collapse .nav-a{padding-left:26px}
+.nav-a{display:flex;align-items:center;gap:10px;height:38px;padding:0 10px;border-radius:var(--radius-md);color:var(--scaffold-text);font-size:14px;font-weight:500;text-decoration:none;position:relative;margin-bottom:2px;transition:background var(--dur-1)}
+.nav-a:hover{background:var(--scaffold-bg-h)}
+.nav-a.active{background:var(--scaffold-bg-act);color:#fff}
+.nav-a.active::before{content:"";position:absolute;left:-10px;top:0;bottom:0;width:3px;background:#fff;border-radius:0 3px 3px 0}
+.nav-a svg{width:18px;height:18px}
+.nav-sub{font-size:13px;color:var(--scaffold-text-m);padding-left:38px}
+.nav-a .pill{margin-left:auto}
+.main{flex:1;min-width:0;margin-left:var(--sidebar-w);display:flex;flex-direction:column}
+.topbar{height:var(--topbar-h);background:var(--bg-content);border-bottom:1px solid var(--border-subtle);display:flex;align-items:center;gap:var(--sp-4);padding:0 24px;position:sticky;top:0;z-index:var(--z-header,200)}
+.topbar .search{position:relative;flex:1 1 300px;max-width:440px}
+.topbar .search svg{position:absolute;left:12px;top:50%;transform:translateY(-50%);width:16px;height:16px;color:var(--text-s);pointer-events:none}
+.topbar .search input{width:100%;height:36px;padding:0 12px 0 36px;border:1px solid var(--border-default);border-radius:var(--radius-md);font-size:14px}
+.topbar .search input:focus{border-color:var(--brand);box-shadow:0 0 0 3px var(--focus-ring);outline:none}
+.icon-btn{width:36px;height:36px;border:1px solid transparent;background:none;border-radius:var(--radius-md);color:var(--text-s);display:inline-flex;align-items:center;justify-content:center;position:relative}
+.icon-btn:hover{background:var(--bg-subtle);color:var(--text-p)}
+.icon-btn svg{width:20px;height:20px}
+.icon-btn .dot{position:absolute;top:4px;right:4px;width:8px;height:8px;border-radius:50%;background:var(--danger);border:2px solid #fff}
+.user-chip{display:flex;align-items:center;gap:10px;padding:4px 8px;border-radius:var(--radius-lg);cursor:pointer;border:1px solid transparent}
+.user-chip:hover{background:var(--bg-subtle)}
+.user-chip .avatar{width:32px;height:32px;border-radius:50%;background:var(--brand);color:#fff;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:600}
+.user-chip .u-n{font-size:13px;font-weight:600;line-height:1.2;text-align:left}
+.user-chip .u-r{font-size:11px;color:var(--text-s)}
+.content{padding:var(--sp-7);flex:1;width:100%;max-width:1500px;margin:0 auto}
+.breadcrumb{font-size:13px;color:var(--text-s);margin-bottom:4px}
+.breadcrumb a{color:var(--text-s)}
+.breadcrumb a:hover{color:var(--text-link)}
+.page-head{display:flex;align-items:center;justify-content:space-between;gap:var(--sp-4);margin-bottom:var(--sp-6);flex-wrap:wrap}
+.page-title{font-size:24px;font-weight:600;line-height:1.3}
+.page-desc{font-size:13px;color:var(--text-s);margin-top:var(--sp-1)}
+
+/* ---------- Tabs ---------- */
+.tabs{display:flex;gap:var(--sp-3);border-bottom:1px solid var(--border-subtle);margin-bottom:var(--sp-6);overflow-x:auto}
+.tab{padding:var(--sp-3) var(--sp-2);border:none;background:none;font-size:14px;font-weight:500;color:var(--text-s);border-bottom:3px solid transparent;cursor:pointer;white-space:nowrap}
+.tab:hover{color:var(--text-p)}
+.tab.active{color:var(--text-p);font-weight:600;border-bottom-color:var(--brand)}
+
+/* ---------- Timeline / línea de tiempo ---------- */
+.timeline{list-style:none;padding:0;position:relative;margin-left:var(--sp-3)}
+.timeline li{position:relative;padding:0 0 var(--sp-5) var(--sp-7);border-left:1px solid var(--border-default)}
+.timeline li::before{content:"";position:absolute;left:-5px;top:2px;width:9px;height:9px;border-radius:50%;background:var(--brand);border:2px solid #fff;box-shadow:0 0 0 1px var(--border-default)}
+.timeline li .tl-date{font-size:12px;color:var(--text-s)}
+.timeline li .tl-text{font-size:13px;margin-top:var(--sp-1)}
+.timeline li .tl-author{font-size:12px;color:var(--text-t)}
+
+/* ---------- Calendario ---------- */
+.cal{width:100%;border-collapse:collapse;font-size:13px}
+.cal th{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.05em;color:var(--text-s);padding:8px 4px;text-align:center}
+.cal td{border:1px solid var(--border-subtle);height:64px;width:14.28%;vertical-align:top;padding:4px 6px;text-align:right;font-size:12px;color:var(--text-s)}
+.cal td.today{outline:2px solid var(--brand);outline-offset:-2px}
+.cal td.other{background:var(--bg-subtle);color:var(--text-d)}
+.cal .ev{display:flex;align-items:center;gap:4px;font-size:11px;color:var(--text-p);text-align:left;margin-top:2px;padding:1px 4px;border-radius:4px;white-space:nowrap;overflow:hidden}
+.cal .ev .dot{width:6px;height:6px;border-radius:50%;flex:none}
+.cal .ev.pago{background:var(--succ-bg)} .cal .ev.pago .dot{background:var(--succ)}
+.cal .ev.visita{background:var(--info-bg)} .cal .ev.visita .dot{background:var(--info)}
+.cal .ev.contrato{background:var(--warn-bg)} .cal .ev.contrato .dot{background:var(--warn)}
+
+/* ---------- Diálogo / Drawer / Toast ---------- */
+.overlay{position:fixed;inset:0;background:var(--scrim);z-index:400;display:flex;align-items:center;justify-content:center;padding:20px}
+.overlay.bottom-sheet{align-items:flex-end;padding:0}
+.modal{background:#fff;border-radius:var(--radius-xl);box-shadow:var(--shadow-xl);width:480px;max-width:100%;max-height:calc(100vh - 40px);display:flex;flex-direction:column;outline:none}
+.modal.lg{width:640px}.modal.xl{width:860px}.modal.w520{width:520px}.modal.w560{width:560px}.modal.no-pad .modal-body{padding:0}
+.modal-head{display:flex;align-items:center;justify-content:space-between;padding:var(--sp-5) var(--sp-6);border-bottom:1px solid var(--border-subtle)}
+.modal-title{font-size:16px;font-weight:600}
+.modal-body{padding:var(--sp-6);overflow-y:auto}
+.modal-foot{display:flex;align-items:center;justify-content:flex-end;gap:var(--sp-3);padding:var(--sp-4) var(--sp-6);border-top:1px solid var(--border-subtle)}
+.drawer{position:fixed;top:0;right:0;bottom:0;width:480px;max-width:100%;background:#fff;box-shadow:var(--shadow-xl);z-index:400;display:flex;flex-direction:column;outline:none}
+.drawer.w360{width:360px}.drawer.w720{width:720px}
+.drawer-head{display:flex;align-items:center;justify-content:space-between;padding:var(--sp-5) var(--sp-6);border-bottom:1px solid var(--border-subtle)}
+.drawer-title{font-size:16px;font-weight:600}
+.drawer-body{padding:20px;overflow-y:auto;flex:1}
+.drawer-foot{display:flex;align-items:center;justify-content:flex-end;gap:var(--sp-3);padding:var(--sp-4) var(--sp-6);border-top:1px solid var(--border-subtle)}
+.toast-wrap{position:fixed;top:var(--sp-5);right:var(--sp-5);z-index:500;display:flex;flex-direction:column;gap:var(--sp-3);width:360px;max-width:calc(100vw - 32px)}
+.toast{background:#fff;border:1px solid var(--border-subtle);border-left:4px solid var(--neutral);border-radius:var(--radius-lg);box-shadow:var(--shadow-lg);padding:var(--sp-4) var(--sp-5);display:flex;align-items:flex-start;gap:var(--sp-3);font-size:13px;animation:slideIn var(--dur-3) var(--ease, cubic-bezier(.2,0,0,1))}
+@keyframes slideIn{from{transform:translateX(20px);opacity:0}to{transform:none;opacity:1}}
+.toast svg{width:18px;height:18px;margin-top:1px}
+.toast-success{border-left-color:var(--succ)} .toast-success svg{color:var(--succ)}
+.toast-error{border-left-color:var(--danger)} .toast-error svg{color:var(--danger)}
+.toast-warning{border-left-color:var(--warn)} .toast-warning svg{color:var(--warn)}
+.toast-info{border-left-color:var(--info)} .toast-info svg{color:var(--info)}
+.toast .t-title{font-weight:600;font-size:13px}
+.toast .t-close{margin-left:auto;background:none;border:none;color:var(--text-s);cursor:pointer;display:inline-flex;padding:2px}
+.toast .t-close svg{width:14px;height:14px}
+
+/* ---------- Estados ---------- */
+.empty{text-align:center;padding:var(--sp-10) var(--sp-7);color:var(--text-s)}
+.empty .ic-circle{width:48px;height:48px;border-radius:50%;background:var(--bg-subtle);display:flex;align-items:center;justify-content:center;margin:0 auto var(--sp-5);color:var(--text-s)}
+.empty .ic-circle svg{width:24px;height:24px}
+.empty h3{font-size:16px;font-weight:600;color:var(--text-p);margin-bottom:var(--sp-2)}
+.empty p{font-size:13px;max-width:380px;margin:0 auto var(--sp-5)}
+.err-state{text-align:center;padding:var(--sp-10) var(--sp-7)}
+.err-state .ic-circle{width:48px;height:48px;border-radius:50%;background:var(--danger-bg);display:flex;align-items:center;justify-content:center;margin:0 auto var(--sp-5);color:var(--danger)}
+.err-state h3{font-size:16px;font-weight:600;margin-bottom:var(--sp-2)}
+.err-state p{font-size:13px;color:var(--text-s);margin:0 auto var(--sp-2);max-width:420px}
+.trace-id{font-family:var(--font-mono);font-size:12px;color:var(--text-t)}
+.guard{max-width:420px;margin:48px auto;text-align:center;color:var(--text-s)}
+.guard .ic-circle{width:48px;height:48px;border-radius:50%;background:var(--warn-bg);display:flex;align-items:center;justify-content:center;margin:0 auto 16px;color:var(--warn)}
+.guard h2{font-size:16px;font-weight:600;color:var(--text-p);margin-bottom:4px}
+.guard p{font-size:14px;margin-bottom:var(--sp-5)}
+.skeleton{background:linear-gradient(90deg,var(--n100) 25%,var(--n200) 50%,var(--n100) 75%);background-size:200% 100%;animation:shimmer 1.4s infinite}
+@keyframes shimmer{0%{background-position:200% 0}100%{background-position:-200% 0}}
+.sk-row{height:14px;border-radius:4px;margin-bottom:var(--sp-3)}
+.sk-card{height:96px;border-radius:var(--radius-lg);margin-bottom:var(--sp-5)}
+.sk-kpi{height:110px;border-radius:var(--radius-lg)}
+
+/* ---------- Alerta ---------- */
+.alert{display:flex;align-items:flex-start;gap:var(--sp-4);padding:var(--sp-4) var(--sp-5);border-radius:var(--radius-lg);border:1px solid;font-size:13px;margin-bottom:var(--sp-5)}
+.alert svg{width:20px;height:20px;margin-top:1px;flex:none}
+.alert h4{font-size:14px;font-weight:600;margin-bottom:2px}
+.alert p{color:var(--text-s)}
+.alert-info{background:var(--info-bg);border-color:var(--info-bd);color:var(--info)}
+.alert-warning{background:var(--warn-bg);border-color:var(--warn-bd);color:var(--warn)}
+.alert-success{background:var(--succ-bg);border-color:var(--succ-bd);color:var(--succ)}
+.alert-danger{background:var(--danger-bg);border-color:var(--danger-bd);color:var(--danger)}
+
+/* ---------- Login ---------- */
+.auth-body{min-height:100vh;display:flex;flex-direction:column;background:var(--n50)}
+.auth-top{height:72px;display:flex;align-items:center;gap:14px;padding:0 32px}
+.auth-main{flex:1;display:flex;align-items:center;justify-content:center;padding:24px}
+.auth-card{width:400px;max-width:100%;background:#fff;border:1px solid var(--border-subtle);border-radius:var(--radius-xl);box-shadow:var(--shadow-md);padding:32px}
+.auth-title{font-size:24px;font-weight:600;margin-bottom:4px}
+.auth-sub{font-size:14px;color:var(--text-s);margin-bottom:24px}
+.auth-foot{text-align:center;font-size:12px;color:var(--text-t);padding:16px 0}
+.divider{display:flex;align-items:center;gap:12px;color:var(--text-t);font-size:12px;margin:20px 0 12px}
+.divider::before,.divider::after{content:"";flex:1;height:1px;background:var(--border-subtle)}
+.demo-user{display:flex;align-items:center;gap:10px;padding:8px 10px;border:1px solid var(--border-subtle);border-radius:var(--radius-md);cursor:pointer;font-size:13px;background:#fff;margin-bottom:6px;width:100%;text-align:left;transition:border-color var(--dur-1),background var(--dur-1)}
+.demo-user:hover{border-color:var(--brand);background:var(--bg-subtle)}
+.demo-user .avatar{width:28px;height:28px;border-radius:50%;background:var(--brand);color:#fff;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:600;flex:none}
+.demo-user .d-name{font-weight:600}
+.demo-user .d-role{font-size:11px;color:var(--text-s)}
+
+/* ---------- OTP ---------- */
+.otp-row{display:flex;gap:var(--sp-3);justify-content:space-between}
+.otp-input{width:48px;height:52px;text-align:center;font-size:20px;font-weight:600;border:1px solid var(--border-default);border-radius:var(--radius-md);font-family:var(--font-mono)}
+.otp-input:focus{border-color:var(--brand);box-shadow:0 0 0 3px var(--focus-ring);outline:none}
+
+/* ---------- Comprobante ---------- */
+.doc{font-family:var(--font-ui);background:#fff;border:1px solid var(--border-default);border-radius:var(--radius-lg);padding:var(--sp-7);max-width:560px;margin:0 auto}
+.doc-head{display:flex;justify-content:space-between;align-items:flex-start;border-bottom:2px solid var(--brand);padding-bottom:var(--sp-5);margin-bottom:var(--sp-5)}
+.doc-emp{font-weight:700;font-size:15px}
+.doc-emp small{display:block;font-weight:400;color:var(--text-s);font-size:12px}
+.doc-title{font-size:13px;font-weight:600;text-transform:uppercase;letter-spacing:.06em;color:var(--text-s);text-align:right}
+.doc-folio{font-family:var(--font-mono);font-size:13px;font-weight:600;text-align:right;margin-top:var(--sp-2)}
+.doc-meta{display:grid;grid-template-columns:1fr 1fr;gap:var(--sp-3) var(--sp-7);font-size:13px;margin-bottom:var(--sp-6)}
+.doc-meta dt{color:var(--text-s);font-size:12px}
+.doc-meta dd{font-weight:600;margin:0}
+.doc-line{display:flex;justify-content:space-between;padding:var(--sp-3) 0;border-bottom:1px solid var(--border-subtle);font-size:13px}
+.doc-total{display:flex;justify-content:space-between;padding:var(--sp-3) 0;font-weight:700;font-size:15px}
+.doc-foot{margin-top:var(--sp-6);font-size:11px;color:var(--text-t);border-top:1px solid var(--border-subtle);padding-top:var(--sp-4);text-align:center}
+.doc-hash{font-family:var(--font-mono);font-size:12px;color:var(--text-t);text-align:center;margin-top:var(--sp-3)}
+
+/* ---------- Alerta demo RBAC ---------- */
+.rbac-note{font-size:12px;color:var(--text-t);background:var(--bg-subtle);border-radius:var(--radius-md);padding:var(--sp-3) var(--sp-4);margin-top:var(--sp-4);display:flex;gap:var(--sp-3);align-items:flex-start}
+.rbac-note svg{width:14px;height:14px;margin-top:1px;flex:none}
+
+/* ---------- Kanban ---------- */
+.kanban{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:var(--sp-5)}
+.kb-col{background:var(--bg-canvas);border:1px solid var(--border-subtle);border-radius:var(--radius-lg);padding:var(--sp-4)}
+.kb-col h4{font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:.06em;color:var(--text-s);display:flex;align-items:center;gap:var(--sp-3);margin-bottom:var(--sp-4)}
+.kb-col h4 .count{background:#fff;border:1px solid var(--border-default);color:var(--text-s);border-radius:var(--radius-pill);padding:0 8px;font-size:11px}
+.kb-card{background:#fff;border:1px solid var(--border-subtle);border-radius:var(--radius-lg);box-shadow:var(--shadow-sm);padding:var(--sp-4);margin-bottom:var(--sp-3);cursor:pointer;transition:box-shadow var(--dur-2)}
+.kb-card:hover{box-shadow:var(--shadow-md)}
+.kb-card .kb-top{display:flex;justify-content:space-between;align-items:center;gap:var(--sp-3);margin-bottom:var(--sp-2)}
+.kb-card .kb-meta{margin:var(--sp-2) 0 var(--sp-3)}
+.kb-card .kb-chips{display:flex;gap:var(--sp-3);flex-wrap:wrap;margin-bottom:var(--sp-3)}
+.kb-card .btn{width:100%}
+.kb-empty{padding:var(--sp-2) 0}
+
+/* ---------- Menús dropdown ---------- */
+.menu{position:absolute;background:#fff;border:1px solid var(--border-subtle);border-radius:var(--radius-lg);box-shadow:var(--shadow-lg);min-width:200px;padding:var(--sp-2);z-index:450}
+.menu button{display:flex;align-items:center;gap:var(--sp-3);width:100%;text-align:left;padding:var(--sp-3) var(--sp-4);border:none;background:none;border-radius:var(--radius-md);font-size:13px;color:var(--text-p)}
+.menu button:hover{background:var(--bg-subtle)}
+.menu button svg{width:16px;height:16px;color:var(--text-s)}
+.menu .sep{height:1px;background:var(--border-subtle);margin:var(--sp-2) 0}
+.menu .danger-text{color:var(--danger)}
+
+/* ---------- Portales ---------- */
+.portal-hero{background:var(--brand);color:#fff;border-radius:var(--radius-xl);padding:24px;margin-bottom:var(--sp-6)}
+.portal-hero .ph-label{font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:.06em;color:var(--scaffold-text-m)}
+.portal-hero .ph-amount{font-size:30px;font-weight:600;margin:6px 0;font-variant-numeric:tabular-nums}
+.portal-hero .ph-due{font-size:13px;color:var(--scaffold-text-m);margin-bottom:14px}
+.portal-hero .btn-primary{background:#fff;color:var(--brand)}
+.portal-hero .btn-primary:hover{background:var(--n100)}
+.bottom-nav{display:none;position:fixed;bottom:0;left:0;right:0;background:#fff;border-top:1px solid var(--border-subtle);height:64px;z-index:350;align-items:stretch;justify-content:space-around}
+.bottom-nav a{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;font-size:11px;color:var(--text-s);text-decoration:none;min-height:44px}
+.bottom-nav a svg{width:20px;height:20px}
+.bottom-nav a.active{color:var(--brand);font-weight:600}
+.hamburger{display:none}
+
+/* ---------- Responsive ---------- */
+@media (max-width:1279px){
+  .kpis{grid-template-columns:repeat(auto-fit,minmax(0,1fr))}
+  .g4{grid-template-columns:repeat(2,1fr)}
+}
+@media (max-width:959px){
+  .sidebar{transform:translateX(-100%);box-shadow:none}
+  body.nav-open .sidebar{transform:none;box-shadow:var(--shadow-xl)}
+  body.nav-open .nav-scrim{content:"";position:fixed;inset:0;background:var(--scrim);z-index:290}
+  .main{margin-left:0}
+  .hamburger{display:inline-flex}
+  .content{padding:var(--sp-5)}
+  .form-grid{grid-template-columns:1fr}
+  .g2,.g3{grid-template-columns:1fr}
+  .grid-dash{grid-template-columns:1fr}
+  .drawer{width:100%}
+  .g4{grid-template-columns:repeat(auto-fit,minmax(180px,1fr))}
+}
+@media (max-width:599px){
+  .content{padding:var(--sp-4)}
+  .page-title{font-size:20px}
+  .stat-value{font-size:24px}
+  .kpis,.mini-grid,.mini-grid-sm{grid-template-columns:repeat(auto-fit,minmax(160px,1fr))}
+  .grid-dash{grid-template-columns:1fr}
+  .cal td{height:52px;padding:2px}
+  .cal .ev{display:none}
+  .card{padding:var(--sp-4)}
+  .toolbar .search{flex-basis:100%}
+}
+/* Panel RH: tarjetas de módulos en 3 columnas (la base está en la sección Tarjetas) */
+@media (max-width:599px){
+  .rh-mod-grid{gap:var(--sp-4);margin-top:var(--sp-5)}
+  .rh-mod-grid .stat-ico{width:32px;height:32px}
+  .rh-mod-card{gap:8px;padding:var(--sp-4)}
+  .rh-mod-card .rh-mod-info .small{font-size:11px;line-height:1.3}
+}
+@media (min-width:960px){
+  .hide-desktop{display:none !important}
+}
+.spacer{flex:1}
+.cursor-pointer{cursor:pointer}
+.kbd{background:var(--bg-subtle);border:1px solid var(--border-default);border-bottom-width:2px;border-radius:4px;padding:1px 5px;font-size:11px;font-family:var(--font-mono)}
+.bullet{width:8px;height:8px;border-radius:50%;display:inline-block;flex:none}
+
+/* ---------- Portales: navegación inferior y aviso de feature ---------- */
+@media (min-width:960px){
+  body.portal-body .bottom-nav{display:none}
+}
+@media (max-width:959px){
+  body.portal-body .bottom-nav{display:flex}
+  body.portal-body .content{padding-bottom:92px}
+}
+.feat-banner{display:flex;gap:var(--sp-4);align-items:flex-start;padding:var(--sp-4) var(--sp-5);border-radius:var(--radius-lg);border:1px dashed var(--warn-bd);background:var(--warn-bg);color:var(--warn);font-size:13px;margin-bottom:var(--sp-6)}
+.feat-banner svg{width:20px;height:20px;flex:none;margin-top:1px}
+.feat-banner code{font-family:var(--font-mono);font-size:12px;background:rgba(255,255,255,.4);padding:1px 5px;border-radius:4px}
+.btn-compact{padding:var(--sp-2) var(--sp-3) !important;height:28px !important;font-size:12px !important}
+/* ===== Métodos de pago · portal inquilino (GRAFITO §4.4) ===== */
+.metodo-grid{display:grid;grid-template-columns:1fr;gap:var(--sp-4);width:100%}
+.metodo{display:flex;align-items:center;gap:var(--sp-4);width:100%;text-align:left;padding:var(--sp-4) var(--sp-5);border:1px solid var(--border-subtle);border-radius:var(--radius-lg);background:var(--bg-content);box-shadow:var(--shadow-sm);cursor:pointer;transition:border-color var(--dur-2),box-shadow var(--dur-2),transform var(--dur-2);font:inherit;color:inherit}
+.metodo:hover{box-shadow:var(--shadow-md);border-color:var(--brand);transform:translateY(-1px)}
+.metodo:focus-visible{outline:none;box-shadow:0 0 0 3px var(--focus-ring);border-color:var(--brand)}
+.metodo[disabled],.metodo.disabled{opacity:.5;cursor:not-allowed;transform:none}
+.metodo[disabled]:hover,.metodo.disabled:hover{border-color:var(--border-subtle);box-shadow:var(--shadow-sm)}
+.m-ico{flex:none;width:42px;height:42px;display:inline-flex;align-items:center;justify-content:center;border-radius:var(--radius-md);background:var(--bg-subtle);color:var(--text-s)}
+.metodo strong{display:block;font-size:14px;font-weight:700;line-height:1.4}
+.metodo small{display:block;margin-top:3px;color:var(--text-s);font-size:12px;line-height:1.5}
+.m-arrow{flex:none;color:var(--text-s);margin-left:auto}
+</style>
+</head>
+<body>
+<div id="app"></div>
+<div id="overlay-root"></div>
+<div id="toast-root" class="toast-wrap" role="status" aria-live="polite"></div>
+<script>"use strict";
+/* ============================================================
+   GRAFITO — Portal de clientes (demo autocontenido)
+   Archivo independiente del prototipo principal.
+   PORTAL_TIPO: 'inquilino' | 'propietario'
+   ============================================================ */
+const PORTAL_TIPO = 'inquilino';
+
+/* ---------- Estado de la sesión demo ---------- */
+let session = null;
+const DEMO_USERS = {
+  inquilino:  {id:'p1', nombre:'Ana Rodríguez', rol:'Inquilina',  iniciales:'AR'},
+  propietario:{id:'p4', nombre:'Julio Vega',    rol:'Propietario', iniciales:'JV'}
+};
+
+/* ---------- Feature flags (se respeta el kill-switch persistido por el admin) ---------- */
+const FEATURE_FLAGS = [
+  {flag:'features.debito-ach', nombre:'Débito ACH · Portal y mandato', desc:'Mandato con consentimiento Ley 81; el demo simula la orden SEPA/AIG.', activo:true},
+  {flag:'features.yappy', nombre:'Yappy · Pago móvil', desc:'El inquilino paga con Yappy y sube el comprobante desde el portal.', activo:true},
+  {flag:'features.pagos-en-linea', nombre:'Pagos en línea · Portal y POS web', desc:'Tarjeta, Yappy y débito ACH con conciliación automática.', activo:true},
+  {flag:'features.incidencias', nombre:'Incidencias en portal', desc:'Permite al inquilino reportar incidencias desde el portal.', activo:true},
+  {flag:'features.notificaciones.whatsapp', nombre:'WhatsApp', desc:'Canal de notificación WhatsApp Business API (Fase 2).', activo:false},
+  {flag:'features.portal-propietario', nombre:'Portal del propietario · Fase 4', desc:'El propietario consulta sus inmuebles y liquidaciones (vista preliminar de diseño).', activo:false}
+];
+const LS_FLAGS = 'grafito.feature-flags';
+function ffOn(flag){ return Boolean((FEATURE_FLAGS.find(function(x){ return x.flag===flag; }) || {}).activo); }
+function cargarFlags(){
+  try{
+    var saved = localStorage.getItem(LS_FLAGS);
+    if(!saved) return;
+    var map = JSON.parse(saved);
+    for(var i=0;i<FEATURE_FLAGS.length;i++){
+      var f = FEATURE_FLAGS[i];
+      if(typeof map[f.flag]==='boolean') f.activo = map[f.flag];
+    }
+  }catch(e){}
+}
+
+/* ---------- Datos maestros (subconjunto coherente con el demo principal) ---------- */
+const PERSONAS = [
+  {id:'p1',ini:'AR',nombre:'Ana Rodríguez', tipo:'Ambos', ci:'8-123-456', cel:'+507 6000-1234', mail:'ana@correo.com', trab:'Ingeniera · Empresa XYZ', nac:'Panameña', estado:'Activo', ciudad:'Panamá', fc:'12/04/1990', civil:'Soltera', notas:'Cuenta con aval bancario. Consentimiento Ley 81 firmado.', inm:'i1', fechaRegistro:'21/01/2026'},
+  {id:'p4',ini:'JV',nombre:'Julio Vega', tipo:'Propietario', ci:'8-765-432', cel:'+507 6000-3344', mail:'j.vega@correo.com', trab:'Administrador de empresas', nac:'Panameño', estado:'Activo', ciudad:'Panamá', fc:'14/07/1972', civil:'Casado', notas:'Propietario de Casa Las Cumbres y Local C-1.', inm:'i7', fechaRegistro:'10/01/2026'}
+];
+const INMUEBLES = [
+  {id:'i1',ref:'Apt 3B', nombre:'Torres del Mar — Torre 2 · Piso 3', tipo:'Apartamento', dir:'Vía Argentina, Ciudad de Panamá', m2:94, hab:2, banios:2, parq:1, ambl:'Amueblado', estado:'Alquilado', serv:'A/C, agua, internet', antig:'5 años', propRef:'p3', adq:'12/06/2021', costo:145000, avaluo:152000},
+  {id:'i6',ref:'Local C-1', nombre:'Plaza Central — Local C1', tipo:'Local comercial', dir:'Calle 50, Ciudad de Panamá', m2:120, hab:0, banios:1, parq:2, ambl:'Sin amueblar', estado:'Disponible', serv:'Agua, luz', antig:'8 años', propRef:'p4', adq:'15/09/2018', costo:210000, avaluo:218000},
+  {id:'i7',ref:'Casa Las Cumbres', nombre:'Residencial Las Cumbres — Casa 12', tipo:'Casa', dir:'Chilibre, Ciudad de Panamá', m2:180, hab:3, banios:3, parq:2, ambl:'Amueblado', estado:'En mantenimiento', serv:'A/C, agua, internet', antig:'4 años', propRef:'p4', adq:'20/01/2022', costo:195000, avaluo:205000}
+];
+const CONTRATOS = [
+  {id:'c1',ref:'ARR-2026-041', tipo:'Arrendamiento', persona:'p1', inm:'i1', canon:900, moneda:'USD (B/.)', ini:'01/03/2026', fin:'28/02/2027', dia:30, garantia:'2 meses · B/. 1,800 (depositado)', estado:'Vigente', itbms:'ITBMS 0% (exento)', comision:null, renovaciones:0, motivo:null},
+  {id:'c7',ref:'ADM-2026-002', tipo:'Administración', persona:'p4', inm:'i7', canon:null, moneda:'USD (B/.)', ini:'01/01/2026', fin:null, dia:null, garantia:'—', estado:'Vigente', itbms:'—', comision:'8%', renovaciones:0, motivo:null}
+];
+const RECIBOS = [
+  {folio:'REC-2026-001', contrato:'c1', periodo:'Septiembre 2026', vence:'30/09/2026', monto:900, estado:'Pagado', pago:'10/09/2026', metodo:'Transferencia', comp:'CRE-2026-0147', refComp:'ABC-123456', itbms:0, dias:0, notas:''},
+  {folio:'REC-2026-006', contrato:'c1', periodo:'Agosto 2026', vence:'30/08/2026', monto:900, estado:'Pagado', pago:'05/08/2026', metodo:'Transferencia', comp:'CRE-2026-0132', refComp:'ABC-119882', itbms:0, dias:0, notas:''},
+  {folio:'REC-2026-011', contrato:'c1', periodo:'Julio 2026', vence:'30/07/2026', monto:900, estado:'Pagado', pago:'05/07/2026', metodo:'Transferencia', comp:'CRE-2026-0118', refComp:null, itbms:0, dias:0, notas:''},
+  {folio:'REC-2026-012', contrato:'c1', periodo:'Octubre 2026', vence:'31/10/2026', monto:900, estado:'Emitido', pago:null, metodo:null, comp:null, refComp:null, itbms:0, dias:0, notas:'Recibo demo · pendiente para validar el flujo de pago'}
+];
+const LIQUIDACIONES = [
+  {ref:'LIQ-2026-003', contrato:'c7', prop:'p4', inm:'i7', periodo:'Agosto 2026', ingreso:1652.17, comision:132.17, neto:1520, estado:'Pendiente', pago:null, metodo:null}
+];
+const INCIDENCIAS = [
+  {id:'INC-2026-101', cat:'Aire acondicionado', urg:'Alta', titulo:'A/C no enfría el apartamento', desc:'El aire de la sala enciende pero no enfría; emite un ruido intermitente.', por:'p1', inm:'i1', estado:'Reportada', fecha:'14/09/2026', tecnico:null, costo:null, slaDue:'15/09/2026', fotos:1, timeline:[{f:'14/09/2026 · 08:12', t:'Reportada', a:'Ana Rodríguez · Portal inquilino'}]}
+];
+const VISITAS = [
+  {id:'v1', titulo:'Mantenimiento preventivo A/C — Apt 3B', fecha:'17/09/2026 · 09:30', tecnico:'ClimaTotal', inm:'i1', tipo:'Mantenimiento', estado:'Programada', canales:'Plataforma + SMS'}
+];
+let PORTAL_NOTIFS = [
+  {id:'pn1', portal:'inquilino', tipo:'Pago', texto:'Tu pago de septiembre está registrado (REC-2026-001). Descarga el comprobante desde Pagos.', fecha:'10/09/2026', leida:false, ruta:'#/pagos'},
+  {id:'pn2', portal:'inquilino', tipo:'Visita', texto:'Mantenimiento preventivo del A/C el jueves 17/09 a las 09:30 (ClimaTotal).', fecha:'15/09/2026', leida:false, ruta:'#/calendario'},
+  {id:'pn3', portal:'inquilino', tipo:'Incidencia', texto:'Recibimos tu reporte del A/C (INC-2026-101). La administración evaluará el caso.', fecha:'14/09/2026', leida:false, ruta:'#/incidencias'},
+  {id:'pn4', portal:'inquilino', tipo:'Aviso', texto:'El 28/09/2026 se cierra el período contable. Tu recibo de octubre estará disponible el 01/10.', fecha:'15/09/2026', leida:true, ruta:null},
+  {id:'pn5', portal:'propietario', tipo:'Liquidación', texto:'La liquidación LIQ-2026-003 (agosto) está pendiente por B/. 1,520.00.', fecha:'15/09/2026', leida:false, ruta:'#/pagos'},
+  {id:'pn6', portal:'propietario', tipo:'Inmueble', texto:'Casa Las Cumbres permanece en mantenimiento tras la reparación del techo.', fecha:'15/09/2026', leida:false, ruta:'#/resumen'}
+];
+var CRE_SEQ = 150, INC_SEQ = 105;
+
+/* ---------- Utilidades básicas ---------- */
+function esc(s){ return String(s==null?'':s).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];}); }
+function fmtM(n){ return 'B/. ' + (Number(n)||0).toLocaleString('en-US',{minimumFractionDigits:2, maximumFractionDigits:2}); }
+function persona(id){ return PERSONAS.find(function(p){ return p.id===id; }) || {nombre:'', correo:'', cel:''}; }
+function inmueble(id){ return INMUEBLES.find(function(p){ return p.id===id; }) || {ref:'', nombre:''}; }
+function contrato(id){ return CONTRATOS.find(function(p){ return p.id===id; }) || {ref:''}; }
+function reciboContrato(id, periodo){ return RECIBOS.find(function(r){ return r.contrato===id && r.periodo===periodo; }); }
+function hoyDemo(){ return new Date(2026,8,15); }
+function todayStr(){ return '15/09/2026'; }
+function nowStr(){ return '15/09/2026 · 09:00'; }
+function addDiasStr(n){ var d = hoyDemo(); d.setDate(d.getDate()+n); return String(d.getDate()).padStart(2,'0')+'/'+String(d.getMonth()+1).padStart(2,'0')+'/'+d.getFullYear(); }
+function nextIncNum(){ INC_SEQ++; return 'INC-2026-'+INC_SEQ; }
+
+/* ---------- Iconos (familia Phosphor, stroke consistente) ---------- */
+const IC = {
+  home:'<path d="M3 10.5 12 3l9 7.5"/><path d="M5 9.5V21h14V9.5"/><path d="M9 21v-6h6v6"/>',
+  users:'<path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/>',
+  user:'<path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/>',
+  building:'<rect x="4" y="3" width="16" height="18" rx="1"/><path d="M8 7h1M11 7h1M8 11h1M11 11h1M8 15h1M11 15h1M15 21v-4h3v4"/>',
+  contract:'<path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8Z"/><path d="M14 3v5h6"/><path d="M9 13h6M9 17h6"/>',
+  wallet:'<path d="M3 7a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2Z"/><path d="M16 12h5"/>',
+  scale:'<path d="M12 3v18"/><path d="M8 21h8"/><path d="M5 8h14l-3-4H8Z"/><path d="m6 8-3 7a3 3 0 0 0 6 0Z"/><path d="m18 8-3 7a3 3 0 0 0 6 0Z"/>',
+  wrench:'<path d="M14.7 6.3a4.5 4.5 0 0 0-6 5.6L3 17.6a2 2 0 0 0 2.8 2.8l5.7-5.7a4.5 4.5 0 0 0 5.6-6L14 11.8l-2-2Z"/>',
+  toolbox:'<rect x="3" y="8" width="18" height="12" rx="2"/><path d="M9 8V6a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v2"/><path d="M3 13h18"/>',
+  calculator:'<rect x="6" y="3" width="12" height="18" rx="2"/><path d="M9 7h6"/><path d="M9 12h.01M12 12h.01M15 12h.01M9 15h.01M12 15h.01M15 15h.01M9 18h.01M12 18h.01M15 18h.01"/>',
+  bell:'<path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.7 21a2 2 0 0 1-3.4 0"/>',
+  chart:'<path d="M4 20V10"/><path d="M10 20V4"/><path d="M16 20v-7"/><path d="M21 20H3"/>',
+  chartline:'<path d="M3 17 9 11l4 4 7-8"/><path d="M3 21h18"/>',
+  settings:'<circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1Z"/>',
+  shield:'<path d="M12 3 5 6v6c0 4.5 3 7.5 7 9 4-1.5 7-4.5 7-9V6Z"/>',
+  search:'<circle cx="11" cy="11" r="7"/><path d="m21 21-4.35-4.35"/>',
+  plus:'<path d="M12 5v14M5 12h14"/>',
+  check:'<path d="M20 6 9 17l-5-5"/>',
+  circlecheck:'<circle cx="12" cy="12" r="9"/><path d="m8.5 12.5 2.5 2.5 5-5.5"/>',
+  x:'<path d="M18 6 6 18M6 6l12 12"/>',
+  chevdown:'<path d="m6 9 6 6 6-6"/>',
+  chevleft:'<path d="m15 18-6-6 6-6"/>',
+  chevright:'<path d="m9 18 6-6-6-6"/>',
+  dots:'<circle cx="12" cy="5" r="1.6"/><circle cx="12" cy="12" r="1.6"/><circle cx="12" cy="19" r="1.6"/>',
+  download:'<path d="M12 3v12m0 0 4-4m-4 4-4-4"/><path d="M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2"/>',
+  upload:'<path d="M12 21V9m0 0 4 4m-4-4-4 4"/><path d="M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2"/>',
+  calendar:'<rect x="3" y="5" width="18" height="16" rx="2"/><path d="M8 3v4M16 3v4M3 10h18"/>',
+  logout:'<path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><path d="m16 17 5-5-5-5"/><path d="M21 12H9"/>',
+  key:'<circle cx="7.5" cy="15.5" r="4.5"/><path d="m10.7 12.3 8.8-8.8M15 7l3 3M18 4l3 3"/>',
+  eye:'<path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/>',
+  eyeoff:'<path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19M14.12 14.12a3 3 0 1 1-4.24-4.24"/><path d="m1 1 22 22"/>',
+  filter:'<path d="M4 5h16l-6 7v5l-4 2v-7Z"/>',
+  arrowup:'<path d="M12 19V5m0 0-6 6m6-6 6 6"/>',
+  arrowdown:'<path d="M12 5v14m0 0 6-6m-6 6-6-6"/>',
+  menu:'<path d="M3 6h18M3 12h18M3 18h18"/>',
+  alert:'<path d="M12 3 2 20h20Z"/><path d="M12 10v4M12 17h.01"/>',
+  info:'<circle cx="12" cy="12" r="9"/><path d="M12 8h.01M12 11v5"/>',
+  lock:'<rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/>',
+  clock:'<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>',
+  mail:'<rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/>',
+  phone:'<path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3 19.5 19.5 0 0 1-6-6 19.8 19.8 0 0 1-3-8.6A2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1 1 .4 2 .7 2.8a2 2 0 0 1-.5 2.1L8.1 9.9a16 16 0 0 0 6 6l1.3-1.2a2 2 0 0 1 2.1-.5c.9.3 1.9.6 2.8.7a2 2 0 0 1 1.7 2Z"/>',
+  image:'<rect x="3" y="4" width="18" height="16" rx="2"/><circle cx="9" cy="10" r="2"/><path d="m3 17 5-4 4 3 5-5 4 4"/>',
+  pencil:'<path d="M17 3a2.83 2.83 0 0 1 4 4L7.5 20.5 2 22l1.5-5.5Z"/>',
+  trash:'<path d="M4 7h16M10 11v6M14 11v6M6 7l1 14h10l1-14M9 7V4h6v3"/>',
+  refresh:'<path d="M21 12a9 9 0 1 1-2.6-6.4"/><path d="M21 3v6h-6"/>',
+  megaphone:'<path d="M3 11v2a2 2 0 0 0 2 2h1l1 5h3l-1-5h2l8 4V7l-8 4H5a2 2 0 0 0-2 2Z"/>',
+  send:'<path d="m22 2-11 11"/><path d="M22 2 15 22l-4-9-9-4Z"/>',
+  receipt:'<path d="M6 2h12v20l-2-1-2 1-2-1-2 1-2-1-2 1Z"/><path d="M9 8h6M9 12h6"/>',
+  bank:'<path d="m3 9 9-6 9 6"/><path d="M5 9v10M9.5 9v10M14.5 9v10M19 9v10"/><path d="M2 21h20"/>',
+  globe:'<circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a15 15 0 0 1 0 18 15 15 0 0 1 0-18Z"/>',
+  clipboard:'<rect x="5" y="4" width="14" height="17" rx="2"/><path d="M9 4a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v1H9Z"/><path d="M9 11h6M9 15h4"/>',
+  list:'<path d="M8 6h13M8 12h13M8 18h13"/><path d="M3 6h.01M3 12h.01M3 18h.01"/>',
+  cable:'<path d="m5 21-4-4"/><path d="m9 17-4-4"/><path d="M7 19l8-8a4 4 0 0 0-6-6l-2 2a4 4 0 0 0 6 6Z"/>',
+  gift:'<rect x="3" y="8" width="18" height="4"/><path d="M5 12v8h14v-8M12 8v12"/><path d="M12 8a4 4 0 1 0-4-4h4v4Zm0 0a4 4 0 1 1 4-4h-4v4Z"/>',
+  gauge:'<path d="M12 21a9 9 0 1 1 9-9"/><path d="m12 12 4.5-4.5"/><circle cx="12" cy="12" r="1.6"/>',
+  whatsapp:'<path d="M12 3a9 9 0 0 0-7.8 13.5L3 21l4.6-1.2A9 9 0 1 0 12 3Z"/><path d="M9 8.5c.5 3 3.5 6 6.5 6.5l1-1.5-2.5-1.5-1 1a6.7 6.7 0 0 1-2.5-2.5l1-1-1.5-2.5Z"/>',
+  file:'<path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8Z"/><path d="M14 3v5h6"/>',
+  flag:'<path d="M5 21V4"/><path d="M5 4c4-2 7 2 10 0s6-1 6-1v11c-2 1-4 2-6 1s-5-1-10 1Z"/>',
+  userplus:'<path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="8.5" cy="7" r="4"/><path d="M19 8v6M22 11h-6"/>',
+  briefcase:'<rect x="3" y="7" width="18" height="13" rx="2"/><path d="M8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/><path d="M3 13h18"/>',
+  edit:'<path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z"/>',
+  smartphone:'<rect x="7" y="2" width="10" height="20" rx="2"/><path d="M11 18h2"/>',
+  play:'<path d="M6 4.5v15l13-7.5Z"/>',
+  grid:'<rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/>',
+  undo:'<path d="M9 14 4 9l5-5"/><path d="M4 9h10a6 6 0 0 1 0 12h-3"/>',
+  arrowright:'<path d="M5 12h14m0 0-6-6m6 6-6 6"/>'
+};
+function ic(name, size){
+  size = size || 16;
+  return '<svg width="'+size+'" height="'+size+'" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">'+(IC[name]||'')+'</svg>';
+}
+function iccArrow(){ return '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>'; }
+
+/* ---------- Avisos, diálogos y paneles ---------- */
+function toast(msg, tipo, titulo){
+  tipo = tipo || 'success';
+  var icons = {success:'circlecheck', error:'alert', warning:'alert', info:'info'};
+  var el = document.createElement('div');
+  el.className = 'toast toast-'+tipo;
+  el.setAttribute('role', tipo==='error'?'alert':'status');
+  el.innerHTML = ic(icons[tipo],18) +
+    '<div><div class="t-title">'+esc(titulo||(tipo==='success'?'Listo':tipo==='error'?'Error':'Aviso'))+'</div>'+
+    '<div>'+msg+'</div></div>'+
+    '<button class="t-close" aria-label="Cerrar aviso">'+ic('x',16)+'</button>';
+  document.getElementById('toast-root').appendChild(el);
+  var close = function(){ el.remove(); };
+  el.querySelector('.t-close').onclick = close;
+  setTimeout(close, tipo==='error'?8000:5000);
+}
+function overlay(action){
+  var root = document.getElementById('overlay-root');
+  if(action==='close'){
+    var ov = root.querySelector('.overlay');
+    if(ov){ ov.remove(); document.body.classList.remove('no-scroll'); }
+    return;
+  }
+}
+function openModal(html, opts){
+  opts = opts || {};
+  var root = document.getElementById('overlay-root');
+  overlay('close');
+  var ov = document.createElement('div');
+  ov.className = 'overlay' + (opts.bottom?' bottom-sheet':'');
+  ov.setAttribute('role','dialog');
+  ov.setAttribute('aria-modal','true');
+  ov.setAttribute('aria-label', opts.title || 'Diálogo');
+  var modal = document.createElement('div');
+  modal.className = 'modal ' + (opts.size?opts.size:'') + (opts.noPadding?' no-pad':'');
+  modal.innerHTML = (opts.noHead?'':'<div class="modal-head"><div class="modal-title">'+esc(opts.title||'')+'</div>'+
+    '<button class="btn-icon" onclick="closeModal()" aria-label="Cerrar">'+ic('x',20)+'</button></div>') +
+    '<div class="modal-body">'+html+'</div>';
+  modal.tabIndex = -1;
+  ov.appendChild(modal);
+  root.appendChild(ov);
+  modal.focus();
+  var first = modal.querySelector('input,select,textarea,button:not(.btn-icon)');
+  if(first && opts.focus!==false) first.focus();
+  return modal;
+}
+function closeModal(){
+  overlay('close');
+  var opener = document.querySelector('[data-last-focus]');
+  if(opener) opener.focus();
+}
+function openDrawer(html, opts){
+  opts = opts || {};
+  var root = document.getElementById('overlay-root');
+  overlay('close');
+  var ov = document.createElement('div');
+  ov.className = 'overlay side';
+  ov.setAttribute('role','dialog');
+  ov.setAttribute('aria-modal','true');
+  ov.setAttribute('aria-label', opts.title || 'Panel');
+  var dr = document.createElement('div');
+  dr.className = 'drawer ' + (opts.size||'');
+  dr.innerHTML = '<div class="drawer-head"><div class="drawer-title">'+esc(opts.title||'')+'</div>'+
+    '<button class="btn-icon" onclick="closeModal()" aria-label="Cerrar">'+ic('x',20)+'</button></div>'+
+    '<div class="drawer-body">'+html+'</div>' + (opts.foot?'<div class="drawer-foot">'+opts.foot+'</div>':'');
+  dr.tabIndex = -1;
+  ov.appendChild(dr);
+  root.appendChild(ov);
+  dr.focus();
+}
+function downloadCSV(nombre, cabeceras, filas){
+  var lines = [cabeceras.map(esc).join(';')].concat(filas.map(function(f){ return f.map(function(c){ return '"'+String(c==null?'':c).replace(/"/g,'""')+'"'; }).join(';'); }));
+  var blob = new Blob(["\uFEFF"+lines.join('\n')], {type:'text/csv;charset=utf-8;'});
+  var a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = nombre+'.csv';
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  toast('Exportación generada: '+nombre+'.csv','success','Archivo listo');
+}
+function emptyState(iconName, titulo, desc, cta){
+  return '<div class="empty">'+
+    '<div class="ic-circle">'+ic(iconName,24)+'</div>'+
+    '<h3>'+esc(titulo)+'</h3><p>'+esc(desc)+'</p>'+(cta?cta:'')+'</div>';
+}
+function pageHead(crumbs, title, desc, actions){
+  return '<div class="breadcrumb">'+crumbs.map(function(c){ return c.link?'<a href="'+c.link+'">'+esc(c.label)+'</a>':'<span>'+esc(c.label)+'</span>'; }).join(' › ')+'</div>'+
+    '<div class="page-head"><div><h1 class="page-title">'+esc(title)+'</h1>'+(desc?'<p class="page-desc">'+esc(desc)+'</p>':'')+'</div>'+
+    '<div class="flex" style="gap:var(--sp-3)">'+(actions||'')+'</div></div>';
+}
+function chipEstado(estado){
+  var map = {
+    'Activo':'success','Inactivo':'neutral','Mora':'danger','Vigente':'success','Mora (derivado)':'danger',
+    'Terminado':'neutral','Anulado':'danger','Disponible':'success','Alquilado':'info','Alquilado/Ocupado':'info',
+    'En mantenimiento':'warning','Reservado':'warning','Suspendido':'neutral','Pendiente de entrega':'warning',
+    'Emitido':'info','En mora':'danger','Pagado':'success','Parcial':'warning','Vencido':'danger',
+    'Pendiente':'warning','Pagado (prop)':'success','Reportada':'warning','En evaluación':'warning','Asignada':'info','Presupuesto':'info',
+    'En ejecución':'warning','Cerrada':'neutral','Cancelada':'neutral','Instalado':'success','En reparación':'warning','De baja':'neutral',
+    'Borrador':'neutral','Por aprobar':'warning','Aprobado':'success','Revertido':'neutral','Abierto':'info','En cierre':'warning',
+    'Cerrado':'neutral','Reabierto':'warning','Conciliado':'success','Declarado':'info','Por calcular':'neutral',
+    'Listo':'success','Error':'danger','Activo (ff)':'success','Programada':'info','No leída':'info','Leída':'neutral','Entregado':'success'
+  };
+  var t = map[estado] || 'neutral';
+  var cls = {success:'chip-success',warning:'chip-warning',danger:'chip-danger',info:'chip-info',neutral:'chip-neutral'}[t];
+  return '<span class="chip '+cls+'">'+esc(estado)+'</span>';
+}
+function urgChip(u){ return '<span class="chip '+(u==='Alta'?'chip-danger':u==='Media'?'chip-warning':'chip-neutral')+'">'+esc(u==='Alta'?'Alta':u==='Media'?'Media':'Baja')+'</span>'; }
+
+/* ---------- Notificaciones del portal ---------- */
+function portalNotifications(){
+  return PORTAL_NOTIFS.filter(function(n){ return n.portal===PORTAL_TIPO; });
+}
+function marcarPortalNotif(id){ var n = PORTAL_NOTIFS.find(function(x){ return x.id===id; }); if(n) n.leida = true; }
+function marcarTodasPortalNotif(){
+  var nb = portalNotifications();
+  var faltan = nb.some(function(n){ return !n.leida; });
+  nb.forEach(function(n){ n.leida = true; });
+  if(faltan) toast('Todas las notificaciones fueron marcadas como leídas.','success','Listo');
+}
+
+/* ---------- Menús de la barra superior ---------- */
+function closeMenus(){
+  var list = document.querySelectorAll('.menu');
+  for(var i=0;i<list.length;i++) list[i].style.display='none';
+  var openers = document.querySelectorAll('[data-menu-open="1"]');
+  for(var j=0;j<openers.length;j++){ openers[j].removeAttribute('data-menu-open'); openers[j].setAttribute('aria-expanded','false'); }
+}
+function menuFor(btn, html, id){
+  var old = document.getElementById(id); if(old) old.remove();
+  var menu = document.createElement('div');
+  menu.id = id; menu.className = 'menu';
+  menu.style.position = 'fixed';
+  var r = btn.getBoundingClientRect();
+  menu.style.top = (r.bottom + 6) + 'px';
+  menu.style.right = Math.max(8, window.innerWidth - r.right) + 'px';
+  menu.style.display = 'block';
+  menu.innerHTML = html;
+  document.body.appendChild(menu);
+  return menu;
+}
+function openNotifMenu(btn){
+  closeMenus();
+  var nb = portalNotifications();
+  var html =
+    '<div style="font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.06em;color:var(--text-s);padding:8px 12px">Notificaciones</div>'+
+    (nb.length? nb.slice(0,5).map(function(n){
+      return '<button onclick="marcarPortalNotif(\''+esc(n.id)+'\');closeMenus();'+(n.ruta?'location.hash=\''+n.ruta+'\';':'')+'">'+
+        '<span style="width:8px;height:8px;border-radius:50%;background:'+(n.leida?'var(--border-default)':'var(--brand)')+';flex:none"></span>'+
+        '<span style="line-height:1.3"><span style="font-weight:600">'+esc(n.tipo)+'</span> · <span class="muted2" style="font-size:11px">'+esc(n.fecha)+'</span><br>'+esc(n.texto)+'</span></button>';
+    }).join('')
+      : '<div class="small muted2" style="padding:10px 12px">No tienes notificaciones nuevas.</div>')+
+    '<div class="sep"></div>'+
+    '<button onclick="marcarTodasPortalNotif();closeMenus()">'+ic('check')+' Marcar todas como leídas</button>';
+  menuFor(btn, html, 'nb-menu');
+  btn.setAttribute('data-menu-open','1'); btn.setAttribute('aria-expanded','true');
+}
+function openUserMenu(btn){
+  closeMenus();
+  var u = session.user;
+  var role = (PORTAL_TIPO==='inquilino') ? 'Inquilina' : 'Propietario';
+  var html =
+    '<div style="padding:10px 12px"><div class="strong" style="font-size:13px">'+esc(u.nombre)+'</div><div class="muted2" style="font-size:12px">'+esc(role)+'</div></div>'+
+    '<div class="sep"></div>'+
+    '<button onclick="logout()">'+ic('logout')+' Cerrar sesión</button>'+
+    '<button onclick="cambiarUsuario()">'+ic('user')+' Cambiar de usuario</button>';
+  menuFor(btn, html, 'user-menu');
+  btn.setAttribute('data-menu-open','1'); btn.setAttribute('aria-expanded','true');
+}
+function logout(){
+  session = null;
+  try{ sessionStorage.removeItem('grafito.session'); }catch(e){}
+  location.href = 'prototipo-demo.html#/login';
+}
+function cambiarUsuario(){
+  session = null;
+  try{ sessionStorage.removeItem('grafito.session'); }catch(e){}
+  location.href = 'prototipo-demo.html#/login';
+}
+
+/* ---------- Shell del portal (sidebar ≥960px, bottom nav <960px) ---------- */
+function portalNavItems(active){
+  var items = [['resumen','gauge','Resumen']];
+  if(PORTAL_TIPO==='inquilino') items.push(['calendario','calendar','Calendario']);
+  if(PORTAL_TIPO==='inquilino') items.push(['pagos','wallet','Pagos']);
+  if(PORTAL_TIPO==='inquilino') items.push(['incidencias','wrench','Incidencias']);
+  if(PORTAL_TIPO==='propietario') items.push(['pagos','wallet','Pagos']);
+  items.push(['notificaciones','bell','Notificaciones']);
+  items.push(['perfil','user','Perfil']);
+  return items;
+}
+function portalSidebar(active){
+  var subs = {'inquilino':'Portal Inquilino','propietario':'Portal Propietario'};
+  var html = '<div class="sidebar"><div class="brand"><div class="brand-logo" style="background:#fff;color:var(--brand)">CE</div><div><div class="brand-name">Constructora Especializada</div><div class="brand-sub">'+esc(subs[PORTAL_TIPO]||'Portal')+'</div></div></div><div class="side-nav">';
+  html += '<div class="nav-group">Mi cuenta</div>';
+  portalNavItems(active).forEach(function(it){
+    html += '<a class="nav-a'+(active===it[0]?' active':'')+'" href="#/'+it[0]+'">'+ic(it[1],18)+'<span>'+esc(it[2])+'</span></a>';
+  });
+  html += '<div class="nav-group">Soporte</div>';
+  html += '<a class="nav-a" href="#" onclick="logout();return false">'+ic('logout',18)+'<span>Cerrar sesión</span></a>';
+  html += '</div><div style="padding:16px 20px;font-size:12px;color:var(--scaffold-text-m)">Demo de diseño · panel simulado<br>© 2026 Empresa de Administración de Inmuebles</div></div>';
+  return html;
+}
+function portalTopbar(view){
+  var nb = portalNotifications().filter(function(n){ return !n.leida; }).length;
+  var u = session.user;
+  var titulos = {'inquilino':'Mi apartamento','propietario':'Mis ingresos'};
+  var roles = {'inquilino':'Inquilina','propietario':'Propietario'};
+  return '<header class="topbar" role="banner">'+
+    '<button class="btn-icon hamburger" onclick="toggleNav()" aria-label="Abrir menú">'+ic('menu',20)+'</button>'+
+    '<div class="strong" style="font-size:14px">'+esc(titulos[PORTAL_TIPO]||'Mi portal')+'</div>'+
+    '<div class="spacer"></div>'+
+    '<button class="icon-btn" onclick="openNotifMenu(this)" aria-label="Notificaciones" aria-expanded="false">'+ic('bell',20)+(nb?'<span class="dot" aria-hidden="true"></span>':'')+'</button>'+
+    '<div class="user-chip" onclick="openUserMenu(this)" tabindex="0" role="button" aria-haspopup="true" aria-expanded="false">'+
+      '<span class="avatar">'+esc(u.iniciales)+'</span>'+
+      '<span><span class="u-n">'+esc(u.nombre)+'</span><br><span class="u-r">'+esc(roles[PORTAL_TIPO]||'Usuario')+'</span></span>'+
+      '<span>'+iccArrow()+'</span>'+
+    '</div></header>';
+}
+function portalBottomNav(active){
+  return '<nav class="bottom-nav" aria-label="Navegación principal del portal">'+
+    portalNavItems(active).map(function(it){
+      return '<a href="#/'+it[0]+'" class="'+(active===it[0]?'active':'')+'">'+ic(it[1],20)+'<span>'+esc(it[2])+'</span></a>';
+    }).join('')+'</nav>';
+}
+function portalShell(view, inner){
+  return '<div class="shell portal-shell">'+portalSidebar(view)+
+    '<div class="main"><div class="nav-scrim" onclick="document.body.classList.remove(\'nav-open\')"></div>'+portalTopbar(view)+'<main class="content">'+inner+'</main>'+portalBottomNav(view)+'</div></div>';
+}
+function toggleNav(){ document.body.classList.toggle('nav-open'); }
+function contratoPortal(){
+  if(PORTAL_TIPO==='inquilino') return CONTRATOS.find(function(c){ return c.tipo==='Arrendamiento' && c.persona==='p1'; }) || null;
+  return CONTRATOS.find(function(c){ return c.id==='c7'; }) || null;
+}
+function recibosPortal(){ var c = contratoPortal(); return c ? RECIBOS.filter(function(r){ return r.contrato===c.id; }) : []; }
+function mesCalendario(year, monthIdx, evs){
+  var first = new Date(year, monthIdx, 1);
+  var startDow = first.getDay();
+  var days = new Date(year, monthIdx+1, 0).getDate();
+  var todayDate = hoyDemo().getDate();
+  var html = '<table class="cal"><thead><tr>'+['Do','Lu','Ma','Mi','Ju','Vi','Sá'].map(function(d){ return '<th>'+d+'</th>'; }).join('')+'</tr></thead><tbody><tr>';
+  for(var i=0;i<startDow;i++) html += '<td class="other"></td>';
+  for(var d=1; d<=days; d++){
+    var evsToday = evs.filter(function(e){ return e.d===d; });
+    html += '<td'+(d===todayDate?' class="today"':'')+'>'+d+evsToday.map(function(e){ return '<div class="ev '+e.cls+'"><span class="dot"></span>'+esc(e.label)+'</div>'; }).join('')+'</td>';
+    if((startDow+d-1)%7===6 && d<days) html += '</tr><tr>';
+  }
+  var lastDow = (startDow+days-1)%7;
+  for(var j=lastDow+1;j<=6;j++) html += '<td class="other"></td>';
+  return html+'</tr></tbody></table>';
+}
+
+/* ---------- Vista Resumen ---------- */
+function viewResumen(){
+  var html = '';
+  if(PORTAL_TIPO==='inquilino'){
+    var p = persona('p1'), c = contratoPortal(), inm = inmueble(c? c.inm : 'i1');
+    var rec = reciboContrato('c1','Septiembre 2026');
+    var alDia = rec && rec.estado==='Pagado';
+    var vis = VISITAS.filter(function(v){ return v.inm==='i1'; });
+    var inci = INCIDENCIAS.filter(function(x){ return x.por==='p1'; });
+    var pagros = RECIBOS.filter(function(r){ return r.contrato==='c1'; }).slice(0,3);
+    html = '<div class="portal-hero"><div class="ph-label">'+(alDia?'Recibo de septiembre · Pagado':'Recibo de septiembre pendiente')+'</div>'+
+      '<div class="ph-amount">'+fmtM(rec? rec.monto : c.canon)+'</div>'+
+      '<div class="ph-due">'+(alDia? 'Pagado el '+esc(rec.pago)+' · '+esc(rec.metodo)+(rec.refComp? ' · ref. '+esc(rec.refComp) : '') : 'Vence el 30/09/2026')+'</div>'+
+      (alDia? '<button class="btn btn-primary" onclick="location.hash=\'#/pagos\'">'+ic('receipt')+' Ver comprobante</button>'
+            : (ffOn('features.pagos-en-linea')&&ffOn('features.debito-ach')
+              ? '<button class="btn btn-primary" onclick="location.hash=\'#/pagos\'">'+ic('wallet')+' Pagar en línea · Débito ACH</button>'
+              : '<button class="btn btn-primary" onclick="toast(\'La administración te notificará cuando registre tu pago.\',\'info\',\'Pago pendiente\')">'+ic('wallet')+' Pagar ahora</button>'))+
+    '</div>';
+    html += pageHead([{label:'Portal', link:'#/resumen'},{label:'Resumen'}], 'Hola, '+esc(p.nombre.split(' ')[0]), 'Apartamento '+esc(inm.ref)+' · '+esc(inm.nombre)+' · Alquiler '+esc(c.ref));
+    html += '<div class="kpis">'+
+      '<div class="card stat-card"><div class="stat-label">Inmueble</div><div class="stat-value md">'+esc(inm.ref)+'</div><div class="stat-meta">'+esc(inm.dir)+'</div></div>'+
+      '<div class="card stat-card"><div class="stat-label">Canon mensual</div><div class="stat-value md">'+fmtM(c.canon)+'</div><div class="stat-meta">'+esc(c.itbms)+' · vence el 30 de cada mes</div></div>'+
+      '<div class="card stat-card"><div class="stat-label">Estado del contrato</div><div class="stat-value md">Vigente</div><div class="stat-meta">Desde 01/03/2026 · Hasta 28/02/2027</div></div>'+
+    '</div>';
+    html += '<div class="g2" style="margin-bottom:var(--sp-5)">'+
+      '<div class="card"><div class="card-head"><div><div class="card-title">Próximas visitas</div><div class="card-sub">Mantenimientos en tu apartamento</div></div><a class="small" href="#/calendario">Ver calendario</a></div>'+
+        (vis.length? vis.map(function(v){ return '<div style="display:flex;gap:12px;align-items:flex-start;padding:10px 0;border-bottom:1px solid var(--border-subtle)"><div class="ic-circle" style="width:34px;height:34px;background:var(--info-bg);color:var(--info)">'+ic('calendar',16)+'</div><div style="font-size:13px"><div class="strong">'+esc(v.titulo)+'</div><div class="muted2 small">'+esc(v.fecha)+' · '+esc(v.tecnico)+'</div></div></div>'; }).join('') : '<p class="small muted2">No tienes visitas programadas.</p>')+
+      '</div>'+
+      '<div class="card"><div class="card-head"><div><div class="card-title">Mis incidencias</div><div class="card-sub">Reporta y da seguimiento</div></div><a class="small" href="#/incidencias">Gestionar</a></div>'+
+        (inci.length? inci.map(function(x){ return '<div class="cursor-pointer" onclick="verIncidenciaPortal(\''+x.id+'\')" style="display:flex;gap:12px;align-items:flex-start;padding:10px 0;border-bottom:1px solid var(--border-subtle)"><div class="ic-circle" style="width:34px;height:34px;background:var(--warn-bg);color:var(--warn)">'+ic('wrench',16)+'</div><div style="font-size:13px"><div class="strong">'+esc(x.titulo)+'</div><div class="muted2 small">'+chipEstado(x.estado)+' '+urgChip(x.urg)+'</div></div></div>'; }).join('') : '<p class="small muted2">No tienes incidencias reportadas.</p>')+
+        '<div style="margin-top:10px"><button class="btn btn-secondary btn-block" onclick="nuevaIncidenciaPortal()">'+ic('plus')+' Nueva incidencia</button></div>'+
+      '</div>'+
+    '</div>';
+    html += '<div class="g2">'+
+      '<div class="card"><div class="card-head"><div><div class="card-title">Mis pagos recientes</div></div><a class="small" href="#/pagos">Ver todos</a></div>'+
+        pagros.map(function(r){ return '<div style="display:flex;justify-content:space-between;gap:10px;align-items:center;padding:8px 0;border-bottom:1px solid var(--border-subtle);font-size:13px"><span>'+esc(r.periodo)+'</span><span class="mono">'+fmtM(r.monto)+'</span><span>'+chipEstado(r.estado)+'</span></div>'; }).join('')+
+      '</div>'+
+      '<div class="card"><div class="card-head"><div><div class="card-title">Notificaciones</div></div><a class="small" href="#/notificaciones">Ver todas</a></div>'+
+        portalNotifications().slice(0,3).map(function(n){ return '<div style="padding:8px 0;border-bottom:1px solid var(--border-subtle);font-size:13px"><span class="muted2 small">'+esc(n.tipo)+' · '+esc(n.fecha)+'</span><br>'+esc(n.texto)+'</div>'; }).join('')+
+      '</div>'+
+    '</div>';
+  } else {
+    var liqs = LIQUIDACIONES.filter(function(l){ return l.prop==='p4'; });
+    var pend = liqs.find(function(l){ return l.estado==='Pendiente'; }) || null;
+    var inmProps = INMUEBLES.filter(function(i){ return i.propRef==='p4'; });
+    var banner = ffOn('features.portal-propietario') ? '' :
+      '<div class="feat-banner">'+ic('alert',20)+'<div><strong>Vista preliminar · Fase 4.</strong> El portal del propietario está en discusión y detrás del feature flag <code>features.portal-propietario</code> (desactivado por defecto; el administrador puede activarlo en Administración → Feature flags). Este contenido es la demostración del diseño propuesto.</div></div>';
+    var hero = pend
+      ? '<div class="portal-hero"><div class="ph-label">Liquidación pendiente · '+esc(pend.periodo)+'</div><div class="ph-amount">'+fmtM(pend.neto)+'</div><div class="ph-due">Ingreso '+fmtM(pend.ingreso)+' · Comisión de gestión '+fmtM(pend.comision)+' · Se transfiere a Banco General •• 5678</div></div>'
+      : '<div class="portal-hero"><div class="ph-label">Sin pagos pendientes</div><div class="ph-amount">'+fmtM(0)+'</div><div class="ph-due">Todas tus liquidaciones están pagadas.</div></div>';
+    html = banner + hero;
+    html += pageHead([{label:'Portal', link:'#/resumen'},{label:'Resumen'}], 'Hola, '+esc(persona('p4').nombre.split(' ')[0]), 'Resumen de tus inmuebles administrados');
+    html += '<div class="kpis">'+
+      '<div class="card stat-card"><div class="stat-label">Inmuebles administrados</div><div class="stat-value lg">'+inmProps.length+'</div><div class="stat-meta">'+inmProps.map(function(i){ return esc(i.ref); }).join(' · ')+'</div></div>'+
+      '<div class="card stat-card"><div class="stat-label">Pendiente de pago</div><div class="stat-value lg">'+fmtM(pend? pend.neto : 0)+'</div><div class="stat-meta">'+(pend? esc(pend.periodo) : 'Todo al día')+'</div></div>'+
+      '<div class="card stat-card"><div class="stat-label">Último pago recibido</div><div class="stat-value lg">'+fmtM(828)+'</div><div class="stat-meta">Julio 2026 · LIQ-2026-002 · Transferencia</div></div>'+
+    '</div>';
+    html += '<div class="g2">'+
+      '<div class="card"><div class="card-head"><div><div class="card-title">Tus inmuebles</div><div class="card-sub">Estado general</div></div></div>'+
+        inmProps.map(function(i){ return '<div style="display:flex;justify-content:space-between;gap:10px;align-items:center;padding:10px 0;border-bottom:1px solid var(--border-subtle)"><div style="font-size:13px"><div class="strong">'+esc(i.ref)+'</div><div class="muted2 small">'+esc(i.nombre)+'</div></div><div>'+chipEstado(i.estado)+'</div></div>'; }).join('')+
+      '</div>'+
+      '<div class="card"><div class="card-head"><div><div class="card-title">Liquidaciones recientes</div><div class="card-sub">Comisión de administración 8%</div></div><a class="small" href="#/pagos">Ver todas</a></div>'+
+        liqs.slice(0,3).map(function(l){ return '<div style="display:flex;justify-content:space-between;gap:10px;align-items:center;padding:10px 0;border-bottom:1px solid var(--border-subtle)"><div style="font-size:13px"><div class="mono strong">'+esc(l.ref)+'</div><div class="muted2 small">'+esc(l.periodo)+'</div></div><div style="text-align:right"><div class="mono">'+fmtM(l.neto)+'</div>'+chipEstado(l.estado)+'</div></div>'; }).join('')+
+      '</div>'+
+    '</div>';
+    html += '<div class="rbac-note" style="margin-top:var(--sp-5)">'+ic('shield',16)+'<span>El propietario solo consulta sus inmuebles y liquidaciones; no ve información de otros clientes (RN-S01).</span></div>';
+  }
+  return html;
+}
+
+/* ---------- Vistas inquilino ---------- */
+function viewCalendario(){
+  var evs = [
+    {d:1, label:'Inicio de período', cls:'contrato'},
+    {d:10, label:'Pago registrado B/. 900', cls:'pago'},
+    {d:17, label:'Visita A/C · 09:30', cls:'visita'},
+    {d:30, label:'Vence recibo de octubre', cls:'contrato'}
+  ];
+  var html = pageHead([{label:'Portal', link:'#/resumen'},{label:'Calendario'}], 'Calendario', 'Septiembre 2026 · Eventos de tu apartamento',
+    '<button class="btn btn-secondary" onclick="toast(\'La suscripción a calendario externo estará disponible en la versión final.\',\'info\',\'Sincronización\')">'+ic('calendar')+' Sincronizar</button>');
+  html += '<div class="card">'+
+    '<div class="flex" style="justify-content:space-between;align-items:center;margin-bottom:12px">'+
+      '<button class="btn-icon" onclick="toast(\'Estás viendo septiembre de 2026.\',\'info\',\'Calendario\')" aria-label="Mes anterior">'+ic('chevleft',20)+'</button>'+
+      '<span class="strong">Septiembre 2026</span>'+
+      '<button class="btn-icon" onclick="toast(\'Octubre se habilita al cierre del período (01/10/2026).\',\'info\',\'Calendario\')" aria-label="Mes siguiente">'+ic('chevright',20)+'</button>'+
+    '</div>'+mesCalendario(2026,8,evs)+'</div>';
+  html += '<div class="rbac-note">'+ic('info',16)+'<span>Los días marcados corresponden a pagos registrados, visitas programadas y vencimientos de tu contrato.</span></div>';
+  return html;
+}
+function viewPagos(){
+  var rcs = recibosPortal();
+  var html = pageHead([{label:'Portal', link:'#/resumen'},{label:'Pagos'}], 'Mis pagos', 'Recibos de tu contrato '+(contratoPortal()? contratoPortal().ref : '—'),
+    '<button class="btn btn-secondary" onclick="exportPagosPortal()">'+ic('download')+' Exportar CSV</button>'+
+    '<button class="btn btn-primary" onclick="nuevoPagoPortal()">'+ic('wallet')+' Pagar</button>');
+  if(!rcs.length) return html + emptyState('receipt','Aún no tienes pagos registrados','Cuando la administración emita tu primer recibo, aparecerá aquí.', '');
+  html += '<div class="card"><div class="tbl-wrap"><table class="tbl dense tbl-hover">'+
+    '<thead><tr><th>Folio</th><th>Período</th><th class="num">Monto</th><th>Vence</th><th>Estado</th><th>Pago</th><th>Método</th><th></th></tr></thead><tbody>'+
+    rcs.map(function(r){
+      return '<tr><td class="mono">'+esc(r.folio)+'</td><td>'+esc(r.periodo)+'</td><td class="num mono">'+fmtM(r.monto)+'</td><td class="mono">'+esc(r.vence)+'</td><td>'+chipEstado(r.estado)+'</td><td class="mono small">'+esc(r.pago||'—')+'</td><td class="small">'+esc(r.metodo||'—')+'</td><td>'+
+        (r.estado==='Pagado'? '<button class="btn btn-secondary btn-compact" onclick="verComprobantePortal(\''+r.folio+'\')">'+ic('receipt',16)+' Comprobante</button>' : '<span class="muted2 small">—</span>')+'</td></tr>';
+    }).join('')+'</tbody></table></div>'+
+    '<div class="pagination"><span class="small muted2">Demostración de diseño · en producción el comprobante PDF se genera desde el BFF.</span></div></div>';
+  html += '<div class="alert alert-info" style="margin-top:var(--sp-5)">'+ic('info',20)+'<div><h4>¿Cómo pagas?</h4><p>Paga con <b>Débito ACH</b> (mandato Ley 81), <b>Yappy</b> o sube el <b>comprobante de tu transferencia</b> desde el portal. La administración valida el pago y te entrega el comprobante numerado CRE-2026-xxxx.</p></div></div>';
+  return html;
+}
+function nuevoPagoPortal(){
+  if(!contratoPortal()) return;
+  var rcs = recibosPortal().filter(function(r){ return r.estado!=='Pagado'; });
+  if(!rcs.length){ toast('Ya no tienes recibos pendientes por pagar.','info','Sin pendientes'); return; }
+  var masYappy = rcs.some(function(r){ return r.monto > 1000; });
+  var yapDisponible = !masYappy;
+  var cards = '<div class="pago-m metodo-grid">'+
+    '<button type="button" class="metodo" onclick="nuevoPagoEnLineaPortal()"><span class="m-ico">'+ic('wallet',24)+'</span><span><strong>Débito ACH · en línea</strong><small>Cargo automático desde tu cuenta bancaria el día 5 de cada mes.</small></span><span class="m-arrow">'+ic('chevright',18)+'</span></button>'+
+    '<button type="button" class="metodo"'+(yapDisponible? '':' disabled title="Yappy solo permite montos de hasta B/. 1,000 por transacción. Este recibo lo supera; usa Débito ACH o sube un comprobante."')+' onclick="'+(yapDisponible?'nuevoPagoYappyPortal()':'void 0')+'"><span class="m-ico">'+ic('smartphone',24)+'</span><span><strong>Yappy</strong><small>'+(yapDisponible?'Pago desde tu app Yappy (hasta B/. 1,000 por transacción).':'Límite B/. 1,000 superado · usa otro método.')+'</small></span><span class="m-arrow">'+ic('chevright',18)+'</span></button>'+
+    '<button type="button" class="metodo" onclick="nuevoPagoComprobantePortal()"><span class="m-ico">'+ic('upload',24)+'</span><span><strong>Subir comprobante</strong><small>Ya pagaste por transferencia o ventanilla; adjunta el recibo y la administración lo valida.</small></span><span class="m-arrow">'+ic('chevright',18)+'</span></button>'+
+    '<button type="button" class="metodo" onclick="nuevoPagoTarjetaPortal()"><span class="m-ico">'+ic('lock',24)+'</span><span><strong>Tarjeta Visa · débito/crédito</strong><small>Paga con tu tarjeta Visa y, si quieres, actívala como pago <b>recurrente</b> para los cánones de cada mes.</small></span><span class="m-arrow">'+ic('chevright',18)+'</span></button>'+
+    '</div>';
+  openModal('<div class="alert alert-info">'+ic('info',20)+'<div><h4>¿Cómo quieres pagar tu recibo?</h4><p>Elige un método y completa el pago. La administración lo valida y emite tu comprobante oficial.</p></div></div>'+cards,
+    {title:'Pagar recibo', size:'w560'});
+}
+function nuevoPagoComprobantePortal(){
+  var pa = contratoPortal(); if(!pa) return;
+  var rcs = recibosPortal().filter(function(r){ return r.estado!=='Pagado'; });
+  var opts = rcs.map(function(r){ return '<option value="'+esc(r.folio)+'">'+esc(r.folio)+' · '+esc(r.periodo)+' · '+fmtM(r.monto)+'</option>'; }).join('');
+  if(!rcs.length){ toast('No tienes recibos pendientes.','info','Sin pendientes'); return; }
+  var html = '<div class="alert alert-success">'+ic('upload',20)+'<div><h4>Comprobante de pago externo</h4><p>Si ya pagaste por <b>transferencia bancaria (ACH/UIT B/. 1,950.00 por folio)</b> o en <b>ventanilla</b>, adjunta aquí el comprobante para que la administración lo valide y marque tu recibo como pagado.</p></div></div>'+
+    '<div class="field"><label for="cp-folio">Recibo a pagar <span class="req">*</span></label><select class="input" id="cp-folio">'+opts+'</select></div>'+
+    '<div class="field"><label for="cp-monto">Monto pagado (B/.) <span class="req">*</span></label><input class="input mono" id="cp-monto" value="'+rcs[0].monto+'"></div>'+
+    '<div class="field"><label for="cp-file">Comprobante (captura / PDF) <span class="req">*</span></label><input class="input" type="file" id="cp-file" accept="image/*,.pdf"></div>'+
+    '<div class="field"><label for="cp-nota">Nota a la administración</label><textarea class="input" id="cp-nota" rows="2" placeholder="Ej. Pago a través de Banistmo, referencia 88231"></textarea></div>'+
+    '<div class="alert alert-warning">'+ic('clock',18)+'<div><h4>Aviso</h4><p>No se permiten los <b>pagos por cuotas</b> en este flujo. El monto debe ser por recibo completo.</p></div></div>';
+  var m = openModal(html, {title:'Subir comprobante', size:'w520'});
+  var foot = document.createElement('div'); foot.className='modal-foot';
+  foot.innerHTML='<button class="btn btn-secondary" onclick="closeModal()">Cancelar</button>'+
+    '<button class="btn btn-primary" onclick="confirmarComprobantePortal()">'+ic('check')+' Validar comprobante</button>';
+  m.querySelector('.modal-body').after(foot);
+}
+function confirmarComprobantePortal(){
+  var sel = document.getElementById('cp-folio'); if(!sel) return;
+  var r = RECIBOS.find(function(x){ return x.folio===sel.value; }); if(!r) return;
+  var file = document.getElementById('cp-file');
+  if(!file || !file.files || !file.files.length){ toast('Adjunta la captura o el PDF del comprobante.','warning','Falta archivo'); return; }
+  r.estado = 'Pagado'; r.metodo = 'Transferencia / ventanilla'; r.pago = todayStr();
+  r.comp = 'CRE-2026-'+String(++CRE_SEQ);
+  r.refComp = (document.getElementById('cp-nota')||{}).value || null;
+  closeModal();
+  toast('Comprobante validado · recibo '+r.folio+' marcado como pagado.','success','Pago registrado');
+  render();
+}
+function nuevoPagoEnLineaPortal(){
+  var pa = contratoPortal(); if(!pa) return;
+  var html = '<div class="alert alert-info">'+ic('info',20)+'<div><h4>Débito ACH · mandato</h4><p>Con tu consentimiento (Ley 81) la administración debita el canon de tu cuenta el día 5 de cada mes. El demo simula la orden SEPA/ACH.</p></div></div>'+
+    '<div class="field"><label for="ach-cuenta">Cuenta a debitar <span class="req">*</span></label><select class="input" id="ach-cuenta"><option>Cuenta corriente · 0123-456-789 · Banco General</option></select></div>'+
+    '<div class="field"><label for="ach-dia">Día de débito</label><select class="input" id="ach-dia"><option>5 · mensual</option></select></div>';
+  var m = openModal(html, {title:'Pagar en línea · Débito ACH', size:'w520'});
+  var foot = document.createElement('div'); foot.className='modal-foot';
+  foot.innerHTML='<button class="btn btn-secondary" onclick="closeModal()">Cancelar</button>'+
+    '<button class="btn btn-primary" onclick="confirmarMandatoACH()">'+ic('check')+' Aceptar mandato</button>';
+  m.querySelector('.modal-body').after(foot);
+}
+function confirmarMandatoACH(){
+  var rcs = recibosPortal().filter(function(r){ return r.estado!=='Pagado'; });
+  if(!rcs.length){ closeModal(); toast('Ya no tienes recibos pendientes.','info','Sin pendientes'); return; }
+  rcs.forEach(function(r){ r.estado='Pagado'; r.metodo='Débito ACH · mandato'; r.pago='Pago en línea · ACH'; });
+  var c = contratoPortal(); if(c) c.pagoRecurrente = true;
+  closeModal();
+  toast('Mandato ACH activado · tu canon se debitará el día 5 de cada mes.','success','Pago en línea');
+  render();
+}
+function nuevoPagoYappyPortal(){
+  var rcs = recibosPortal().filter(function(r){ return r.estado!=='Pagado'; });
+  if(rcs.length && Number(rcs[0].monto) > 1000){ toast('Yappy tiene un límite de B/. 1,000 por transacción. Este recibo supera el monto: usa Débito ACH o adjunta un comprobante.','warning','Yappy no disponible'); return; }
+  var pa = contratoPortal(); if(!pa) return;
+  var rcs2 = recibosPortal().filter(function(r){ return r.estado!=='Pagado'; });
+  if(!rcs2.length){ toast('Todos tus recibos están pagados.','info','Sin pendientes'); return; }
+  var opts = rcs2.map(function(r){ return '<option value="'+esc(r.folio)+'">'+esc(r.folio)+' · '+esc(r.periodo)+' · '+fmtM(r.monto)+'</option>'; }).join('');
+  var html = '<div class="alert alert-success">'+ic('smartphone',20)+'<div><h4>Yappy · Banco General</h4><p>Elige el recibo, configura el monto y genera el pago Yappy. Luego <b>sube el comprobante</b> para que la administración lo valide.</p></div></div>'+
+    '<div class="field"><label for="y-folio">Recibo a pagar <span class="req">*</span></label><select class="input" id="y-folio">'+opts+'</select></div>'+
+    '<div class="field"><label for="y-monto">Monto (B/.) <span class="req">*</span></label><input class="input mono" id="y-monto" value="'+rcs2[0].monto+'"></div>'+
+    '<div class="field"><label for="y-corr">Correo / móvil del inquilino <span class="req">*</span></label><input class="input" id="y-corr" value="'+esc(persona('p1').correo)+'"></div>';
+  var m = openModal(html, {title:'Pagar con Yappy · Generar pago', size:'w520'});
+  var foot = document.createElement('div'); foot.className='modal-foot';
+  foot.innerHTML='<button class="btn btn-secondary" onclick="closeModal()">Cancelar</button>'+
+    '<button class="btn btn-primary" onclick="generarPagoYappy()">'+ic('smartphone')+' Generar pago Yappy</button>';
+  m.querySelector('.modal-body').after(foot);
+}
+function generarPagoYappy(){
+  var sel = document.getElementById('y-folio'); if(!sel) return;
+  var folio = sel.value;
+  var r = RECIBOS.find(function(x){ return x.folio===folio; }); if(!r) return;
+  var monto = (document.getElementById('y-monto')||{}).value||'';
+  closeModal();
+  toast('Pago Yappy B/. '+monto+' generado para '+folio+'. Abre la app de Yappy para completar el pago y luego sube el comprobante.','info','Yappy');
+  // en producción el BFF crea el link de pago Yappy; aquí lo simulamos
+  openModal('<div class="alert alert-success">'+ic('smartphone',24)+'<div><h4>Yappy listo</h4><p>Se envió la solicitud de pago a la app Yappy de <span class="mono">'+esc(persona('p1').correo)+'</span>. Cuando completes el pago, sube aquí el comprobante para validarlo.</p></div></div>'+
+    '<div class="field"><label for="yc-file">Comprobante (captura / PDF) <span class="req">*</span></label><input class="input" type="file" id="yc-file" accept="image/*,.pdf"></div>',
+    {title:'Yappy · Subir comprobante', size:'w520'});
+  var foot = document.createElement('div'); foot.className='modal-foot';
+  foot.innerHTML='<button class="btn btn-secondary" onclick="closeModal()">Cancelar</button>'+
+    '<button class="btn btn-primary" onclick="subirComprobanteYappy(\''+folio+'\')">'+ic('upload')+' Subir comprobante</button>';
+  document.querySelector('#overlay-root .modal .modal-body').after(foot);
+}
+function subirComprobanteYappy(folio){
+  var file = document.getElementById('yc-file');
+  if(!file || !file.files || !file.files.length){ toast('Adjunta la captura o el PDF del comprobante Yappy.','warning','Falta archivo'); return; }
+  var r = RECIBOS.find(function(x){ return x.folio===folio; }); if(!r) return;
+  r.estado = 'Pagado'; r.metodo = 'Yappy'; r.pago = todayStr();
+  closeModal();
+  toast('Comprobante Yappy recibido · pago B/. '+r.monto+' validado. Se notificó a la administración.','success','Pago Yappy validado');
+  render();
+}
+function nuevoPagoTarjetaPortal(){
+  var pa = contratoPortal(); if(!pa) return;
+  var rcs = recibosPortal().filter(function(r){ return r.estado!=='Pagado'; });
+  var opts = rcs.map(function(r){ return '<option value="'+esc(r.folio)+'">'+esc(r.folio)+' · '+esc(r.periodo)+' · '+fmtM(r.monto)+'</option>'; }).join('');
+  var html = '<div class="alert alert-info">'+ic('lock',20)+'<div><h4>Tarjeta Visa · débito/crédito</h4><p>Ingresa los datos de tu tarjeta. El cargo se procesa al instante y se emite tu comprobante numerado CRE-2026-xxxx.</p></div></div>'+
+    '<div class="field"><label for="tc-folio">Recibo a pagar <span class="req">*</span></label><select class="input" id="tc-folio">'+opts+'</select></div>'+
+    '<div class="field"><label for="tc-num">Número de tarjeta <span class="req">*</span></label><input class="input mono" id="tc-num" maxlength="19" placeholder="4000 0000 0000 0000"></div>'+
+    '<div class="g2"><div class="field"><label for="tc-tit">Titular <span class="req">*</span></label><input class="input" id="tc-tit" placeholder="Nombre como aparece en la tarjeta"></div><div class="field"><label for="tc-cvv">CVV <span class="req">*</span></label><input class="input mono" id="tc-cvv" maxlength="3" placeholder="123"></div></div>'+
+    '<div class="g2"><div class="field"><label for="tc-vto">Vence (MM/AA) <span class="req">*</span></label><input class="input mono" id="tc-vto" maxlength="5" placeholder="09/28"></div><div class="field"><label for="tc-pais">Red</label><div class="chip chip-success" style="font-size:12px">'+ic('lock',16)+' Visa · tokenizada</div></div></div>'+
+    '<div class="field"><label class="check" style="display:flex;align-items:flex-start;gap:10px"><input type="checkbox" id="tc-rec" checked> <span><strong>Este pago se repite automáticamente cada mes</strong><small class="muted2" style="display:block;margin-top:3px">Mismo monto, misma tarjeta, sin que tengas que volver a pagar: el canon se cobrará a tu tarjeta en la misma fecha cada mes (Ley 81 · cargo recurrente).</small></span></label></div>'+
+    '<div class="alert alert-warning">'+ic('shield',16)+'<div><h4>Seguridad</h4><p>El número se tokeniza (VTS); la administración nunca ve los 16 dígitos. Demo: no se procesa ningún cargo real.</p></div></div>';
+  var m = openModal(html, {title:'Pagar con tarjeta Visa', size:'w520'});
+  var foot = document.createElement('div'); foot.className='modal-foot';
+  foot.innerHTML='<button class="btn btn-secondary" onclick="closeModal()">Cancelar</button>'+
+    '<button class="btn btn-primary" onclick="confirmarPagoTarjetaPortal()">'+ic('check')+' Pagar recibo</button>';
+  m.querySelector('.modal-body').after(foot);
+}
+function confirmarPagoTarjetaPortal(){
+  var f = document.getElementById('tc-folio'); if(!f) return;
+  var rcs = recibosPortal(); var r=null;
+  for(var i=0;i<rcs.length;i++){ if(rcs[i].folio===f.value){ r=rcs[i]; break; } }
+  if(!r) return;
+  var rec = document.getElementById('tc-rec');
+  if(rec && rec.checked){ var pa = contratoPortal(); if(pa && PORTAL_TIPO==='inquilino'){ pa.pagoRecurrente = true; } }
+  r.estado='Pagado'; r.metodo='Tarjeta Visa · débito/crédito'; r.pago='Pago en línea · tarjeta';
+  closeModal();
+  toast('Recibo '+esc(r.folio)+' pagado con tu tarjeta Visa. Comprobante emitido.','success','Pago procesado');
+  render();
+}
+function verComprobantePortal(folio){
+  var r = RECIBOS.find(function(x){ return x.folio===folio; }); if(!r) return;
+  var c = contratoPortal(); var inm = inmueble(c? c.inm : 'i1');
+  var html = '<div style="text-align:center;margin-bottom:16px"><div class="strong" style="font-size:15px">Comprobante de pago</div>'+
+    '<div class="doc-folio">'+esc(r.comp||r.folio)+'</div>'+
+    '<div class="muted2 small">Emitido por la administración · Constructora Especializada, S.A.</div></div>'+
+    '<div class="card" style="padding:14px;margin-bottom:16px">'+
+      '<div class="detail-row"><span class="muted2 small">Recibo</span><span class="mono">'+esc(r.folio)+'</span></div>'+
+      '<div class="detail-row"><span class="muted2 small">Período</span><span>'+esc(r.periodo)+'</span></div>'+
+      '<div class="detail-row"><span class="muted2 small">Inquilino</span><span>'+esc(persona('p1').nombre)+'</span></div>'+
+      '<div class="detail-row"><span class="muted2 small">Inmueble</span><span>'+esc(inm.ref)+' · '+esc(inm.nombre)+'</span></div>'+
+      '<div class="detail-row"><span class="muted2 small">Monto</span><span class="mono strong">'+fmtM(r.monto)+'</span></div>'+
+      '<div class="detail-row"><span class="muted2 small">Pagado</span><span class="mono small">'+esc(r.pago)+'</span></div>'+
+      '<div class="detail-row"><span class="muted2 small">Método</span><span>'+esc(r.metodo||'—')+'</span></div>'+
+      (r.refComp? '<div class="detail-row"><span class="muted2 small">Referencia</span><span class="mono small">'+esc(r.refComp)+'</span></div>':'')+
+    '</div>'+
+    '<div class="doc-hash">hash · SHA-256: 9f3a…'+esc(r.folio)+'</div>';
+  openModal(html, {title:'Comprobante '+(r.comp||r.folio), size:'w520'});
+}
+function exportPagosPortal(){
+  var rcs = recibosPortal();
+  downloadCSV('mis-pagos-portal', ['Folio','Periodo','Monto','Vence','Estado','Pago','Metodo'], rcs.map(function(r){ return [r.folio, r.periodo, r.monto, r.vence, r.estado, r.pago||'', r.metodo||'']; }));
+}
+function viewIncidencias(){
+  var inci = INCIDENCIAS.filter(function(x){ return x.por==='p1'; });
+  var html = pageHead([{label:'Portal', link:'#/resumen'},{label:'Incidencias'}], 'Mis incidencias', 'Reporta un problema y dale seguimiento en línea',
+    '<button class="btn btn-primary" onclick="nuevaIncidenciaPortal()">'+ic('plus')+' Nueva incidencia</button>');
+  html += '<div class="alert alert-info">'+ic('info',20)+'<div><h4>Plazos de atención</h4><p>Urgencia Alta: atención en 24 h · Media: 72 h · Baja: 7 días. Te notificamos en cada cambio de estado.</p></div></div>';
+  if(!inci.length) return html + emptyState('wrench','No tienes incidencias','Cuando reportes una incidencia verás aquí el estado, el técnico asignado y el seguimiento.', '');
+  html += '<div style="display:grid;gap:var(--sp-4)">'+inci.map(function(x){
+      return '<div class="card card-hover" style="padding:16px;cursor:pointer" onclick="verIncidenciaPortal(\''+x.id+'\')">'+
+        '<div class="flex between" style="align-items:flex-start;gap:10px"><div>'+
+          '<div class="flex" style="gap:8px;align-items:center;flex-wrap:wrap"><span class="mono strong">'+esc(x.id)+'</span>'+chipEstado(x.estado)+urgChip(x.urg)+'</div>'+
+          '<div class="strong" style="margin-top:6px">'+esc(x.titulo)+'</div>'+
+          '<div class="small muted2">'+esc(x.desc)+'</div>'+
+        '</div><div style="text-align:right;flex:none"><div class="mono small">'+esc(x.fecha)+'</div><div class="small muted2">SLA: '+esc(x.slaDue||'—')+'</div></div></div>'+
+      '</div>';
+    }).join('')+'</div>';
+  return html;
+}
+function nuevaIncidenciaPortal(){
+  var html =
+    '<div class="field"><label for="pi-cat">Categoría <span class="req">*</span></label>'+
+      '<select class="input" id="pi-cat"><option>Aire acondicionado</option><option>Plomería</option><option>Electricidad</option><option>Electrodoméstico</option><option>Estructura</option><option>Otro</option></select></div>'+
+    '<div class="field"><label for="pi-urg">Urgencia <span class="req">*</span></label>'+
+      '<select class="input" id="pi-urg"><option value="Baja">Baja — sin urgencia (7 días)</option><option value="Media">Media — afecta comodidad (72 h)</option><option value="Alta">Alta — riesgo o avería grave (24 h)</option></select></div>'+
+    '<div class="field"><label for="pi-titulo">Título <span class="req">*</span></label><input class="input" id="pi-titulo" maxlength="90" placeholder="Ej.: Fuga en el baño principal"></div>'+
+    '<div class="field"><label for="pi-desc">Descripción <span class="req">*</span></label><textarea class="input" id="pi-desc" rows="3" placeholder="Describe el problema: dónde, desde cuándo, qué se observa…"></textarea></div>';
+  var m = openModal(html, {title:'Reportar incidencia', size:'w520'});
+  var foot = document.createElement('div'); foot.className = 'modal-foot';
+  foot.innerHTML = '<button class="btn btn-secondary" onclick="closeModal()">Cancelar</button>'+
+    '<button class="btn btn-primary" id="pi-ok">'+ic('send')+' Enviar reporte</button>';
+  m.querySelector('.modal-body').after(foot);
+  m.querySelector('#pi-ok').onclick = function(){
+    var titulo = document.getElementById('pi-titulo').value.trim();
+    var desc = document.getElementById('pi-desc').value.trim();
+    if(!titulo || !desc){ toast('Completa el título y la descripción para enviar el reporte.','warning','Revisa el formulario'); return; }
+    var urg = document.getElementById('pi-urg').value;
+    var sla = addDiasStr(urg==='Alta'? 1 : (urg==='Media'? 3 : 7));
+    var id = nextIncNum();
+    INCIDENCIAS.unshift({id:id, cat:document.getElementById('pi-cat').value, urg:urg, titulo:titulo, desc:desc, por:'p1', inm:'i1', estado:'Reportada', fecha:todayStr(), tecnico:null, costo:null, slaDue:sla, fotos:0, timeline:[{f:todayStr()+' · 09:00', t:'Reportada', a:'Ana Rodríguez · Portal inquilino'}]});
+    PORTAL_NOTIFS.unshift({id:'pn'+Date.now(), portal:'inquilino', tipo:'Incidencia', texto:'Recibimos tu reporte ('+id+'). La administración evaluará el caso en el plazo indicado.', fecha:todayStr(), leida:false, ruta:'#/incidencias'});
+    closeModal();
+    toast('Reporte enviado ('+id+'). Te notificaremos en cada cambio de estado.','success','Incidencia registrada');
+    render();
+  };
+}
+function verIncidenciaPortal(id){
+  var x = INCIDENCIAS.find(function(i){ return i.id===id; }); if(!x) return;
+  var inm = inmueble(x.inm);
+  var html = '<div class="flex" style="gap:10px;align-items:center;margin-bottom:12px;flex-wrap:wrap"><h2 style="font-size:19px;font-weight:600;font-family:var(--font-mono)">'+esc(x.id)+'</h2>'+chipEstado(x.estado)+urgChip(x.urg)+'</div>'+
+    '<div class="strong" style="font-size:15px;margin-bottom:4px">'+esc(x.titulo)+'</div>'+
+    '<p class="muted2 small" style="margin-bottom:16px">'+esc(x.desc)+'</p>'+
+    '<div class="card" style="padding:14px;margin-bottom:16px">'+
+      '<div class="detail-row"><span class="muted2 small">Categoría</span><span>'+esc(x.cat)+'</span></div>'+
+      '<div class="detail-row"><span class="muted2 small">Ubicación</span><span>'+esc(inm.ref)+' · '+esc(inm.nombre)+'</span></div>'+
+      '<div class="detail-row"><span class="muted2 small">Reportada</span><span class="mono small">'+esc(x.fecha)+'</span></div>'+
+      '<div class="detail-row"><span class="muted2 small">SLA comprometido</span><span class="mono small">'+esc(x.slaDue||'—')+'</span></div>'+
+      (x.tecnico? '<div class="detail-row"><span class="muted2 small">Técnico</span><span>'+esc(x.tecnico)+'</span></div>' : '')+
+      (x.costo!=null? '<div class="detail-row"><span class="muted2 small">Costo estimado</span><span class="mono">'+fmtM(x.costo)+'</span></div>' : '')+
+    '</div>'+
+    '<div class="stat-label" style="margin-bottom:10px">SEGUIMIENTO</div>'+
+    '<ul class="timeline">'+(x.timeline||[]).map(function(t){ return '<li><div class="tl-date">'+esc(t.f)+'</div><div class="tl-text"><span class="chip chip-info">'+esc(t.t)+'</span></div><div class="tl-author">'+esc(t.a)+'</div></li>'; }).join('')+'</ul>';
+  openDrawer(html, {title:'Incidencia '+x.id});
+}
+function viewPerfil(){
+  if(PORTAL_TIPO==='inquilino'){
+    var p = persona('p1'), c = contratoPortal(), inm = inmueble(c? c.inm : 'i1');
+    var waOff = ffOn('features.notificaciones.whatsapp');
+    var html = pageHead([{label:'Portal', link:'#/resumen'},{label:'Perfil'}], 'Mi perfil', 'Datos personales y preferencias de contacto');
+    html += '<div class="g2">'+
+      '<div class="card"><div class="card-head"><div><div class="card-title">Datos personales</div><div class="card-sub">Consentimiento Ley 81 firmado el 21/01/2026</div></div></div>'+
+        '<div class="field"><label for="pf-nom">Nombre completo</label><input class="input" id="pf-nom" value="'+esc(p.nombre)+'"></div>'+
+        '<div class="field"><label for="pf-ci">Cédula</label><input class="input" id="pf-ci" value="'+esc(p.ci)+'"></div>'+
+        '<div class="field"><label for="pf-mail">Correo electrónico</label><input class="input" id="pf-mail" type="email" value="'+esc(p.mail)+'"></div>'+
+        '<div class="field"><label for="pf-cel">Celular</label><input class="input" id="pf-cel" value="'+esc(p.cel)+'"></div>'+
+        '<button class="btn btn-primary" onclick="guardarPerfilPortal()">'+ic('check')+' Guardar cambios</button>'+
+      '</div>'+
+      '<div>'+
+        '<div class="card" style="margin-bottom:var(--sp-5)"><div class="card-head"><div><div class="card-title">Contrato</div></div></div>'+
+          '<div class="detail-row"><span class="muted2 small">Referencia</span><span class="mono">'+esc(c.ref)+'</span></div>'+
+          '<div class="detail-row"><span class="muted2 small">Inmueble</span><span>'+esc(inm.ref)+' · '+esc(inm.nombre)+'</span></div>'+
+          '<div class="detail-row"><span class="muted2 small">Canon</span><span class="mono">'+fmtM(c.canon)+'</span></div>'+
+          '<div class="detail-row"><span class="muted2 small">Vigencia</span><span>01/03/2026 · 28/02/2027</span></div>'+
+          '<div class="detail-row"><span class="muted2 small">Garantía</span><span>B/. 1,800 (2 meses)</span></div>'+
+        '</div>'+
+        '<div class="card"><div class="card-head"><div><div class="card-title">Preferencias de notificación</div></div></div>'+
+          '<label class="check" style="display:flex;margin-bottom:10px"><input type="checkbox" checked> Correo electrónico</label>'+
+          '<label class="check" style="display:flex;margin-bottom:10px"><input type="checkbox" checked> Plataforma (panel y app)</label>'+
+          '<label class="check" style="display:flex;margin-bottom:10px"><input type="checkbox" disabled'+(waOff?'':' checked')+'> WhatsApp <span class="chip chip-neutral" style="margin-left:6px">Fase 2</span></label>'+
+          '<label class="check" style="display:flex;margin-bottom:6px"><input type="checkbox"> SMS</label>'+
+          '<p class="help">Los canales marcados como “Fase 2” se activan cuando el administrador habilita la integración.</p>'+
+        '</div>'+
+      '</div>'+
+    '</div>';
+    return html;
+  }
+  var p4 = persona('p4');
+  var h = pageHead([{label:'Portal', link:'#/resumen'},{label:'Perfil'}], 'Mi perfil', 'Datos de contacto y cuenta bancaria');
+  h += '<div class="g2">'+
+    '<div class="card"><div class="card-head"><div><div class="card-title">Datos personales</div></div></div>'+
+      '<div class="field"><label for="pr-nom">Nombre completo</label><input class="input" id="pr-nom" value="'+esc(p4.nombre)+'"></div>'+
+      '<div class="field"><label for="pr-ci">Cédula</label><input class="input" id="pr-ci" value="'+esc(p4.ci)+'"></div>'+
+      '<div class="field"><label for="pr-mail">Correo electrónico</label><input class="input" id="pr-mail" type="email" value="'+esc(p4.mail)+'"></div>'+
+      '<div class="field"><label for="pr-cel">Celular</label><input class="input" id="pr-cel" value="'+esc(p4.cel)+'"></div>'+
+      '<button class="btn btn-primary" onclick="guardarPerfilPortal()">'+ic('check')+' Guardar cambios</button>'+
+    '</div>'+
+    '<div class="card"><div class="card-head"><div><div class="card-title">Cuenta bancaria</div><div class="card-sub">Para recibir liquidaciones</div></div></div>'+
+      '<div class="field"><label for="pr-banco">Banco</label><input class="input" id="pr-banco" value="Banco General"></div>'+
+      '<div class="field"><label for="pr-iban">Cuenta (IBAN)</label><input class="input" id="pr-iban" value="PA•• 1234 5678 9012 3456 7890"></div>'+
+      '<div class="field"><label for="pr-titular">Titular</label><input class="input" id="pr-titular" value="'+esc(p4.nombre)+'"></div>'+
+      '<p class="help">Los cambios de cuenta se validan con doble factor antes de surtir efecto en la próxima liquidación.</p>'+
+    '</div>'+
+  '</div>';
+  return h;
+}
+function guardarPerfilPortal(){ toast('Tus datos fueron actualizados correctamente.','success','Perfil guardado'); }
+
+/* ---------- Vistas propietario ---------- */
+function viewPropPagos(){
+  var liqs = LIQUIDACIONES.filter(function(l){ return l.prop==='p4'; });
+  var html = pageHead([{label:'Portal', link:'#/resumen'},{label:'Pagos'}], 'Mis pagos', 'Liquidaciones netas que recibes por la administración');
+  html += '<div class="alert alert-info">'+ic('info',20)+'<div><h4>Esquema</h4><p>Ingreso por arrendamiento menos comisión de gestión (8% según ADM-2026-002). Los montos se transfieren a Banco General •• 5678.</p></div></div>';
+  if(!liqs.length) return html + emptyState('receipt','Aún no hay liquidaciones','Cuando el período se cierre, tus liquidaciones aparecerán aquí.', '');
+  html += '<div class="card"><div class="tbl-wrap"><table class="tbl dense tbl-hover"><caption>Liquidaciones recientes</caption>'+
+    '<thead><tr><th>Ref.</th><th>Período</th><th class="num">Ingreso</th><th class="num">Comisión 8%</th><th class="num">Neto a recibir</th><th>Estado</th><th>Pago</th><th>Método</th></tr></thead><tbody>'+
+    liqs.map(function(l){
+      return '<tr><td class="mono">'+esc(l.ref)+'</td><td>'+esc(l.periodo)+'</td><td class="num mono">'+fmtM(l.ingreso)+'</td><td class="num mono">'+fmtM(l.comision)+'</td><td class="num mono strong">'+fmtM(l.neto)+'</td><td>'+chipEstado(l.estado)+'</td><td class="mono small">'+esc(l.pago||'—')+'</td><td class="small">'+esc(l.metodo||'—')+'</td></tr>';
+    }).join('')+'</tbody></table></div>'+
+    '<div class="pagination"><span class="small muted2">El detalle por inmueble y el PDF estarán disponibles en la versión final.</span></div></div>';
+  return html;
+}
+function viewNotificaciones(){
+  var nb = portalNotifications();
+  return pageHead([{label:'Portal', link:'#/resumen'},{label:'Notificaciones'}], 'Notificaciones', 'Comunicaciones de la administración',
+    '<button class="btn btn-secondary" onclick="marcarTodasPortalNotif();render()">'+ic('check')+' Marcar todas como leídas</button>')+
+    (nb.length? '<div class="card" style="padding:8px 16px">'+nb.map(function(n){
+      return '<div style="display:flex;gap:12px;align-items:flex-start;padding:12px 0;border-bottom:1px solid var(--border-subtle)">'+
+        '<span style="width:9px;height:9px;border-radius:50%;background:'+(n.leida?'var(--border-default)':'var(--brand)')+';flex:none;margin-top:5px" aria-hidden="true"></span>'+
+        '<div style="flex:1;font-size:13px"><div class="flex" style="gap:8px;align-items:center"><span class="chip chip-info">'+esc(n.tipo)+'</span><span class="muted2 small">'+esc(n.fecha)+'</span></div>'+
+        '<p style="margin:4px 0 0">'+esc(n.texto)+'</p></div>'+
+        (n.leida? '' : '<button class="btn-icon" onclick="marcarPortalNotif(\''+n.id+'\');render()" aria-label="Marcar como leída">'+ic('check',16)+'</button>')+
+      '</div>'; }).join('')+'</div>'
+    : emptyState('bell','No tienes notificaciones','Cuando la administración te notifique, verás el aviso aquí.'));
+}
+
+/* ---------- Router / render / init ---------- */
+const VISTAS = ['resumen','calendario','pagos','incidencias','notificaciones','perfil'];
+function parseRoute(){
+  var h = location.hash.replace(/^#\/?/,'') || '';
+  var parts = h.split('/').filter(Boolean);
+  if(!parts.length) return {view:'resumen'};
+  return {view:parts[0], sub:parts[1]||null};
+}
+function dispatch(view, sub){
+  if(PORTAL_TIPO==='inquilino'){
+    if(view==='calendario') return viewCalendario();
+    if(view==='pagos') return viewPagos();
+    if(view==='incidencias') return viewIncidencias();
+    if(view==='notificaciones') return viewNotificaciones();
+    if(view==='perfil') return viewPerfil();
+    return viewResumen();
+  }
+  if(view==='pagos') return viewPropPagos();
+  if(view==='notificaciones') return viewNotificaciones();
+  if(view==='perfil') return viewPerfil();
+  return viewResumen();
+}
+function render(){
+  var r = parseRoute();
+  var app = document.getElementById('app');
+  if(!app) return;
+  var view = (VISTAS.indexOf(r.view)>=0 && (PORTAL_TIPO==='propietario' ? (r.view==='resumen'||r.view==='pagos'||r.view==='notificaciones'||r.view==='perfil') : true)) ? r.view : 'resumen';
+  document.body.classList.add('portal-body');
+  app.innerHTML = portalShell(view, dispatch(view, r.sub));
+  document.title = 'Constructora Especializada · Portal '+(PORTAL_TIPO==='inquilino'?'Inquilino':'Propietario');
+  closeMenus();
+  window.scrollTo(0,0);
+}
+function init(){
+  cargarFlags();
+  var saved = null;
+  try{ saved = sessionStorage.getItem('grafito.session'); }catch(e){}
+  if(saved){
+    try{
+      var s = JSON.parse(saved);
+      if(s && s.type===PORTAL_TIPO) session = s;
+    }catch(e){}
+  }
+  if(!session) session = {type:PORTAL_TIPO, user:DEMO_USERS[PORTAL_TIPO], rol:DEMO_USERS[PORTAL_TIPO].rol};
+  render();
+  window.addEventListener('hashchange', render, false);
+  document.addEventListener('keydown', function(e){ if(e.key==='Escape') closeMenus(); });
+  document.addEventListener('pointerdown', function(e){
+    if(e.target && e.target.closest && !e.target.closest('.menu') && !e.target.closest('[onclick*="openUserMenu"]') && !e.target.closest('[onclick*="openNotifMenu"]')){ closeMenus(); }
+  });
+}
+if(document.readyState==='loading'){ document.addEventListener('DOMContentLoaded', init); } else { init(); }
+</script>
+</body>
+</html>
