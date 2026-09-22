@@ -18,6 +18,7 @@ Esto permite:
 - Llevar **control de versiones por módulo** (cadena de cambios y autor por documento; historial íntegro en git).
 - Revisar, aprobar y evolucionar cada módulo sin bloquear a los demás.
 - Cruzar con los documentos de arquitectura (`docs/diseno-arquitectura.md`, `docs/modulo-contabilidad.md`, `docs/adr-aislamiento-modulos-killswitch.md`).
+- El stack alternativo **Laravel + FilamentPHP** se evalúa en `docs/analisis-stack-laravel.md` (borrador; no modifica ADRs hasta decisión formal).
 
 ## 2. Reglas transversales (aplican a todos los módulos)
 
